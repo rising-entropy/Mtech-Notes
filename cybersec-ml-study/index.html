@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>AI &amp; ML in Cyber Security — Exam Study Guide (AIML ZG567)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+window.MathJax = {tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1e242d; --ink:#e6edf3; --muted:#8b949e;
+  --accent:#58a6ff; --accent2:#ffa657; --good:#7ee787; --warn:#ff7b72; --bad:#f85149;
+  --code:#0a0d12; --border:#30363d;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+nav.side{width:320px;background:var(--panel);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;overflow-y:auto;padding:18px 14px;font-size:14px;}
+nav.side h2{color:var(--accent);margin:0 0 12px;font-size:16px}
+nav.side ol{padding-left:18px;margin:0}
+nav.side li{margin:6px 0}
+nav.side ul{padding-left:14px;margin:4px 0;list-style:disc;color:var(--muted)}
+nav.side ul a{color:var(--muted)}
+main{flex:1;padding:30px 48px;max-width:1100px}
+h1{color:#fff;border-bottom:1px solid var(--border);padding-bottom:10px}
+h2{color:var(--accent);margin-top:50px;border-left:4px solid var(--accent);padding-left:10px}
+h3{color:var(--accent2);margin-top:30px}
+h4{color:#cdd5e0;margin-top:20px;margin-bottom:6px}
+section{margin-bottom:40px;padding:18px 22px;background:var(--panel);border:1px solid var(--border);border-radius:10px}
+.def{background:var(--panel2);border-left:3px solid var(--good);padding:10px 14px;margin:10px 0;border-radius:4px}
+.def strong{color:var(--good)}
+.note{background:#2a2030;border-left:3px solid var(--warn);padding:10px 14px;margin:10px 0;border-radius:4px}
+.example{background:#1a2230;border-left:3px solid var(--accent);padding:10px 14px;margin:14px 0;border-radius:4px}
+.example strong{color:var(--accent)}
+.bad{background:#2a1a1a;border-left:3px solid var(--bad);padding:10px 14px;border-radius:4px;margin:10px 0}
+code{background:var(--code);padding:1px 6px;border-radius:4px;font-size:0.92em;color:#ffd58a}
+table{border-collapse:collapse;margin:10px 0;width:100%;font-size:14px}
+th,td{border:1px solid var(--border);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--accent)}
+ul.k li{margin:4px 0}
+.pill{display:inline-block;background:var(--panel2);border:1px solid var(--border);padding:2px 8px;border-radius:12px;font-size:12px;color:var(--muted);margin:2px}
+.toc-top{background:var(--panel2);padding:10px 14px;border-radius:6px;border:1px solid var(--border)}
+hr{border:none;border-top:1px dashed var(--border);margin:25px 0}
+@media (max-width:900px){nav.side{display:none}main{padding:18px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="side">
+<h2>Syllabus Navigator</h2>
+<ol>
+<li><a href="#s1">Intro to Cyber Security</a>
+  <ul>
+    <li><a href="#s1-1">CIA triad</a></li>
+    <li><a href="#s1-2">Threats & attack vectors</a></li>
+    <li><a href="#s1-3">AI/ML landscape</a></li>
+  </ul></li>
+<li><a href="#s2">Core Concepts</a>
+  <ul>
+    <li><a href="#s2-1">Defense-in-depth</a></li>
+    <li><a href="#s2-2">Policies & frameworks</a></li>
+    <li><a href="#s2-3">Attack surface</a></li>
+    <li><a href="#s2-4">Threat intel</a></li>
+    <li><a href="#s2-5">TTPs</a></li>
+    <li><a href="#s2-6">Threat modeling</a></li>
+    <li><a href="#s2-7">SOC</a></li>
+  </ul></li>
+<li><a href="#s3">ML Foundations</a>
+  <ul>
+    <li><a href="#s3-1">Data collection</a></li>
+    <li><a href="#s3-2">Algorithm selection</a></li>
+    <li><a href="#s3-3">ML pipeline</a></li>
+  </ul></li>
+<li><a href="#s4">Misuse/Signature Detection</a>
+  <ul>
+    <li><a href="#s4-1">Signature principles</a></li>
+    <li><a href="#s4-2">Pattern matching</a></li>
+    <li><a href="#s4-3">Decision Trees</a></li>
+    <li><a href="#s4-4">SVM</a></li>
+    <li><a href="#s4-5">Random Forest</a></li>
+    <li><a href="#s4-6">Metrics</a></li>
+    <li><a href="#s4-7">Case study</a></li>
+  </ul></li>
+<li><a href="#s5">Anomaly Detection</a>
+  <ul>
+    <li><a href="#s5-1">Statistical methods</a></li>
+    <li><a href="#s5-2">Distance-based</a></li>
+    <li><a href="#s5-3">Density-based</a></li>
+    <li><a href="#s5-4">K-means</a></li>
+    <li><a href="#s5-5">DBSCAN</a></li>
+    <li><a href="#s5-6">PCA, Autoencoders</a></li>
+    <li><a href="#s5-7">One-class SVM, IF</a></li>
+    <li><a href="#s5-8">Real-time</a></li>
+  </ul></li>
+<li><a href="#s6">Malware Detection 1</a>
+  <ul>
+    <li><a href="#s6-1">Types & evolution</a></li>
+    <li><a href="#s6-2">Static vs dynamic</a></li>
+    <li><a href="#s6-3">Feature extraction</a></li>
+    <li><a href="#s6-4">N-gram</a></li>
+    <li><a href="#s6-5">API calls</a></li>
+  </ul></li>
+<li><a href="#s7">Malware Detection 2</a>
+  <ul>
+    <li><a href="#s7-1">DL for malware</a></li>
+    <li><a href="#s7-2">Obfuscation</a></li>
+    <li><a href="#s7-3">Polymorphic/Metamorphic</a></li>
+    <li><a href="#s7-4">Adaptation</a></li>
+  </ul></li>
+<li><a href="#s9">Network Intrusion Detection 1</a>
+  <ul>
+    <li><a href="#s9-1">Traffic analysis</a></li>
+    <li><a href="#s9-2">Flow features</a></li>
+    <li><a href="#s9-3">Packet inspection</a></li>
+    <li><a href="#s9-4">Feature selection</a></li>
+    <li><a href="#s9-5">Ensembles</a></li>
+  </ul></li>
+<li><a href="#s10">NIDS — Datasets & Eval</a>
+  <ul>
+    <li><a href="#s10-1">Real-time</a></li>
+    <li><a href="#s10-2">NSL-KDD, CICIDS</a></li>
+    <li><a href="#s10-3">Metrics for NIDS</a></li>
+  </ul></li>
+<li><a href="#s11">DGA Domains</a>
+  <ul>
+    <li><a href="#s11-1">DGAs</a></li>
+    <li><a href="#s11-2">Linguistic features</a></li>
+    <li><a href="#s11-3">N-gram models</a></li>
+    <li><a href="#s11-4">Deep learning</a></li>
+  </ul></li>
+<li><a href="#s12">Profiling Traffic 1</a>
+  <ul>
+    <li><a href="#s12-1">Statistical fingerprint</a></li>
+    <li><a href="#s12-2">Protocol behaviour</a></li>
+    <li><a href="#s12-3">UEBA</a></li>
+  </ul></li>
+<li><a href="#s13">Profiling Traffic 2</a>
+  <ul>
+    <li><a href="#s13-1">App ID</a></li>
+    <li><a href="#s13-2">Encrypted traffic</a></li>
+    <li><a href="#s13-3">Temporal patterns</a></li>
+  </ul></li>
+<li><a href="#s14">Adversarial ML 1</a>
+  <ul>
+    <li><a href="#s14-1">Attack taxonomy</a></li>
+    <li><a href="#s14-2">Adversarial examples</a></li>
+    <li><a href="#s14-3">Defenses</a></li>
+  </ul></li>
+<li><a href="#s15">Adversarial ML 2</a>
+  <ul>
+    <li><a href="#s15-1">Poisoning</a></li>
+    <li><a href="#s15-2">Evasion</a></li>
+    <li><a href="#s15-3">Attacker knowledge</a></li>
+    <li><a href="#s15-4">Defenses summary</a></li>
+  </ul></li>
+<li><a href="#cheat">Cheat-sheet</a></li>
+</ol>
+</nav>
+
+<main>
+<h1>AI &amp; ML in Cyber Security — AIML ZG567 Study Guide</h1>
+<p class="toc-top">Topic-by-topic walkthrough of the entire syllabus, in order. Every contact-session sub-topic has a definition, intuition, and worked examples / numerical illustrations where useful. Math renders via MathJax — give it a moment to load.</p>
+
+<!-- ============== SESSION 1 ============== -->
+<section id="s1">
+<h2>1. Introduction to Cyber Security</h2>
+
+<h3>1.1 Fundamentals — Core Concepts &amp; Terminology</h3>
+<div class="def"><strong>Cyber Security.</strong> The practice of protecting <b>systems, networks, programs, data and people</b> from digital attacks, unauthorised access, damage, theft or disruption. Combines technology, processes, and human practices.</div>
+
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Asset</td><td>Anything of value to be protected — data, hardware, software, reputation.</td></tr>
+<tr><td>Vulnerability</td><td>A weakness that can be exploited (unpatched OS, weak password).</td></tr>
+<tr><td>Threat</td><td>A potential cause of an incident (an attacker, malware).</td></tr>
+<tr><td>Attack</td><td>An actual attempt to exploit a vulnerability.</td></tr>
+<tr><td>Risk</td><td>Likelihood × Impact of a successful attack.</td></tr>
+<tr><td>Exploit</td><td>The piece of code or technique used to take advantage of a vulnerability.</td></tr>
+<tr><td>Control / Countermeasure</td><td>A safeguard that reduces risk (firewall, MFA).</td></tr>
+<tr><td>Incident</td><td>Any violation of policy or successful attack.</td></tr>
+<tr><td>IOC (Indicator of Compromise)</td><td>An artifact that signals an incident (file hash, IP, registry key).</td></tr>
+<tr><td>Zero-day</td><td>A vulnerability not yet known to the vendor / no patch exists.</td></tr>
+</table>
+
+<h3 id="s1-1">1.2 The CIA Triad</h3>
+<div class="def">The three foundational security goals:
+<ul>
+<li><strong>Confidentiality</strong> — info accessible <em>only</em> to authorised parties. Protected by encryption, access control, classification.</li>
+<li><strong>Integrity</strong> — info is <em>accurate and unaltered</em>. Protected by hashes (SHA-256), digital signatures, version control.</li>
+<li><strong>Availability</strong> — info / services are accessible <em>when needed</em>. Protected by redundancy, DDoS mitigation, backups.</li>
+</ul>
+Extensions: <b>AAA</b> (Authentication, Authorisation, Accounting), <b>Non-repudiation</b>, <b>Privacy</b>.</div>
+
+<div class="example"><strong>Mapping attacks to CIA:</strong>
+<br>• Data leak / eavesdropping → breaks <b>Confidentiality</b>.
+<br>• File tampering / SQL injection altering records → breaks <b>Integrity</b>.
+<br>• DDoS / ransomware encrypting files → breaks <b>Availability</b>.</div>
+
+<h3 id="s1-2">1.3 Types of Cyber Threats &amp; Attack Vectors</h3>
+
+<h4>Threat categories</h4>
+<table>
+<tr><th>Type</th><th>Description / Example</th></tr>
+<tr><td>Malware</td><td>Malicious software: virus, worm, trojan, ransomware, spyware, rootkit, bot.</td></tr>
+<tr><td>Phishing / Social engineering</td><td>Deceiving users into giving credentials — spear-phishing, whaling, smishing, vishing.</td></tr>
+<tr><td>DoS / DDoS</td><td>Flooding services to deny availability (e.g. SYN flood, UDP flood, amplification).</td></tr>
+<tr><td>MITM (man-in-the-middle)</td><td>Intercepting and possibly altering communication (ARP spoofing, SSL stripping).</td></tr>
+<tr><td>Injection</td><td>SQL injection, command injection, XSS — supplying malicious input.</td></tr>
+<tr><td>Privilege escalation</td><td>Vertical (user→root) or horizontal (user→another user).</td></tr>
+<tr><td>Insider threat</td><td>Malicious or negligent employee.</td></tr>
+<tr><td>Supply chain</td><td>Compromise upstream software/library (SolarWinds, log4j).</td></tr>
+<tr><td>APT</td><td>Advanced Persistent Threat — long-lasting, targeted, often nation-state.</td></tr>
+</table>
+
+<h4>Attack vectors</h4>
+<p>The <em>route</em> an attacker uses: email attachments, web pages, USB drives, remote services (RDP/SSH brute-force), unpatched software, cloud misconfiguration, mobile apps, IoT devices.</p>
+
+<h3 id="s1-3">1.4 AI/ML in Cybersecurity — Landscape</h3>
+
+<h4>Evolution</h4>
+<ol>
+<li>Rule-based / signature systems (1990s–2000s) — fast, precise, but blind to novel attacks.</li>
+<li>Statistical and supervised ML (2000s–2010s) — anomaly detection, spam filters using Naive Bayes/SVM.</li>
+<li>Deep learning (2015→) — malware classification on raw bytes, NIDS on packet sequences.</li>
+<li>Generative + adversarial era (now) — LLMs for SOC analyst assistance; attackers using LLMs for phishing; adversarial ML.</li>
+</ol>
+
+<h4>Where ML is used in security</h4>
+<ul class="k">
+<li>Spam &amp; phishing detection</li>
+<li>Malware detection / classification</li>
+<li>Network Intrusion Detection (NIDS)</li>
+<li>Anomaly detection on logs / user behaviour</li>
+<li>DGA / malicious domain detection</li>
+<li>Insider threat / UEBA</li>
+<li>Vulnerability prediction &amp; fuzzing</li>
+<li>SOC alert triage &amp; deduplication</li>
+</ul>
+
+<h4>Challenges (very important — exam-favourite)</h4>
+<ul class="k">
+<li><b>Highly imbalanced data</b> — attacks are rare (1 in millions).</li>
+<li><b>Concept drift</b> — attackers evolve, so models become stale quickly.</li>
+<li><b>High cost of false positives</b> — analyst alert fatigue.</li>
+<li><b>Adversarial setting</b> — attackers actively try to evade the model.</li>
+<li><b>Ground-truth labelling</b> is expensive (need experts).</li>
+<li><b>Interpretability</b> — analysts need to know <em>why</em> an alert fired.</li>
+<li><b>Privacy</b> — sensitive logs / packet contents.</li>
+</ul>
+</section>
+
+<!-- ============== SESSION 2 ============== -->
+<section id="s2">
+<h2>2. Core Cybersecurity Concepts</h2>
+
+<h3 id="s2-1">2.1 Defense-in-Depth</h3>
+<div class="def"><strong>Defense-in-Depth (DiD)</strong> = layered security where multiple, redundant controls protect assets, so an attacker breaching one layer is stopped by the next. Inspired by castle architecture (moat, walls, keep).</div>
+
+<h4>Typical layers (outer→inner)</h4>
+<ol>
+<li><b>Policies, procedures &amp; awareness</b> — training, user education, governance.</li>
+<li><b>Physical</b> — locks, badges, CCTV, biometric access to data centres.</li>
+<li><b>Perimeter</b> — firewalls, DMZ, VPN, IDS/IPS.</li>
+<li><b>Network</b> — segmentation, NAC, micro-segmentation.</li>
+<li><b>Endpoint</b> — antivirus/EDR, OS hardening, patching.</li>
+<li><b>Application</b> — secure coding, WAF, code review, input validation.</li>
+<li><b>Data</b> — encryption at rest &amp; in transit, DLP, key management.</li>
+<li><b>Identity</b> — MFA, RBAC, zero-trust.</li>
+</ol>
+
+<h3 id="s2-2">2.2 Security Policies and Frameworks</h3>
+<div class="def">A <strong>security policy</strong> is a documented statement of rules and expectations (acceptable use, password, incident response). A <strong>framework</strong> is a structured set of guidelines for designing a security program.</div>
+<table>
+<tr><th>Framework</th><th>What it offers</th></tr>
+<tr><td><b>NIST CSF</b></td><td>Functions: Identify, Protect, Detect, Respond, Recover (and "Govern" in 2.0).</td></tr>
+<tr><td><b>ISO/IEC 27001</b></td><td>ISMS standard — risk-based controls (Annex A); certifiable.</td></tr>
+<tr><td><b>CIS Controls</b></td><td>18 prioritised controls (Basic, Foundational, Organizational).</td></tr>
+<tr><td><b>MITRE ATT&amp;CK</b></td><td>Knowledge base of attacker tactics/techniques.</td></tr>
+<tr><td><b>OWASP Top 10</b></td><td>Top web application risks (Injection, Broken Auth, etc.).</td></tr>
+<tr><td><b>PCI-DSS</b></td><td>Payment card data.</td></tr>
+<tr><td><b>HIPAA / GDPR</b></td><td>Health / personal data privacy.</td></tr>
+</table>
+
+<h3 id="s2-3">2.3 Attack Surface Management (ASM)</h3>
+<div class="def">The <strong>attack surface</strong> is the totality of points (endpoints, APIs, ports, accounts, cloud assets) where an attacker can try to enter or extract data. <b>ASM</b> = the continuous discovery, inventory, assessment, and reduction of these exposures.</div>
+<ul class="k">
+<li><b>Digital</b> (apps, exposed ports), <b>Physical</b> (USB ports, devices), <b>Human</b> (users susceptible to phishing).</li>
+<li>Minimise via patching, decommissioning, segmentation, least privilege.</li>
+</ul>
+
+<h3 id="s2-4">2.4 Threat Intelligence &amp; Attribution</h3>
+<div class="def"><strong>Threat Intelligence (TI)</strong> = evidence-based knowledge (context, indicators, mechanisms, implications) about threats that can inform decisions.</div>
+<h4>Levels of TI</h4>
+<ul class="k">
+<li><b>Strategic</b> — long-term trends, geopolitics; for executives.</li>
+<li><b>Tactical</b> — TTPs of adversaries; for SOC architects.</li>
+<li><b>Operational</b> — campaigns and tools in use; for hunt teams.</li>
+<li><b>Technical</b> — IOCs: hashes, IPs, domains; for SIEM/EDR.</li>
+</ul>
+
+<h4>Threat actors and motivations</h4>
+<table>
+<tr><th>Actor</th><th>Motivation</th></tr>
+<tr><td>Script kiddies</td><td>Fame, mischief.</td></tr>
+<tr><td>Hacktivists (e.g. Anonymous)</td><td>Ideology.</td></tr>
+<tr><td>Cybercriminals</td><td>Financial gain (ransomware, fraud).</td></tr>
+<tr><td>Insiders</td><td>Revenge, money, ideology, accident.</td></tr>
+<tr><td>Nation-state / APT</td><td>Espionage, sabotage, geopolitical.</td></tr>
+<tr><td>Terrorists</td><td>Disruption, ideology.</td></tr>
+</table>
+
+<h4>Attribution</h4>
+<p>Linking activity to a specific actor using TTPs, infrastructure overlaps, code reuse, language artifacts, timing. Extremely hard — attackers use false flags.</p>
+
+<h3 id="s2-5">2.5 Tactics, Techniques and Procedures (TTPs)</h3>
+<div class="def"><b>Tactic</b> = adversary's high-level goal (e.g. <i>Persistence</i>). <b>Technique</b> = how they achieve it (e.g. <i>Scheduled Task</i>). <b>Procedure</b> = specific implementation (e.g. <i>schtasks.exe /create /tn evil ...</i>). TTPs change slowly relative to IOCs — analysing them yields durable defenses (Pyramid of Pain).</div>
+
+<h4>Pyramid of Pain (David Bianco)</h4>
+<p>Going up the pyramid, the more "painful" it is for the attacker to change:</p>
+<ol>
+<li>Hash values — trivial to change.</li>
+<li>IP addresses — easy.</li>
+<li>Domain names — simple.</li>
+<li>Network/host artifacts — annoying.</li>
+<li>Tools — challenging.</li>
+<li>TTPs — tough!</li>
+</ol>
+
+<h4>MITRE ATT&amp;CK</h4>
+<p>A matrix mapping 14 tactics (Reconnaissance, Initial Access, Execution, Persistence, Privilege Escalation, Defense Evasion, Credential Access, Discovery, Lateral Movement, Collection, C2, Exfiltration, Impact, Resource Development) and hundreds of techniques. Widely used to design detections and coverage maps.</p>
+
+<h3 id="s2-6">2.6 Threat Modeling</h3>
+<div class="def"><strong>Threat modeling</strong> systematically identifies what could go wrong with a system and how to mitigate it. Done early in design.</div>
+<h4>Methodologies</h4>
+<ul class="k">
+<li><b>STRIDE</b> (Microsoft) — Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege.</li>
+<li><b>DREAD</b> — scoring Damage, Reproducibility, Exploitability, Affected users, Discoverability.</li>
+<li><b>PASTA</b> — 7-stage attacker-centric process.</li>
+<li><b>Attack Trees</b> — root = goal, branches = sub-attacks.</li>
+<li><b>Kill chain</b> (Lockheed Martin) — Recon → Weaponize → Deliver → Exploit → Install → C2 → Actions on Objectives.</li>
+</ul>
+
+<h3 id="s2-7">2.7 Security Operations Center (SOC)</h3>
+<div class="def">A <strong>SOC</strong> is a centralised function (people + process + tech) that continuously monitors, detects, analyses and responds to cybersecurity incidents.</div>
+
+<h4>SOC structure (tiers)</h4>
+<table>
+<tr><th>Tier</th><th>Role</th></tr>
+<tr><td>Tier 1</td><td>Alert triage, initial investigation, escalation.</td></tr>
+<tr><td>Tier 2</td><td>Deeper investigation, scoping, containment.</td></tr>
+<tr><td>Tier 3 / Hunters</td><td>Proactive threat hunting, advanced forensics, malware reverse engineering.</td></tr>
+<tr><td>SOC Manager</td><td>Coordination, metrics, reporting.</td></tr>
+</table>
+
+<h4>Core tools</h4>
+<ul class="k">
+<li><b>SIEM</b> — Security Information &amp; Event Management (Splunk, ELK, QRadar). Aggregates logs.</li>
+<li><b>EDR / XDR</b> — Endpoint Detection &amp; Response.</li>
+<li><b>SOAR</b> — Security Orchestration, Automation and Response.</li>
+<li><b>TIP</b> — Threat Intelligence Platform.</li>
+<li><b>IDS / IPS</b>, <b>NDR</b>, <b>UEBA</b>.</li>
+</ul>
+
+<h4>Detection &amp; response workflow (NIST IR)</h4>
+<ol>
+<li><b>Preparation</b> — playbooks, training, tooling.</li>
+<li><b>Detection &amp; Analysis</b> — alert, scope, IOCs.</li>
+<li><b>Containment</b> — short and long-term.</li>
+<li><b>Eradication</b> — remove root cause.</li>
+<li><b>Recovery</b> — restore services.</li>
+<li><b>Post-incident lessons learned</b>.</li>
+</ol>
+
+<h4>ML in modern SOCs</h4>
+<ul class="k">
+<li>Alert prioritisation / deduplication.</li>
+<li>UEBA (anomalous logins, lateral movement).</li>
+<li>Auto-summarisation of incidents with LLMs.</li>
+<li>Phishing classifier in mail gateway.</li>
+<li>Malware triage with classifiers.</li>
+</ul>
+</section>
+
+<!-- ============== SESSION 3 ============== -->
+<section id="s3">
+<h2>3. Data Science &amp; ML Foundations for Cybersecurity</h2>
+
+<h3 id="s3-1">3.1 Data Collection &amp; Preprocessing</h3>
+
+<h4>Security data sources &amp; formats</h4>
+<table>
+<tr><th>Source</th><th>Examples</th></tr>
+<tr><td>Network</td><td>PCAP, NetFlow/IPFIX, Zeek/Bro logs, DNS logs, proxy logs.</td></tr>
+<tr><td>Endpoint</td><td>Sysmon events, Windows Event Logs, EDR telemetry, process trees.</td></tr>
+<tr><td>Application</td><td>Web server logs (CLF), DB audit logs, app logs (JSON).</td></tr>
+<tr><td>Authentication</td><td>AD logon events, IAM logs (CloudTrail, Azure AD).</td></tr>
+<tr><td>Threat intel</td><td>STIX/TAXII feeds, IOC lists.</td></tr>
+<tr><td>Malware</td><td>PE/ELF files, hashes, sandbox reports.</td></tr>
+</table>
+
+<h4>Data cleaning challenges</h4>
+<ul class="k">
+<li>Heterogeneous formats — JSON, CSV, syslog, binary.</li>
+<li>Missing/incomplete logs (gaps, dropped packets).</li>
+<li>Duplicate events (multiple sensors).</li>
+<li>Timezone &amp; clock drift across systems.</li>
+<li>PII redaction / pseudonymisation.</li>
+<li>Severe class imbalance: 99.99% benign.</li>
+</ul>
+
+<h4>Feature extraction challenges in security</h4>
+<ul class="k">
+<li>Categorical with very high cardinality (IPs, URLs, ports). Use hashing trick / embeddings.</li>
+<li>Strings and binaries (URLs, malware) need n-grams, opcodes, byte histograms, embeddings.</li>
+<li>Temporal/sequential nature — order matters, rolling windows.</li>
+<li>Encrypted payloads — must rely on metadata (TLS handshake, packet sizes/timing).</li>
+<li>Adversary-controlled features → robust feature design.</li>
+</ul>
+
+<h3 id="s3-2">3.2 ML Algorithms for Security Applications</h3>
+
+<h4>Algorithm selection criteria</h4>
+<ul class="k">
+<li><b>Data shape</b> — tabular (trees), sequence (RNN/Transformer), images of bytes (CNN).</li>
+<li><b>Label availability</b> — supervised vs unsupervised vs semi-supervised.</li>
+<li><b>Latency budget</b> — packet inspection needs &lt;1 ms inference.</li>
+<li><b>Interpretability</b> — analysts must justify alerts → trees, rules, SHAP.</li>
+<li><b>Resistance to evasion</b> — gradient-based models easier to attack.</li>
+<li><b>Maintenance cost</b> — retraining frequency.</li>
+</ul>
+
+<h4>Supervised vs Unsupervised in security</h4>
+<table>
+<tr><th></th><th>Supervised</th><th>Unsupervised</th></tr>
+<tr><td>Needs labels</td><td>Yes (benign/malicious)</td><td>No</td></tr>
+<tr><td>Use case</td><td>Signature / misuse detection, classification of known threats</td><td>Anomaly detection (novel threats)</td></tr>
+<tr><td>Algos</td><td>Logistic Regression, SVM, Decision Tree, RF, GBM, NN</td><td>K-means, DBSCAN, Isolation Forest, Autoencoder, One-class SVM</td></tr>
+<tr><td>Limitation</td><td>Blind to zero-days</td><td>Higher false positives</td></tr>
+</table>
+
+<h4>Model evaluation in security contexts</h4>
+<p>Accuracy is misleading under imbalance. Use:</p>
+<ul class="k">
+<li><b>Precision</b> = TP/(TP+FP) — of those flagged, how many are real attacks.</li>
+<li><b>Recall (TPR)</b> = TP/(TP+FN) — of all attacks, how many caught.</li>
+<li><b>F1</b> = harmonic mean of P &amp; R.</li>
+<li><b>FPR</b> = FP/(FP+TN) — false alarm rate.</li>
+<li><b>ROC curve / AUC</b>; <b>PR curve / AUPR</b> (preferred for imbalance).</li>
+<li><b>Confusion matrix</b>.</li>
+<li>Operational metrics: MTTD, MTTR, alerts/analyst/day.</li>
+</ul>
+
+<div class="example"><strong>Imbalance numeric.</strong> 1 000 000 connections, 100 are attacks. A classifier marks 200 as attacks; 80 of them are real. TP=80, FP=120, FN=20, TN=999 780.
+<br>Accuracy = (80+999 780)/1 000 000 = 99.986%. Looks great!
+<br>Precision = 80/200 = 40%. Recall = 80/100 = 80%. F1 = 2·0.4·0.8/(0.4+0.8) = 0.533. FPR = 120/999 880 ≈ 0.012%.
+<br>This shows why accuracy alone is dangerous for security.</div>
+
+<h3 id="s3-3">3.3 ML Development Pipeline for Security</h3>
+<ol>
+<li><b>Problem framing</b> — supervised or anomaly? cost of FP vs FN?</li>
+<li><b>Data collection &amp; labelling</b> — sandbox + analyst labels.</li>
+<li><b>Preprocessing &amp; feature engineering</b>.</li>
+<li><b>Model selection &amp; training</b> with cross-validation; tune for FPR target.</li>
+<li><b>Evaluation</b> — held-out + adversarial test + simulated drift.</li>
+<li><b>Deployment</b> — model server, latency budget, A/B test.</li>
+<li><b>Monitoring</b> — drift detection, performance over time, alert volume.</li>
+<li><b>Retraining</b> — periodic with new IOCs/samples.</li>
+</ol>
+
+<h4>Data labelling challenges</h4>
+<ul class="k">
+<li>Expensive — needs security analysts.</li>
+<li>Definitions evolve (today's anomaly is tomorrow's normal).</li>
+<li>Ground truth unclear — analyst disagreement.</li>
+<li>Adversaries inject false labels (label flipping) → poisoning.</li>
+</ul>
+
+<h4>Deployment considerations</h4>
+<ul class="k">
+<li>Inference latency &amp; throughput (line-speed traffic).</li>
+<li>Model size on endpoints (EDR runs on user laptop).</li>
+<li>Updates without disrupting protection.</li>
+<li>Logging predictions for forensics + future training.</li>
+</ul>
+
+<h4>Maintaining effectiveness — Concept &amp; Data drift</h4>
+<div class="def"><strong>Concept drift</strong> = relationship $P(y|x)$ changes (new attack variants). <strong>Data drift</strong> = $P(x)$ changes (new app rolled out, traffic mix shifts). Detect via population stability index (PSI), KS-test, model performance monitoring.</div>
+</section>
+
+<!-- ============== SESSION 4 ============== -->
+<section id="s4">
+<h2>4. Supervised Learning for Misuse / Signature Detection</h2>
+
+<h3 id="s4-1">4.1 Signature-based Detection Principles</h3>
+<div class="def"><strong>Misuse / Signature detection</strong> identifies known attacks by matching incoming data against a database of <b>signatures</b> (patterns of malicious activity).</div>
+
+<h4>Traditional signature development</h4>
+<ol>
+<li>Capture/obtain malicious sample (malware, exploit, attack traffic).</li>
+<li>Analysts extract distinctive features — byte sequences, regex patterns, behavior.</li>
+<li>Write signature in YARA / Snort / Suricata / sigma rule format.</li>
+<li>Test against benign + malicious corpora.</li>
+<li>Distribute and update.</li>
+</ol>
+<div class="example"><b>YARA-style rule</b>: a string <code>"GET /admin/cmd.exe"</code> + condition that file type is HTTP request.</div>
+
+<h3 id="s4-2">4.2 Pattern Matching Algorithms</h3>
+<ul class="k">
+<li><b>Boyer–Moore</b> — efficient single-pattern matching (skip ahead using bad-character heuristic).</li>
+<li><b>Aho–Corasick</b> — multi-pattern, builds a trie + failure links; matches many signatures in one pass. Used in Snort &amp; clamav.</li>
+<li><b>Regex (NFA/DFA)</b> — flexible but can suffer ReDoS (catastrophic backtracking).</li>
+<li><b>Hyperscan</b> — Intel's high-performance regex/multi-pattern library.</li>
+</ul>
+
+<h3>4.3 Limitations of Signature-based Detection</h3>
+<ul class="k">
+<li>Can't detect <b>zero-days</b> or polymorphic variants.</li>
+<li>Easily evaded by trivial changes (whitespace, encoding).</li>
+<li>Signature DB grows huge — performance impact.</li>
+<li>Requires constant updates; lag between attack and signature.</li>
+<li>False positives from over-broad patterns.</li>
+</ul>
+<p>This is exactly why we layer <b>ML-based</b> detection on top — to generalise to similar-but-unseen attacks.</p>
+
+<h3>4.4 Supervised Learning Techniques</h3>
+
+<h3 id="s4-3">4.4.1 Decision Trees</h3>
+<div class="def">A <strong>decision tree</strong> recursively splits the feature space using axis-aligned tests, producing leaves that vote for a class. Greedy growth using impurity measures.</div>
+<p>Impurity measures:</p>
+<ul class="k">
+<li><b>Gini</b> $= 1 - \sum_k p_k^2$. Used by CART.</li>
+<li><b>Entropy</b> $= -\sum_k p_k \log_2 p_k$. Used by ID3/C4.5.</li>
+<li><b>Information gain</b> = entropy(parent) − weighted sum of entropy(children).</li>
+</ul>
+
+<div class="example"><strong>Numeric.</strong> 10 samples at a node: 6 benign, 4 malicious.
+<br>Gini = $1 - (0.6^2 + 0.4^2) = 1 - 0.52 = 0.48$.
+<br>Entropy = $-(0.6\log_2 0.6 + 0.4\log_2 0.4) = 0.971$ bits.
+<br>If a split gives child1 (4 ben,0 mal) and child2 (2 ben,4 mal): entropy(child1)=0, entropy(child2)=$-(1/3\log_2(1/3)+2/3\log_2(2/3))=0.918$. Weighted = 0.4·0+0.6·0.918=0.551. <b>IG = 0.971 − 0.551 = 0.420</b>.</div>
+
+<p><b>Pros</b> in security: interpretable (auditable alerts), no scaling needed, fast inference. <b>Cons</b>: high variance, can overfit.</p>
+
+<h3 id="s4-4">4.4.2 Support Vector Machine (SVM)</h3>
+<div class="def">An <strong>SVM</strong> finds the hyperplane that <em>maximises the margin</em> between two classes:
+$$\min_{w,b}\ \tfrac{1}{2}\|w\|^2\quad\text{s.t.}\ y_i(w^\top x_i + b)\ge 1\ \forall i$$
+With slack: soft-margin SVM uses hinge loss $\max(0,\,1-y_i(w^\top x_i+b))$. Non-linear boundaries via <b>kernels</b> (RBF, polynomial).</div>
+<ul class="k">
+<li>Strong with high-dim data and small samples (good for many security feature spaces).</li>
+<li>RBF kernel: $K(x,x')=\exp(-\gamma\|x-x'\|^2)$.</li>
+<li>Cons: slow to train on large data, harder to interpret with kernels.</li>
+</ul>
+
+<h3 id="s4-5">4.4.3 Random Forest</h3>
+<div class="def">A <strong>Random Forest</strong> is an ensemble of decision trees trained on <b>bootstrap</b> samples (bagging), with each split considering only a <b>random subset</b> of features. Final prediction by majority vote (classification) or average (regression).</div>
+<ul class="k">
+<li>Reduces variance vs single tree.</li>
+<li>Handles mixed data, missing values, outliers.</li>
+<li>Provides <b>feature importances</b> (mean decrease in impurity / permutation importance).</li>
+<li>Workhorse for tabular security data (NIDS, malware features).</li>
+</ul>
+
+<h3 id="s4-6">4.4.4 Feature Engineering &amp; Metrics</h3>
+<p>For signature detection of, say, HTTP requests: URL length, number of <code>%</code> chars, presence of SQL keywords (<code>UNION</code>, <code>--</code>), entropy of query string, ratio of digits to letters.</p>
+<p><b>Metrics</b>: precision, recall, F1, FPR, AUC-ROC/PR, confusion matrix (covered in §3).</p>
+
+<h3 id="s4-7">4.5 Case Study — Building a Classifier</h3>
+<ol>
+<li><b>Dataset exploration</b>: e.g. KDD-99 / Web logs / Phishing URLs. Check class balance, missing values.</li>
+<li><b>Preparation</b>: encode categorical (port, protocol) with one-hot or target encoding; standardise; resample (SMOTE) or class-weight.</li>
+<li><b>Train/Val/Test split</b>: stratify; for time-ordered data use temporal split.</li>
+<li><b>Train</b> RF / Gradient Boosting / SVM; <b>tune</b> via grid/random search + CV.</li>
+<li><b>Evaluate</b> at chosen operating point (e.g. fix FPR=0.1%).</li>
+<li><b>Interpret</b> with feature importance / SHAP; sanity check top features.</li>
+<li><b>Deploy</b> + monitor drift; retrain periodically.</li>
+</ol>
+</section>
+
+<!-- ============== SESSION 5 ============== -->
+<section id="s5">
+<h2>5. Machine Learning for Anomaly Detection</h2>
+
+<div class="def"><strong>Anomaly detection</strong> identifies data points that deviate significantly from the rest. In security: novel attacks, insider behavior, data exfiltration.</div>
+<p>Types of anomalies:</p>
+<ul class="k">
+<li><b>Point anomaly</b> — single data point far from others (a huge upload).</li>
+<li><b>Contextual</b> — anomalous given context (a login at 3am from new country).</li>
+<li><b>Collective</b> — a group of points whose joint pattern is unusual (slow-and-low scan).</li>
+</ul>
+
+<h3 id="s5-1">5.1 Statistical Methods</h3>
+<ul class="k">
+<li><b>Z-score / 3σ rule</b> — flag if $|x-\mu|/\sigma > k$ (e.g. $k=3$). Assumes Gaussian.</li>
+<li><b>IQR</b> — flag points outside $[Q_1 - 1.5\,IQR,\ Q_3 + 1.5\,IQR]$.</li>
+<li><b>Mahalanobis distance</b> — multivariate, accounts for correlation: $d^2=(x-\mu)^\top \Sigma^{-1}(x-\mu)$.</li>
+<li><b>Grubbs/Chi-square tests</b> for outliers.</li>
+<li><b>EWMA / CUSUM</b> for sequential change-point detection.</li>
+</ul>
+
+<div class="example"><b>Z-score numeric.</b> Hourly logins per user $\mu=20, \sigma=5$. Today user has 60 logins → $z=(60-20)/5=8$. Way beyond 3σ → anomaly.</div>
+
+<h3 id="s5-2">5.2 Distance-based Methods</h3>
+<div class="def">A point $x$ is anomalous if its <b>distance to its $k$ nearest neighbors</b> is large relative to the rest of the data.</div>
+<ul class="k">
+<li>$k$-NN distance / average distance.</li>
+<li>Choice of distance: Euclidean, Manhattan, cosine (for text-like features).</li>
+<li>Costly in high dimensions — curse of dimensionality.</li>
+</ul>
+
+<h3 id="s5-3">5.3 Density-based Methods</h3>
+<ul class="k">
+<li><b>LOF (Local Outlier Factor)</b> — compares local density of $x$ vs its neighbors. $\text{LOF}\gg 1$ → outlier.</li>
+<li><b>DBSCAN</b> noise points naturally form anomalies (see below).</li>
+<li><b>Isolation Forest</b> — anomalies are <em>easier to isolate</em> with random splits; fewer splits ⇒ anomaly score. Efficient on large data.</li>
+</ul>
+
+<h3>5.4 Unsupervised Learning Approaches</h3>
+
+<h3 id="s5-4">5.4.1 K-Means Clustering</h3>
+<div class="def">Partition data into $k$ clusters minimising $\sum_i \|x_i-\mu_{c_i}\|^2$. Algorithm: init $k$ centroids, alternate (assign each point to nearest centroid, recompute centroid means) until stable.</div>
+<ul class="k">
+<li>Choose $k$ via elbow method / silhouette.</li>
+<li>For anomaly detection: train on benign data → cluster centers. New points with high distance to nearest centroid → anomaly.</li>
+<li>Sensitive to $k$, init, scale (use k-means++; standardise features).</li>
+</ul>
+
+<div class="example"><b>K-means numeric.</b> Data: 2, 4, 10, 12, 24, 30. $k=2$, init centers $c_1=2,c_2=30$.
+<br>Round 1 assign: 2,4,10,12 → c1; 24,30 → c2. Update: c1=(2+4+10+12)/4=7, c2=27.
+<br>Round 2 assign: 2,4,10,12 → c1; 24,30 → c2 (since dist 24 to 7 is 17, to 27 is 3). Same — converged. Cluster means 7 and 27.</div>
+
+<h3 id="s5-5">5.4.2 DBSCAN</h3>
+<div class="def"><strong>DBSCAN</strong> (Density-Based Spatial Clustering of Applications with Noise) groups points with at least <b>MinPts</b> neighbours within radius <b>ε</b>. Points not reachable from any cluster → labelled <b>noise</b> (anomalies).</div>
+<ul class="k">
+<li>Finds arbitrarily shaped clusters; doesn't need $k$.</li>
+<li>Noise points become anomaly candidates.</li>
+<li>Struggles with varying density — fix: HDBSCAN.</li>
+</ul>
+
+<h3 id="s5-6">5.4.3 Dimensionality Reduction</h3>
+<h4>PCA</h4>
+<div class="def"><strong>Principal Component Analysis</strong> finds orthogonal axes maximising variance. Anomaly score = reconstruction error using only top $k$ components: $\|x - \hat x\|^2$.</div>
+
+<h4>Autoencoders</h4>
+<div class="def">A neural network trained to <b>reconstruct</b> its input through a bottleneck. Trained only on benign data, it reconstructs benign well; <em>malicious inputs reconstruct poorly</em> → large error = anomaly.</div>
+<p>Variants: denoising AE, variational AE (probabilistic), sparse AE. Used in NIDS, log anomaly detection.</p>
+
+<h3 id="s5-7">5.4.4 One-class Classification</h3>
+<ul class="k">
+<li><b>One-class SVM</b> — learns a boundary enclosing the "normal" data; points outside = anomalies. Uses an RBF kernel and a parameter $\nu$ controlling outlier fraction.</li>
+<li><b>SVDD</b> (Support Vector Data Description) — finds the smallest enclosing hypersphere.</li>
+<li><b>Isolation Forest</b> — already covered; widely used.</li>
+</ul>
+
+<h3 id="s5-8">5.5 Real-time Anomaly Detection Systems</h3>
+<h4>Implementation challenges</h4>
+<ul class="k">
+<li>High throughput / low latency requirements.</li>
+<li>Streaming data — incremental models (online learning, sliding window).</li>
+<li>Need to update normal model continuously (concept drift).</li>
+<li>Distributed data sources (logs from many servers).</li>
+</ul>
+
+<h4>Threshold optimisation</h4>
+<p>Anomaly score → binary decision via threshold. Methods:</p>
+<ul class="k">
+<li>Pick threshold from validation set to hit a target FPR (e.g. 0.01%).</li>
+<li>Use percentile-based threshold (top 0.1% of scores).</li>
+<li>Cost-sensitive: $\arg\min_\tau\ C_{FP}\cdot FP(\tau)+C_{FN}\cdot FN(\tau)$.</li>
+</ul>
+
+<h4>Reducing false positives</h4>
+<ul class="k">
+<li>Add context (whitelists for known apps, business hours).</li>
+<li>Ensemble multiple detectors — require agreement.</li>
+<li>Hierarchical detection: cheap filter → expensive classifier.</li>
+<li>Feedback loop from analysts (active learning).</li>
+<li>Alert aggregation / correlation in SIEM.</li>
+</ul>
+</section>
+
+<!-- ============== SESSION 6 ============== -->
+<section id="s6">
+<h2>6. Malware Detection &amp; Classification (Part 1)</h2>
+
+<h3 id="s6-1">6.1 Malware — Characteristics &amp; Types</h3>
+<div class="def"><strong>Malware</strong> ("malicious software") = software intentionally designed to cause damage, gain unauthorised access, or disrupt operations.</div>
+
+<table>
+<tr><th>Type</th><th>Behaviour</th></tr>
+<tr><td>Virus</td><td>Attaches to host file; spreads when executed.</td></tr>
+<tr><td>Worm</td><td>Self-replicating, spreads autonomously over network.</td></tr>
+<tr><td>Trojan</td><td>Disguised as legitimate; needs user execution.</td></tr>
+<tr><td>Ransomware</td><td>Encrypts files, demands ransom (WannaCry, REvil).</td></tr>
+<tr><td>Spyware / Keylogger</td><td>Steals data, monitors users.</td></tr>
+<tr><td>Rootkit</td><td>Hides presence at OS/kernel level.</td></tr>
+<tr><td>Bot / Botnet</td><td>Infected host controlled remotely; used for DDoS, spam.</td></tr>
+<tr><td>Adware / PUP</td><td>Unwanted ads; sometimes spyware.</td></tr>
+<tr><td>Fileless malware</td><td>Lives in memory / scripts (PowerShell, WMI); no disk artifacts.</td></tr>
+<tr><td>RAT</td><td>Remote Access Trojan — full remote control.</td></tr>
+</table>
+
+<h4>Evolution of malware (high level)</h4>
+<ol>
+<li><b>1980s–90s</b>: file viruses, boot-sector viruses (Brain, Michelangelo).</li>
+<li><b>2000s</b>: network worms (Slammer, Conficker), spam botnets.</li>
+<li><b>2010s</b>: APT toolkits (Stuxnet, Duqu), banking trojans (Zeus), early ransomware.</li>
+<li><b>2017–</b>: ransomware-as-a-service, fileless attacks, supply-chain (NotPetya, SolarWinds).</li>
+<li><b>Now</b>: AI-augmented malware, LLM-generated phishing, info-stealers.</li>
+</ol>
+
+<h3 id="s6-2">6.2 Static vs Dynamic Analysis</h3>
+<table>
+<tr><th></th><th>Static</th><th>Dynamic</th></tr>
+<tr><td>What</td><td>Inspect without execution — bytes, strings, headers, disassembly.</td><td>Execute in sandbox; observe behaviour.</td></tr>
+<tr><td>Tools</td><td>strings, IDA, Ghidra, PEiD, YARA, pefile.</td><td>Cuckoo, Joe Sandbox, ANY.RUN, FLARE-VM.</td></tr>
+<tr><td>Speed</td><td>Fast, scalable.</td><td>Slow (minutes/sample).</td></tr>
+<tr><td>Coverage</td><td>Can miss behaviour hidden by packing/obfuscation.</td><td>Sees runtime behaviour; can be evaded by sandbox-aware malware.</td></tr>
+<tr><td>Features</td><td>Byte n-grams, opcode n-grams, PE header fields, imported APIs, strings, entropy.</td><td>API call sequences, file/registry/network operations, system calls.</td></tr>
+</table>
+
+<h3 id="s6-3">6.3 Feature Extraction from Malware Samples</h3>
+
+<h4>Static features</h4>
+<ul class="k">
+<li><b>PE header</b>: number of sections, size of code, characteristics, timestamp.</li>
+<li><b>Imports</b>: list of API functions (DLLs, functions). Often summarised as binary vector or hashed.</li>
+<li><b>Strings</b>: printable strings (URLs, commands).</li>
+<li><b>Byte n-grams</b>: counts of $n$-byte sequences.</li>
+<li><b>Opcode n-grams</b>: from disassembly.</li>
+<li><b>Entropy</b>: high entropy → packing/encryption.</li>
+<li><b>Image of bytes</b>: visualise file as grayscale image, feed to CNN (Nataraj 2011).</li>
+</ul>
+
+<h4>Dynamic features</h4>
+<ul class="k">
+<li>API call sequences (CreateFile, RegSetValue, WSAConnect ...).</li>
+<li>System call traces.</li>
+<li>Network traffic (C2 domains, ports).</li>
+<li>File &amp; registry modifications.</li>
+<li>Process tree.</li>
+</ul>
+
+<h3 id="s6-4">6.4 ML-based Detection — N-gram Analysis</h3>
+<div class="def">An <strong>n-gram</strong> = contiguous sequence of $n$ tokens (bytes, opcodes, API calls). N-gram counts/frequencies form a feature vector used to train classifiers.</div>
+
+<div class="example"><b>N-gram numeric.</b> Byte sequence <code>AB CD EF AB CD</code>. 2-grams: (AB,CD), (CD,EF), (EF,AB), (AB,CD). Counts: (AB,CD)=2, (CD,EF)=1, (EF,AB)=1. Vector $[2,1,1,0,\dots]$ in vocabulary space.</div>
+
+<p>Issues:</p>
+<ul class="k">
+<li>Vocabulary explodes ($256^n$ for bytes) → use <b>feature hashing</b> or pick top-$k$ by IG.</li>
+<li>Susceptible to small edits — robustness lower than behavioural features.</li>
+<li>Often combined with TF-IDF, then SVM / RF / logistic regression.</li>
+</ul>
+
+<h3 id="s6-5">6.5 API Call Sequence Analysis</h3>
+<p>Treat the trace of API calls during dynamic execution like a sentence:</p>
+<ul class="k">
+<li><b>Bag of API calls</b> — simple, ignores order.</li>
+<li><b>API n-grams</b> — captures short-order context.</li>
+<li><b>Markov chains</b> — transition probabilities $P(\text{call}_t|\text{call}_{t-1})$; benign vs malware have different transition matrices.</li>
+<li><b>RNN/LSTM/Transformer</b> over API call sequences — strong baseline (covered in §7).</li>
+</ul>
+<p>Behavioural patterns common in malware: open file → read → encrypt → write → delete shadow copies (ransomware); enumerate processes → inject thread (loader).</p>
+</section>
+
+<!-- ============== SESSION 7 ============== -->
+<section id="s7">
+<h2>7. Malware Detection &amp; Classification (Part 2)</h2>
+
+<h3 id="s7-1">7.1 Deep Learning for Malware Classification</h3>
+
+<h4>Approach 1 — Bytes as image (Nataraj 2011, MalConv 2018)</h4>
+<ul class="k">
+<li>Reshape the raw binary into a 2-D grayscale image (rows of bytes).</li>
+<li>Train a CNN (like LeNet/ResNet) for family classification.</li>
+<li>No feature engineering; learns texture-like patterns.</li>
+<li><b>MalConv</b> uses a 1-D CNN directly on raw byte sequence (up to 2 MB) with gated activations.</li>
+</ul>
+
+<h4>Approach 2 — Sequence models on API calls</h4>
+<ul class="k">
+<li>Embed API names; feed to LSTM / GRU / Transformer; output family or malicious probability.</li>
+<li>Pros: captures long-range behavior; handles variable lengths.</li>
+<li>Cons: needs dynamic analysis traces; slow.</li>
+</ul>
+
+<h4>Approach 3 — Graph Neural Networks</h4>
+<p>Build call-graphs / control-flow graphs from disassembly; GNN classifies. Captures structural similarity even under code-level obfuscation.</p>
+
+<h4>Approach 4 — Transformer / LLM on disassembly</h4>
+<p>Tokenise opcodes or pseudo-code; pretrain on millions of binaries (e.g., PalmTree, Trex). Fine-tune for malware family or vulnerability detection.</p>
+
+<h3 id="s7-2">7.2 Evasion Techniques — Obfuscation</h3>
+<div class="def"><strong>Obfuscation</strong> transforms malware code/binary to <em>hide its true nature</em> while preserving behaviour. Common techniques:</div>
+<ul class="k">
+<li><b>Packing</b> — compress/encrypt the binary; unpack at runtime (UPX, Themida).</li>
+<li><b>String encryption</b> — decrypt strings only when used.</li>
+<li><b>Control-flow flattening</b> — restructure logic into a big switch.</li>
+<li><b>Dead code insertion</b>, <b>instruction substitution</b>, <b>register reassignment</b>.</li>
+<li><b>Anti-debugging / anti-VM</b> — detect sandbox, refuse to run.</li>
+<li><b>API call obfuscation</b> — resolve API addresses dynamically.</li>
+</ul>
+
+<h3 id="s7-3">7.3 Polymorphic vs Metamorphic Malware</h3>
+<div class="def"><strong>Polymorphic malware</strong> changes its <b>appearance</b> on every infection (encrypted payload + mutating decryptor) but keeps the <em>underlying behaviour</em> the same.</div>
+<div class="def"><strong>Metamorphic malware</strong> rewrites its <b>own code</b> at each generation (instruction substitution, code reordering, register reassignment) — no static decryptor, no constant payload. Hardest to signature.</div>
+<table>
+<tr><th></th><th>Polymorphic</th><th>Metamorphic</th></tr>
+<tr><td>Mutates</td><td>Decryptor + encryption key</td><td>Entire body</td></tr>
+<tr><td>Detection by static signature?</td><td>Hard</td><td>Very hard</td></tr>
+<tr><td>Detection by behavioural / dynamic?</td><td>Effective</td><td>Effective</td></tr>
+</table>
+<p>Why ML helps: <em>polymorphic samples share behavioural patterns</em> and high-level features even when bytes differ. Models learn generalisable structures.</p>
+
+<h3 id="s7-4">7.4 Countermeasures &amp; Model Adaptation</h3>
+<ul class="k">
+<li><b>Dynamic / behavioural analysis</b> — bypass static obfuscation.</li>
+<li><b>Memory forensics</b> — unpack at runtime, scan memory.</li>
+<li><b>Heuristic / ML features</b> — e.g. entropy, section anomalies catch packed files.</li>
+<li><b>Continuous learning</b> — retrain models on fresh samples; collect via honeypots.</li>
+<li><b>Robust features</b> — invariant to common transforms (graph features, semantic features).</li>
+<li><b>Adversarial training</b> — see §14–15.</li>
+<li><b>Ensembles</b> — combine static + dynamic models; harder to evade all simultaneously.</li>
+</ul>
+</section>
+
+<!-- ============== SESSION 9 ============== -->
+<section id="s9">
+<h2>9. Network Intrusion Detection &amp; Classification (Part 1)</h2>
+
+<h3>9.1 IDS Fundamentals</h3>
+<div class="def">A <strong>Network Intrusion Detection System (NIDS)</strong> monitors network traffic for malicious activity. <b>NIPS</b> additionally blocks. Two paradigms: <b>signature-based</b> (Snort/Suricata) and <b>anomaly-based</b> (ML).</div>
+
+<h3 id="s9-1">9.2 Network Traffic Analysis Basics</h3>
+
+<h4>Protocol analysis</h4>
+<p>Decode packet headers per protocol stack (Ethernet → IP → TCP/UDP → app). Check for protocol violations, malformed packets, suspicious flags (e.g. Xmas scan: FIN+PSH+URG all set).</p>
+
+<h4 id="s9-2">Flow-based features</h4>
+<div class="def">A <strong>flow</strong> is a sequence of packets sharing the 5-tuple: (src IP, dst IP, src port, dst port, protocol), within a time window. Captured by NetFlow / IPFIX / Zeek <code>conn.log</code>.</div>
+<p>Flow features typical of NIDS datasets:</p>
+<ul class="k">
+<li>Duration, total bytes/packets sent/received.</li>
+<li>Mean/std/min/max packet size; inter-arrival times.</li>
+<li>TCP flags counts (SYN, ACK, FIN, RST).</li>
+<li>Protocol, service, direction.</li>
+<li>Aggregates: connections to same host/service in last $T$ sec.</li>
+</ul>
+
+<h4 id="s9-3">Packet-level inspection (DPI)</h4>
+<p>Look inside payload — headers and content. Limitations: encrypted traffic (TLS); high cost; legal/privacy issues. Used for HTTP, DNS, plaintext protocols.</p>
+
+<h4>NIDS deployment topology</h4>
+<ul class="k">
+<li><b>Inline</b> (IPS) — sees and blocks traffic; latency-sensitive.</li>
+<li><b>Passive</b> (NIDS via SPAN/tap) — observes only; safer to deploy.</li>
+<li><b>Host-based (HIDS)</b> on each endpoint vs <b>NIDS</b> at network choke point.</li>
+</ul>
+
+<h3>9.3 ML Models for NIDS</h3>
+
+<h4 id="s9-4">Feature selection for network data</h4>
+<ul class="k">
+<li>Filter methods: chi-square, mutual information, ANOVA F-test.</li>
+<li>Wrapper methods: recursive feature elimination.</li>
+<li>Embedded: L1-regularised models, tree feature importance.</li>
+<li>Domain knowledge — drop leak-y features (target encoded in IPs).</li>
+</ul>
+
+<h4 id="s9-5">Ensemble methods</h4>
+<ul class="k">
+<li><b>Bagging</b> — average many high-variance learners (Random Forest).</li>
+<li><b>Boosting</b> — sequential, each learner corrects predecessor's errors (AdaBoost, Gradient Boosting, XGBoost, LightGBM).</li>
+<li><b>Stacking</b> — train a meta-learner over base learner outputs.</li>
+<li><b>Voting</b> — hard or soft.</li>
+</ul>
+<p>Random Forest, XGBoost, LightGBM consistently top leaderboards on tabular NIDS data (NSL-KDD, CIC-IDS).</p>
+
+<h4>Algorithms commonly applied</h4>
+<table>
+<tr><th>Algorithm</th><th>Strengths</th><th>Weaknesses</th></tr>
+<tr><td>Naive Bayes</td><td>Fast, simple, baseline</td><td>Independence assumption</td></tr>
+<tr><td>Logistic Regression</td><td>Calibrated probs, interpretable</td><td>Linear boundary</td></tr>
+<tr><td>k-NN</td><td>Non-parametric</td><td>Slow at inference</td></tr>
+<tr><td>SVM</td><td>Robust in high-dim</td><td>Training slow</td></tr>
+<tr><td>Decision Tree / RF</td><td>Interpretable, robust</td><td>RF heavy memory</td></tr>
+<tr><td>Gradient Boosting</td><td>Top accuracy, tabular</td><td>Tuning needed</td></tr>
+<tr><td>MLP / CNN / LSTM</td><td>Sequences, raw features</td><td>Compute, less interpretable</td></tr>
+</table>
+</section>
+
+<!-- ============== SESSION 10 ============== -->
+<section id="s10">
+<h2>10. NIDS — Real-time, Datasets &amp; Evaluation</h2>
+
+<h3 id="s10-1">10.1 Real-time Classification Approaches</h3>
+<ul class="k">
+<li><b>Streaming feature extraction</b> — windowed aggregates from packet stream.</li>
+<li><b>Low-latency models</b> — small trees, linear models, quantised NNs.</li>
+<li><b>Cascade</b> — fast classifier filters obvious benign; heavier one analyses suspicious.</li>
+<li><b>Hardware acceleration</b> — FPGAs, P4 switches, SmartNICs.</li>
+<li><b>Online learning</b> — update model with new data without full retrain (SGD, Hoeffding trees).</li>
+</ul>
+
+<h3 id="s10-2">10.2 Standard Benchmark Datasets</h3>
+
+<h4>KDD-99 &amp; NSL-KDD</h4>
+<ul class="k">
+<li>Derived from DARPA-98. 41 features per connection: 9 basic (e.g. duration, protocol_type, service, src_bytes), 13 content, 19 traffic-window-based.</li>
+<li>4 attack categories: <b>DoS</b>, <b>Probe</b>, <b>R2L</b> (Remote to Local), <b>U2R</b> (User to Root) + Normal.</li>
+<li>KDD-99 issues: huge redundancy (78% duplicates). <b>NSL-KDD</b> removes duplicates, balances train/test better.</li>
+<li>Criticisms: still old (1999 traffic patterns), doesn't reflect modern attacks.</li>
+</ul>
+
+<h4>CICIDS / CIC-IDS-2017 / 2018</h4>
+<ul class="k">
+<li>By Canadian Institute for Cybersecurity (UNB).</li>
+<li>Realistic traffic with B-Profile users + attack scenarios (Brute Force, DoS, DDoS, Heartbleed, Web Attacks, Botnet, Port Scan, Infiltration).</li>
+<li>~80 flow features extracted by <b>CICFlowMeter</b>.</li>
+<li>Caveats: some labelling errors; class imbalance; updated versions exist.</li>
+</ul>
+
+<h4>Other notable datasets</h4>
+<ul class="k">
+<li><b>UNSW-NB15</b> — modern attacks (Fuzzers, Backdoors, Worms).</li>
+<li><b>CTU-13</b> — botnet traffic.</li>
+<li><b>CICDDoS2019</b> — DDoS-specific.</li>
+<li><b>ToN-IoT / Bot-IoT</b> — IoT contexts.</li>
+</ul>
+
+<h3 id="s10-3">10.3 Performance Metrics Specific to NIDS</h3>
+<p>All from §3.2.4 (precision/recall/F1/FPR/ROC) plus:</p>
+<ul class="k">
+<li><b>Detection Rate</b> = recall on attacks (TPR).</li>
+<li><b>False Alarm Rate</b> = FPR.</li>
+<li><b>Per-attack-class metrics</b> — recall on rare classes (U2R, R2L) often poor.</li>
+<li><b>Latency</b> — time from packet to alert.</li>
+<li><b>Throughput</b> — packets/flows per second processed.</li>
+<li><b>Bytes per alert</b> — operational cost metric.</li>
+</ul>
+
+<h3>10.4 Operational Considerations</h3>
+<ul class="k">
+<li>Alert fatigue → tune for low FPR; use SIEM correlation.</li>
+<li>Encrypted traffic → fall back on metadata, TLS fingerprinting (JA3/JA3S).</li>
+<li>Concept drift → continuously monitor performance.</li>
+<li>Privacy &amp; compliance — log retention, PII handling.</li>
+<li>Backup / failover — IDS itself is high-value target.</li>
+<li>Continuous threat-intel feed to update signatures + ML training.</li>
+</ul>
+</section>
+
+<!-- ============== SESSION 11 ============== -->
+<section id="s11">
+<h2>11. Detection and Categorization of Domain Names</h2>
+
+<h3 id="s11-1">11.1 Domain Generation Algorithms (DGAs)</h3>
+<div class="def">A <strong>DGA</strong> is an algorithm that periodically generates many pseudo-random domain names which malware uses to contact its command-and-control (C2) server. The bot tries each domain until one resolves; attacker registers only a few per period, making takedown hard.</div>
+
+<h4>Why attackers use DGAs</h4>
+<ul class="k">
+<li><b>Resilient C2</b> — blocking one domain doesn't kill the botnet.</li>
+<li>Defender can't blocklist all candidate domains in advance.</li>
+<li>Bypass static blacklists.</li>
+</ul>
+
+<h4>Examples</h4>
+<p>Conficker, Cryptolocker, Necurs, Murofet, Locky — each with its own DGA family. Some are time-based (date/UTC seed), some use a fixed seed and counter, some pull seeds from Twitter trends.</p>
+
+<h3 id="s11-2">11.2 Characteristics of Malicious Domains — Linguistic, Statistical, Time features</h3>
+
+<h4>Linguistic / Lexical features</h4>
+<ul class="k">
+<li><b>Length</b> — DGA names tend to be longer.</li>
+<li><b>Entropy</b> of characters — random strings have high entropy.</li>
+<li><b>Vowel/consonant ratio</b> — DGAs have unnaturally low vowel ratio.</li>
+<li><b>n-gram likelihood</b> under English distribution — DGA names look low-probability.</li>
+<li><b>Pronounceability</b> / dictionary words present.</li>
+<li><b>Digit ratio</b>, hyphens.</li>
+<li><b>TLD</b> distribution — many DGAs prefer <code>.top</code>, <code>.xyz</code>, <code>.ru</code>.</li>
+</ul>
+
+<div class="example"><b>Entropy numeric.</b> Domain <code>google</code>: chars g,o,o,g,l,e. Probs g=2/6, o=2/6, l=1/6, e=1/6. Entropy $H = -2(2/6)\log_2(2/6)-2(1/6)\log_2(1/6)=2(1/3)(1.585)+2(1/6)(2.585)\approx 1.918$.
+<br>Domain <code>qzwlkr</code>: 6 unique chars → entropy $\log_2 6 = 2.585$ (max). Higher entropy ⇒ more "random" ⇒ DGA-like.</div>
+
+<h4>Statistical features</h4>
+<ul class="k">
+<li>Frequency of subdomain reuse; passive DNS volumes; registration date (very young → suspicious).</li>
+<li>WHOIS data — privacy proxy, short lifespan.</li>
+<li>IP address mapping: fast-flux (changing IPs rapidly).</li>
+</ul>
+
+<h4>Time-based patterns</h4>
+<ul class="k">
+<li>DGAs generate many candidates per day → DNS resolver sees many NXDOMAIN responses from one host.</li>
+<li>Bursty queries to never-before-seen domains.</li>
+<li>Domain creation date close to query time.</li>
+</ul>
+
+<h3 id="s11-3">11.3 ML Techniques — N-gram Models</h3>
+<p>Train a character-level n-gram language model on legitimate domains (top Alexa). For a query domain, compute its log-likelihood under the model. Low likelihood → unlikely to be English-like → DGA candidate.</p>
+<p>Or use <b>Random Forest / GBDT</b> over engineered lexical features → fast and interpretable.</p>
+
+<h3 id="s11-4">11.4 Deep Learning Approaches</h3>
+<ul class="k">
+<li><b>Endgame's character LSTM</b> (Woodbridge 2016) — embed chars → LSTM → sigmoid. Beats feature-engineered baselines.</li>
+<li>1-D CNN over characters — similar performance, faster.</li>
+<li>Transformer over chars — current SOTA.</li>
+<li>Output: binary (DGA vs benign) <em>and</em> family classification.</li>
+</ul>
+
+<h4>Real-time detection systems</h4>
+<ul class="k">
+<li>Sit at DNS resolver / passive DNS pipeline.</li>
+<li>Score every query in ms; flag suspicious to SIEM.</li>
+<li>Correlate with host-level signals (high NXDOMAIN rate per host).</li>
+</ul>
+
+<h4>Challenges</h4>
+<ul class="k">
+<li>Dictionary DGAs (e.g. Suppobox) combine real English words → harder to spot lexically; need behavioural features.</li>
+<li>DGAs evolve; transfer-learn or active-learn on new families.</li>
+<li>Whitelisting popular domains is essential.</li>
+</ul>
+</section>
+
+<!-- ============== SESSION 12 ============== -->
+<section id="s12">
+<h2>12. Profiling Network Traffic (Part 1)</h2>
+
+<div class="def"><strong>Traffic profiling</strong> = building a "behavioral fingerprint" of devices, users, or applications from their network activity to detect deviations or identify what's flowing.</div>
+
+<h3 id="s12-1">12.1 Statistical Fingerprinting</h3>
+<ul class="k">
+<li>Per-flow stats: packet size distribution, inter-arrival time distribution, burstiness, idle periods.</li>
+<li>Aggregate stats per host/day: average bytes, unique destinations, port spread.</li>
+<li>TLS fingerprints: <b>JA3 / JA3S</b> hashes of ClientHello / ServerHello fields → identify clients (browser/version) without decryption.</li>
+<li>SSH client banner, HTTP User-Agent — but spoofable.</li>
+</ul>
+
+<h3 id="s12-2">12.2 Protocol Behavior Analysis</h3>
+<ul class="k">
+<li>Check whether traffic conforms to RFC behavior — improper handshakes flag scanners.</li>
+<li>Per-protocol baseline: typical HTTP request rates, DNS query distribution.</li>
+<li>Detect <b>tunnelling</b> (e.g. DNS used to exfiltrate data — long TXT records, high query rate).</li>
+<li>Detect <b>covert channels</b> in protocol fields.</li>
+</ul>
+
+<h3 id="s12-3">12.3 User and Entity Behavior Analytics (UEBA)</h3>
+<div class="def"><strong>UEBA</strong> profiles each user and entity (host, service account) and flags deviations from their personal baseline using ML.</div>
+<ul class="k">
+<li>Per-user features: typical login hours, geo-locations, devices, applications used, data volume.</li>
+<li>Peer-group analysis: compare a user to their org/role peers — outliers escalated.</li>
+<li>Use cases: account compromise (impossible-travel, atypical resource access), insider threat (mass downloads), privilege escalation.</li>
+<li>Models: clustering, autoencoders, isolation forest, Markov models over event sequences.</li>
+</ul>
+</section>
+
+<!-- ============== SESSION 13 ============== -->
+<section id="s13">
+<h2>13. Profiling Network Traffic (Part 2) — ML for Traffic Classification</h2>
+
+<h3 id="s13-1">13.1 Application Identification</h3>
+<p>Goal: from network traffic, identify the application (YouTube vs Netflix vs Zoom) without payload inspection (because of TLS).</p>
+<ul class="k">
+<li><b>Port-based</b> — unreliable (apps use 443 for everything now).</li>
+<li><b>DPI</b> — looks at unencrypted parts (SNI, certificates).</li>
+<li><b>Statistical ML</b> on flow features (packet sizes, IATs, direction).</li>
+<li>Models: RF, GBM, 1-D CNN, LSTM over packet-size sequences.</li>
+</ul>
+
+<h3 id="s13-2">13.2 Encrypted Traffic Analysis</h3>
+<div class="def">Since payloads are encrypted (TLS, QUIC), classification relies on <b>metadata</b>: packet sizes, IATs, direction, flow duration, TLS handshake parameters.</div>
+<ul class="k">
+<li><b>Side-channel features</b> — packet length distributions reveal app behavior (Netflix's adaptive bit-rate signatures).</li>
+<li><b>Sequence models</b> — LSTM/Transformer over per-packet vectors (size, direction, IAT) → app or activity label.</li>
+<li><b>Cisco ETA</b> (Encrypted Traffic Analytics) uses sequence-of-packet-lengths + TLS metadata for malware detection in encrypted streams.</li>
+</ul>
+
+<h3 id="s13-3">13.3 Temporal Pattern Recognition</h3>
+<ul class="k">
+<li>Treat per-flow or per-host metrics as time series.</li>
+<li>Detect periodic beaconing (C2): regular short connections (every $T$ sec) → autocorrelation / FFT peaks.</li>
+<li>Detect bursty exfiltration patterns.</li>
+<li>Use HMMs, LSTM, Transformer, or change-point detection (Bayesian online).</li>
+</ul>
+
+<div class="example"><b>Beaconing example.</b> Host queries C2 every 60 s with ±2 s jitter. Inter-arrival histogram peaks sharply at 60 s. Benign user traffic shows broad distribution → ML easily flags this pattern.</div>
+</section>
+
+<!-- ============== SESSION 14 ============== -->
+<section id="s14">
+<h2>14. Adversarial Machine Learning — Fundamentals &amp; Defenses</h2>
+
+<div class="def"><strong>Adversarial ML (AML)</strong> studies how attackers can manipulate ML systems and how defenders can protect against it. In security, this is doubly critical because the threat actors are adaptive.</div>
+
+<h3>14.1 Why ML in Security is Especially Vulnerable</h3>
+<ul class="k">
+<li>Adversary has incentive and skill.</li>
+<li>Feature space partially controlled by attacker (e.g. malware author chooses bytes).</li>
+<li>High-cost FN (missed attack), high-cost FP (alert fatigue).</li>
+<li>Models often public / standard — attacker can study them.</li>
+</ul>
+
+<h3 id="s14-1">14.2 Attack Taxonomy</h3>
+<p>Two main axes — <b>timing</b> (when attack happens) and <b>goal</b> + <b>attacker knowledge</b>.</p>
+
+<h4>Timing</h4>
+<table>
+<tr><th>Phase</th><th>Attack type</th></tr>
+<tr><td>Training</td><td><b>Poisoning</b> — attacker manipulates training data.</td></tr>
+<tr><td>Inference</td><td><b>Evasion</b> — attacker manipulates inputs at test time.</td></tr>
+<tr><td>Either</td><td><b>Model stealing / extraction</b>, <b>model inversion</b>, <b>membership inference</b>.</td></tr>
+</table>
+
+<h4>Goal</h4>
+<ul class="k">
+<li><b>Targeted</b> — make model misclassify $x$ as a chosen class.</li>
+<li><b>Untargeted</b> — any misclassification.</li>
+<li><b>Availability</b> — degrade overall model performance.</li>
+<li><b>Privacy</b> — recover training data / model parameters.</li>
+</ul>
+
+<h4>Attacker knowledge (revisited in §15)</h4>
+<table>
+<tr><th>Setting</th><th>What attacker knows</th></tr>
+<tr><td><b>White-box</b></td><td>Full model: architecture, parameters, gradients.</td></tr>
+<tr><td><b>Gray-box</b></td><td>Partial: maybe arch or training data.</td></tr>
+<tr><td><b>Black-box</b></td><td>Only query access (input→label/score).</td></tr>
+</table>
+
+<h3 id="s14-2">14.3 Adversarial Examples</h3>
+<div class="def">An <strong>adversarial example</strong> is an input $x' = x + \delta$ with $\|\delta\|$ small (often imperceptible) that causes the model to misclassify, while a human would label it identically to $x$.</div>
+
+<h4>White-box attacks</h4>
+<ul class="k">
+<li><b>FGSM</b> (Fast Gradient Sign Method) — $x' = x + \epsilon\cdot \text{sign}(\nabla_x \mathcal{L})$. One step.</li>
+<li><b>PGD</b> — iterative FGSM with projection onto $\ell_\infty$ ball. Strong attack.</li>
+<li><b>Carlini &amp; Wagner (C&amp;W)</b> — optimisation-based, minimises perturbation under misclassification constraint.</li>
+<li><b>DeepFool</b> — finds minimal $L_2$ perturbation to cross the decision boundary.</li>
+</ul>
+
+<h4>Black-box attacks</h4>
+<ul class="k">
+<li><b>Transfer attacks</b> — craft on a surrogate model; perturbations often transfer.</li>
+<li><b>Query-based</b> — gradient estimation via finite differences (ZOO, NES).</li>
+<li><b>Boundary attack</b> — start with random adversarial example, walk along boundary to reduce perturbation.</li>
+</ul>
+
+<h4>Adversarial examples in malware</h4>
+<div class="note">In malware/security, perturbations must <em>preserve functionality</em> — can't just add noise to bytes. Common techniques:
+<ul>
+<li>Append benign bytes after EOF / in unused sections (MalConv attack).</li>
+<li>Insert dead-code / NOP slides without changing behaviour.</li>
+<li>Substitute equivalent API calls.</li>
+<li>Repack with a benign-looking packer.</li>
+</ul>
+The constraint set is discrete and functional — much harder than image AML.</div>
+
+<h3 id="s14-3">14.4 Defense Strategies</h3>
+
+<h4>Adversarial training</h4>
+<div class="def">Augment the training set with adversarial examples generated on the fly: $\min_\theta \mathbb{E}_{(x,y)}\!\left[\max_{\|\delta\|\le \epsilon} \mathcal{L}(\theta;x+\delta,y)\right]$. Currently the strongest known defense for evasion.</div>
+
+<h4>Model robustness techniques</h4>
+<ul class="k">
+<li><b>Defensive distillation</b> — train a softer model; can be broken by C&amp;W.</li>
+<li><b>Gradient masking</b> — obfuscate gradients (NOT secure; gives false sense).</li>
+<li><b>Input preprocessing</b> — JPEG compression, randomised smoothing, feature squeezing.</li>
+<li><b>Certified defenses</b> — provable robustness within $\epsilon$ ball (interval bound propagation, randomised smoothing).</li>
+<li><b>Ensembles</b> — multiple diverse models harder to fool simultaneously.</li>
+<li><b>Anomaly detection on inputs</b> — flag adversarial-looking samples.</li>
+</ul>
+
+<h4>Detection of adversarial inputs</h4>
+<ul class="k">
+<li>Statistical tests on input distribution (MMD, density estimators).</li>
+<li>Detector neural networks trained to discriminate clean vs adversarial.</li>
+<li>Sensitivity to noise — adversarial examples often unstable under small re-noise.</li>
+<li>Consistency checks across multiple models.</li>
+</ul>
+
+<h4>Robust feature design (for security specifically)</h4>
+<ul class="k">
+<li>Pick features the attacker can't change cheaply.</li>
+<li>Use behavioural / semantic features over surface bytes.</li>
+<li>Apply <b>monotonic models</b> — make the model only respond to "more malicious" feature changes, so attacker can't subtract maliciousness without losing functionality.</li>
+</ul>
+</section>
+
+<!-- ============== SESSION 15 ============== -->
+<section id="s15">
+<h2>15. Adversarial ML — Poisoning &amp; Evasion in Depth</h2>
+
+<h3 id="s15-1">15.1 Model Poisoning</h3>
+<div class="def">In a <strong>poisoning attack</strong>, the attacker injects malicious samples into the training set so the resulting model is biased — e.g. misclassifies attacker-chosen inputs, or has a backdoor that activates on a trigger.</div>
+
+<h4>Sub-types</h4>
+<ul class="k">
+<li><b>Label flipping</b> — flip benign↔malicious labels in training data.</li>
+<li><b>Data injection</b> — add carefully crafted poisoned points.</li>
+<li><b>Backdoor / Trojan attacks</b> — embed a trigger pattern that activates the wanted misbehavior at inference (e.g. a specific byte sequence in malware → always classified benign).</li>
+<li><b>Clean-label attacks</b> — poisoned samples retain correct labels but cause damage.</li>
+</ul>
+
+<h4>Example: Binary classifier poisoning attack</h4>
+<div class="example">Defender trains a malware classifier on samples collected from honeypots. Attacker uploads many malicious files <em>labelled benign by a corrupted analyst</em>, or floods VirusTotal with mislabelled samples. The retrained classifier learns to mark this attacker's malware family as benign.
+<br>A simpler illustration: a logistic regression for spam. Attacker sends benign emails containing words associated with spam (Viagra, lottery) — the model lowers the weight of those words, allowing future real spam to pass.</div>
+
+<h3 id="s15-3">15.2 Attacker Knowledge for Poisoning</h3>
+<table>
+<tr><th>Knowledge</th><th>Capability</th></tr>
+<tr><td>Algorithm only</td><td>Crafts samples assuming a class of model (e.g. SVM).</td></tr>
+<tr><td>+ Training data</td><td>Can simulate the training process and optimise poisoning.</td></tr>
+<tr><td>+ Model parameters</td><td>Solve bilevel optimisation $\max_{\text{poison}} \mathcal{L}_{\text{val}}(\arg\min_\theta \mathcal{L}_{\text{train}}(\theta))$.</td></tr>
+<tr><td>+ Live deployment</td><td>Adaptive poisoning across retrains.</td></tr>
+</table>
+
+<h4>Defenses against poisoning</h4>
+<ul class="k">
+<li><b>Data sanitisation</b> — outlier detection on training data; remove suspicious points.</li>
+<li><b>Robust statistics</b> — use trimmed-mean / median estimators less sensitive to outliers.</li>
+<li><b>Provenance tracking</b> — only train on data from trusted sources.</li>
+<li><b>Differential privacy</b> — bounds influence of any single training point.</li>
+<li><b>Influence functions</b> — identify samples that most influenced predictions; investigate them.</li>
+<li><b>Activation clustering / spectral signatures</b> — backdoors leave detectable patterns in activations.</li>
+<li><b>Model audit / certification</b> after training.</li>
+</ul>
+
+<h3 id="s15-2">15.3 Evasion Attacks (Inference Time)</h3>
+<div class="def">In an <strong>evasion attack</strong>, attacker crafts inputs at test time to be misclassified — without touching training data.</div>
+
+<h4>Example: Binary classifier evasion attack</h4>
+<div class="example">A malware sample is correctly detected by a static classifier. The attacker:
+<ol>
+<li>Queries the classifier with many variants (black-box) or computes gradients (white-box).</li>
+<li>Finds a minimal modification — e.g. appending 512 benign bytes to a non-executed section — that flips the prediction to benign while preserving payload.</li>
+<li>Releases the modified binary into the wild.</li>
+</ol>
+This is the malware analogue of FGSM. Real-world examples: <b>MalConv evasion</b> by appending bytes; <b>API-call substitution</b> in dynamic detectors; <b>URL evasion</b> by adding benign tokens.</div>
+
+<h4>Defenses against evasion</h4>
+<ul class="k">
+<li><b>Adversarial training</b> on functionality-preserving perturbations (e.g. byte-append, dead-code insertion).</li>
+<li><b>Feature squeezing</b> — reduce input space to limit perturbation expressiveness.</li>
+<li><b>Ensemble &amp; multi-modality</b> — combine static + dynamic + behavioural; attacker must evade all.</li>
+<li><b>Monotonic / robust features</b> — features that an attacker can only push in the malicious direction.</li>
+<li><b>Online learning / fast retraining</b> — chase the moving target.</li>
+<li><b>Rate-limiting queries</b> — slow down black-box attackers probing the model.</li>
+<li><b>Run-time anomaly detection</b> — sandbox new samples even if classifier says benign.</li>
+</ul>
+
+<h3 id="s15-4">15.4 Other Adversarial Attacks (good to know)</h3>
+<ul class="k">
+<li><b>Model stealing / extraction</b> — attacker queries the model many times and trains a surrogate that mimics it. Enables further white-box attacks, IP theft.</li>
+<li><b>Model inversion</b> — recover features of training data given model and outputs.</li>
+<li><b>Membership inference</b> — determine whether a specific sample was in the training set (privacy concern).</li>
+<li><b>Sponge attacks</b> — craft inputs that maximise compute/latency (DoS on model).</li>
+</ul>
+
+<h3>15.5 Defense Summary (cheat-sheet)</h3>
+<table>
+<tr><th>Threat</th><th>Defenses</th></tr>
+<tr><td>Poisoning</td><td>Sanitisation, provenance, robust stats, DP, activation clustering.</td></tr>
+<tr><td>Evasion</td><td>Adversarial training, ensembles, monotonic features, behavioural detection.</td></tr>
+<tr><td>Model stealing</td><td>Rate-limit, watermark, output perturbation, DP predictions.</td></tr>
+<tr><td>Inversion / membership</td><td>Differential privacy, output truncation, regularisation.</td></tr>
+</table>
+
+<h3>15.6 Putting It Together — A Secure ML Pipeline</h3>
+<ol>
+<li><b>Trusted data collection</b> with provenance + cryptographic signing.</li>
+<li><b>Data sanitisation</b> (outlier detection, signature DB filter).</li>
+<li><b>Training</b> with differential privacy + adversarial training.</li>
+<li><b>Validation</b> on adversarial benchmark + held-out clean data.</li>
+<li><b>Deployment</b> with monitoring (input distribution, score distribution).</li>
+<li><b>Continuous learning</b> with human-in-the-loop verification.</li>
+<li><b>Incident response</b> playbook for ML failures.</li>
+</ol>
+</section>
+
+<!-- ============== CHEAT SHEET ============== -->
+<section id="cheat">
+<h2>Final Cheat-Sheet</h2>
+<ul class="k">
+<li><b>CIA triad</b>: Confidentiality, Integrity, Availability. Map attack → which goal is broken.</li>
+<li><b>Defense-in-Depth</b> = layered controls; <b>NIST CSF</b>: Identify, Protect, Detect, Respond, Recover.</li>
+<li><b>TTPs</b>: durable adversary patterns; <b>MITRE ATT&amp;CK</b> matrix maps them.</li>
+<li><b>SOC</b>: T1 triage, T2 investigate, T3 hunt; tools = SIEM, EDR, SOAR.</li>
+<li><b>Security ML challenges</b>: imbalance, drift, adversaries, FP cost, interpretability.</li>
+<li><b>Metrics</b>: precision, recall, F1, FPR, ROC, PR-AUC. Accuracy lies under imbalance.</li>
+<li><b>Signature detection</b>: Aho–Corasick, regex; brittle to polymorphism. Add ML on top.</li>
+<li><b>Supervised ML</b>: Decision Tree (Gini/Entropy/IG), SVM (max margin, kernels), Random Forest (bagging + feature subsampling).</li>
+<li><b>Anomaly detection</b>: statistical (z, Mahalanobis), distance (kNN), density (LOF, IF), clustering (K-means, DBSCAN), DR (PCA, AE), one-class SVM.</li>
+<li><b>Malware features</b>: static (PE header, n-gram, imports), dynamic (API calls, sys calls). DL: image-of-bytes, MalConv, LSTM/Transformer over API calls.</li>
+<li><b>Obfuscation</b>: packing, control-flow flatten; <b>polymorphic</b> ≠ <b>metamorphic</b>.</li>
+<li><b>NIDS</b>: flow features (5-tuple), DPI, ensembles. Datasets: KDD-99, NSL-KDD, CIC-IDS-2017, UNSW-NB15. Categories: DoS, Probe, R2L, U2R.</li>
+<li><b>DGA detection</b>: lexical (length, entropy, n-gram likelihood, vowel ratio), behavioural (NXDOMAIN bursts), character LSTM/CNN.</li>
+<li><b>Profiling</b>: JA3 TLS fingerprint, UEBA, encrypted traffic via packet-size sequences, beaconing detection.</li>
+<li><b>Adversarial ML</b>: poisoning (training time) vs evasion (inference). White/grey/black-box. FGSM, PGD, C&amp;W. Defenses: adversarial training, robust features, ensembles, DP.</li>
+<li><b>Security ML rule of thumb</b>: assume the attacker reads your model; design for graceful failure.</li>
+</ul>
+</section>
+
+<p style="text-align:center;color:var(--muted);margin-top:40px;font-size:13px">
+Study guide for AIML ZG567 AI &amp; ML Techniques in Cyber Security · prepared for comprehensive exam
+</p>
+</main>
+</div>
+</body>
+</html>

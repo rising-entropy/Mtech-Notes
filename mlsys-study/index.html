@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ML System Optimization — Exam Study Guide (AIML CLZG516)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+window.MathJax = {tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1e242d; --ink:#e6edf3; --muted:#8b949e;
+  --accent:#79c0ff; --accent2:#ffa657; --good:#7ee787; --warn:#ff7b72;
+  --code:#0a0d12; --border:#30363d;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.65;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+nav.side{width:320px;background:var(--panel);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;overflow-y:auto;padding:18px 14px;font-size:14px;}
+nav.side h2{color:var(--accent);margin:0 0 8px;font-size:16px}
+nav.side h3{color:var(--accent2);margin:14px 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:0.04em}
+nav.side ol{padding-left:18px;margin:0}
+nav.side li{margin:6px 0}
+nav.side ul{padding-left:14px;margin:4px 0;list-style:disc;color:var(--muted)}
+nav.side ul a{color:var(--muted)}
+main{flex:1;padding:30px 48px;max-width:1100px}
+h1{color:#fff;border-bottom:1px solid var(--border);padding-bottom:10px}
+h2{color:var(--accent);margin-top:50px;border-left:4px solid var(--accent);padding-left:10px}
+h2.module{color:#fff;background:linear-gradient(90deg,#1f3a52,#22324c);padding:10px 14px;border-radius:6px;border-left:6px solid var(--accent)}
+h3{color:var(--accent2);margin-top:30px}
+h4{color:#cdd5e0;margin-top:20px;margin-bottom:6px}
+section{margin-bottom:40px;padding:18px 22px;background:var(--panel);border:1px solid var(--border);border-radius:10px}
+.def{background:var(--panel2);border-left:3px solid var(--good);padding:10px 14px;margin:10px 0;border-radius:4px}
+.def strong{color:var(--good)}
+.note{background:#2a2030;border-left:3px solid var(--warn);padding:10px 14px;margin:10px 0;border-radius:4px}
+.example{background:#1a2230;border-left:3px solid var(--accent);padding:10px 14px;margin:14px 0;border-radius:4px}
+.example strong{color:var(--accent)}
+code{background:var(--code);padding:1px 6px;border-radius:4px;font-size:0.92em;color:#ffd58a}
+table{border-collapse:collapse;margin:10px 0;width:100%;font-size:14px}
+th,td{border:1px solid var(--border);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--accent)}
+ul.k li{margin:4px 0}
+.toc-top{background:var(--panel2);padding:10px 14px;border-radius:6px;border:1px solid var(--border)}
+@media (max-width:900px){nav.side{display:none}main{padding:18px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="side">
+<h2>Syllabus Navigator</h2>
+
+<h3>M1 — Foundations</h3>
+<ol>
+<li><a href="#s1">S1 · Performance & Environments</a>
+  <ul><li><a href="#s1-1">Time complexity</a></li>
+      <li><a href="#s1-2">Throughput vs latency</a></li>
+      <li><a href="#s1-3">Training vs deployment</a></li>
+      <li><a href="#s1-4">System range</a></li></ul></li>
+<li><a href="#s2">S2 · Parallel/Distributed Basics</a>
+  <ul><li><a href="#s2-1">Speedup, Amdahl</a></li>
+      <li><a href="#s2-2">Gustafson</a></li>
+      <li><a href="#s2-3">Data/Task/Request parallelism</a></li>
+      <li><a href="#s2-4">Scale-up vs scale-out</a></li>
+      <li><a href="#s2-5">Communication cost</a></li></ul></li>
+<li><a href="#s3">S3 · Programming Models & HW</a>
+  <ul><li><a href="#s3-1">MapReduce</a></li>
+      <li><a href="#s3-2">SIMD vs MIMD</a></li>
+      <li><a href="#s3-3">Memory hierarchy</a></li>
+      <li><a href="#s3-4">CPU vs GPU clusters</a></li>
+      <li><a href="#s3-5">Sharding</a></li>
+      <li><a href="#s3-6">PS vs All-reduce</a></li></ul></li>
+</ol>
+
+<h3>M2 — Distributed ML</h3>
+<ol start="4">
+<li><a href="#s4">S4 · Algorithm parallelism 1</a>
+  <ul><li><a href="#s4-1">Problem decomposition</a></li>
+      <li><a href="#s4-2">Ensembles, XGBoost</a></li>
+      <li><a href="#s4-3">DT/RF distributed</a></li>
+      <li><a href="#s4-4">SVM parallel</a></li></ul></li>
+<li><a href="#s5">S5 · Algorithm parallelism 2</a>
+  <ul><li><a href="#s5-1">Comm overhead</a></li>
+      <li><a href="#s5-2">k-NN, LSH</a></li>
+      <li><a href="#s5-3">SGD variants</a></li></ul></li>
+<li><a href="#s6">S6 · Hadoop/Spark, k-means, CNN</a>
+  <ul><li><a href="#s6-1">Hadoop/Spark</a></li>
+      <li><a href="#s6-2">k-Means MR</a></li>
+      <li><a href="#s6-3">CNN distributed</a></li></ul></li>
+<li><a href="#s7">S7 · Distributed Training Strategies</a>
+  <ul><li><a href="#s7-1">Data parallel</a></li>
+      <li><a href="#s7-2">Model parallel</a></li>
+      <li><a href="#s7-3">Pipeline parallel</a></li>
+      <li><a href="#s7-4">Gradient checkpointing</a></li>
+      <li><a href="#s7-5">Mixed precision</a></li></ul></li>
+</ol>
+
+<h3>M3 — Scale-Out Systems</h3>
+<ol start="8">
+<li><a href="#s8">S8 · Frameworks & PS Model</a>
+  <ul><li><a href="#s8-1">Parameter Server</a></li>
+      <li><a href="#s8-2">TF architecture</a></li>
+      <li><a href="#s8-3">tf.distribute</a></li>
+      <li><a href="#s8-4">Spark MLlib</a></li></ul></li>
+<li><a href="#s9">S9 · Distributed DL</a>
+  <ul><li><a href="#s9-1">All-Reduce (ring/tree)</a></li>
+      <li><a href="#s9-2">Async / Hogwild</a></li>
+      <li><a href="#s9-3">Local SGD</a></li>
+      <li><a href="#s9-4">MatMul optimisation</a></li></ul></li>
+<li><a href="#s10">S10 · Model & Pipeline Parallelism</a>
+  <ul><li><a href="#s10-1">Locality, multi-threading</a></li>
+      <li><a href="#s10-2">GPGPU intro</a></li>
+      <li><a href="#s10-3">Layer vs tensor split</a></li>
+      <li><a href="#s10-4">Pipeline bubbles</a></li>
+      <li><a href="#s10-5">GPT-scale case</a></li></ul></li>
+<li><a href="#s11">S11 · GPU & Federated Learning</a>
+  <ul><li><a href="#s11-1">GPU architecture</a></li>
+      <li><a href="#s11-2">Threading model</a></li>
+      <li><a href="#s11-3">FL basics</a></li>
+      <li><a href="#s11-4">Secure aggregation</a></li>
+      <li><a href="#s11-5">Decentralized FL</a></li></ul></li>
+</ol>
+
+<h3>M4 — Constrained Systems</h3>
+<ol start="12">
+<li><a href="#s12">S12 · Model Compression Intro</a>
+  <ul><li><a href="#s12-1">Compression overview</a></li>
+      <li><a href="#s12-2">Weight sharing</a></li>
+      <li><a href="#s12-3">Huffman</a></li>
+      <li><a href="#s12-4">Knowledge distillation</a></li></ul></li>
+<li><a href="#s13">S13 · Quantization</a>
+  <ul><li><a href="#s13-1">Uniform vs non-uniform</a></li>
+      <li><a href="#s13-2">PTQ vs QAT</a></li>
+      <li><a href="#s13-3">Reduced precision</a></li>
+      <li><a href="#s13-4">Hardware support</a></li></ul></li>
+<li><a href="#s14">S14 · Pruning</a>
+  <ul><li><a href="#s14-1">Structured vs unstructured</a></li>
+      <li><a href="#s14-2">Iterative/one-shot</a></li>
+      <li><a href="#s14-3">Metrics</a></li>
+      <li><a href="#s14-4">Deep Compression pipeline</a></li></ul></li>
+<li><a href="#s15">S15 · Edge & TFLite</a>
+  <ul><li><a href="#s15-1">Optimisation landscape</a></li>
+      <li><a href="#s15-2">TFLite, ONNX</a></li>
+      <li><a href="#s15-3">SLMs / TFLite Micro</a></li></ul></li>
+<li><a href="#s16">S16 · Energy & Trade-offs</a>
+  <ul><li><a href="#s16-1">Energy constraints</a></li>
+      <li><a href="#s16-2">Trade-off matrix</a></li></ul></li>
+</ol>
+<li><a href="#cheat">Cheat-sheet</a></li>
+</nav>
+
+<main>
+<h1>ML System Optimization — AIML CLZG516 Study Guide</h1>
+<p class="toc-top">Session-by-session walkthrough of the 4 modules (16 sessions) in syllabus order. Every sub-topic has a definition, intuition, key formulas, and worked numerical examples or comparison tables where they help. MathJax will render the equations after a moment.</p>
+
+<!-- ============== MODULE 1 ============== -->
+<h2 class="module">Module M1 — Foundations</h2>
+
+<!-- =========== SESSION 1 =========== -->
+<section id="s1">
+<h2>S1. ML &amp; DL — Performance and Environments</h2>
+
+<h3 id="s1-1">1.1 Time Complexity and Running Time</h3>
+<div class="def"><strong>Time complexity</strong> is an asymptotic description of how an algorithm's running time grows with input size $n$. Expressed using Big-O / Θ / Ω notation. <strong>Running time</strong> is the actual wall-clock seconds — a function of complexity <em>and</em> constants (hardware, memory hierarchy, cache, vectorisation, …).</div>
+
+<table>
+<tr><th>Operation</th><th>Complexity</th></tr>
+<tr><td>Linear regression (closed form)</td><td>$O(nd^2 + d^3)$</td></tr>
+<tr><td>SGD epoch over $n$ samples, $d$ features</td><td>$O(nd)$</td></tr>
+<tr><td>Dense forward pass, $L$ layers width $h$</td><td>$O(L h^2)$ per sample</td></tr>
+<tr><td>Self-attention</td><td>$O(n^2 d)$</td></tr>
+<tr><td>k-NN (brute)</td><td>$O(nd)$ per query</td></tr>
+<tr><td>k-means iteration</td><td>$O(nkd)$</td></tr>
+<tr><td>Decision tree training</td><td>$O(nd\log n)$</td></tr>
+</table>
+
+<h4>Why asymptotic isn't enough</h4>
+<ul class="k">
+<li>Two $O(n^2)$ algorithms can differ by 100× due to <em>cache locality</em>, vectorisation, branching.</li>
+<li>Memory access latency: L1 ≈ 1 ns, DRAM ≈ 100 ns, SSD ≈ 100 µs, network ≈ 1 ms. <b>Memory-bound</b> kernels dominate ML training.</li>
+<li><b>Arithmetic intensity</b> = FLOPs / bytes; high intensity ⇒ compute bound (good for GPUs).</li>
+</ul>
+
+<h3 id="s1-2">1.2 Performance Metrics — Throughput, Latency, etc.</h3>
+<div class="def"><strong>Latency</strong> = time to complete one operation (e.g. one inference). <strong>Throughput</strong> = operations completed per unit time (e.g. samples/sec, queries/sec).</div>
+<p>They are <em>not</em> reciprocals — batching reduces per-sample latency overhead but adds queueing latency.</p>
+<ul class="k">
+<li><b>Tail latencies</b> (p50/p95/p99) matter more than mean for user-facing systems.</li>
+<li><b>Goodput</b> — useful work per second (excludes retries, failures).</li>
+<li><b>Utilization</b> — % of time hardware is busy doing useful work.</li>
+<li><b>FLOPs</b> — count of floating-point ops; <b>FLOP/s</b> — rate.</li>
+<li><b>MFU</b> (Model FLOPs Utilization) — achieved FLOP/s ÷ peak FLOP/s.</li>
+</ul>
+
+<div class="example"><strong>Numeric.</strong> A model needs $3\times10^9$ FLOPs/inference. GPU has 100 TFLOP/s peak with 30% MFU. Per-inference compute = $3\times10^9 / (0.3 \times 10^{14}) = 10^{-4}$ s = 0.1 ms. With a batch size 64, throughput ≈ 640 000 samples/s if I/O doesn't bottleneck.</div>
+
+<h3 id="s1-3">1.3 Scaling and Tuning</h3>
+<ul class="k">
+<li><b>Profile first</b> — Amdahl says: don't optimise the cheap 5%.</li>
+<li><b>Vectorise</b> — replace Python loops with NumPy / BLAS / cuBLAS.</li>
+<li><b>Batch</b> — amortise overhead.</li>
+<li><b>Memory layout</b> — contiguous arrays, channels-last for some GPUs.</li>
+<li><b>Tune hyperparameters that affect compute</b> — batch size, precision (fp16/bf16), grad accumulation.</li>
+</ul>
+
+<h3 id="s1-3b">1.4 Training vs Deployment</h3>
+<table>
+<tr><th></th><th>Training</th><th>Inference / Deployment</th></tr>
+<tr><td>Goal</td><td>Learn weights (one-time, hours/days)</td><td>Serve predictions (continuous, ms)</td></tr>
+<tr><td>Workload</td><td>Forward + backward + optimiser</td><td>Forward only</td></tr>
+<tr><td>Hardware</td><td>Large GPU clusters / TPU pods</td><td>Single GPU, CPU, mobile, MCU</td></tr>
+<tr><td>Constraints</td><td>Throughput, convergence, cost</td><td>Latency, memory, energy</td></tr>
+<tr><td>Optimisations</td><td>Mixed precision, distributed</td><td>Quantization, pruning, distillation</td></tr>
+<tr><td>Batch size</td><td>Large (256, 1024, …)</td><td>Often 1 (real-time)</td></tr>
+</table>
+
+<h3 id="s1-4">1.5 Range of Systems</h3>
+<ul class="k">
+<li><b>Cloud / Distributed</b> — multi-node GPU clusters (AWS, GCP, Azure). Petabytes of data; train foundation models.</li>
+<li><b>On-prem servers</b> — multi-GPU box, low-latency LAN.</li>
+<li><b>Edge devices</b> — Raspberry Pi, Jetson Nano. Limited RAM/CPU; intermittent connectivity.</li>
+<li><b>Mobile</b> — phones, smart speakers. Battery, thermal limits.</li>
+<li><b>Embedded / TinyML / MCU</b> — Cortex-M, ESP32. KB of RAM, mW power.</li>
+</ul>
+</section>
+
+<!-- =========== SESSION 2 =========== -->
+<section id="s2">
+<h2>S2. Parallel and Distributed Algorithms</h2>
+
+<h3 id="s2-1">2.1 Speedup &amp; Amdahl's Law</h3>
+<div class="def"><strong>Speedup</strong> $S(p) = T_1 / T_p$, where $T_1$ is single-processor time, $T_p$ time on $p$ processors.<br>
+<strong>Efficiency</strong> $E(p) = S(p)/p$. Ideal $S=p$ (linear).</div>
+
+<div class="def"><strong>Amdahl's Law.</strong> If fraction $f$ of work is parallelisable and $1-f$ is serial:
+$$S(p) = \frac{1}{(1-f) + f/p} \xrightarrow{p\to\infty} \frac{1}{1-f}$$
+The serial portion sets a hard upper bound on speedup.</div>
+
+<div class="example"><strong>Numeric.</strong> $f=0.95$, $p=16$ ⇒ $S=1/(0.05+0.95/16)=1/0.1094=9.14×$.
+<br>At $p=\infty$, $S=1/0.05=20×$ — even infinite processors can't beat 20× because of 5% serial code.
+<br>If $f=0.99$, $p=100$ ⇒ $S=1/(0.01+0.0099)=50.25×$. Max ever: 100×.</div>
+
+<h3 id="s2-2">2.2 Gustafson's Law (scale-up of problem size)</h3>
+<div class="def">If we <em>grow the problem</em> with $p$ (typical in ML — more data, more GPUs), the parallel fraction stays high:
+$$S(p) = p - (1-f)(p-1)$$
+which grows nearly linearly. Justifies why "throw more GPUs at a bigger model" actually works.</div>
+
+<h3 id="s2-3">2.3 Data vs Task vs Request Parallelism</h3>
+<table>
+<tr><th>Type</th><th>What's split</th><th>ML example</th></tr>
+<tr><td><b>Data parallelism</b></td><td>Different data on different workers; each runs the same op</td><td>Each GPU holds a replica of the model, processes a shard of the batch.</td></tr>
+<tr><td><b>Task parallelism</b></td><td>Different operations run concurrently</td><td>Data loading on CPU thread while GPU trains; preprocess pipeline.</td></tr>
+<tr><td><b>Request parallelism</b></td><td>Independent requests handled in parallel</td><td>Inference serving with multiple concurrent users (load-balanced).</td></tr>
+<tr><td><b>Model parallelism</b></td><td>Different parts of the model on different devices</td><td>Layer 1–10 on GPU A, 11–20 on GPU B (covered in §7, §10).</td></tr>
+<tr><td><b>Pipeline parallelism</b></td><td>Different micro-batches at different model stages</td><td>GPipe / PipeDream.</td></tr>
+</table>
+
+<h3 id="s2-4">2.4 Scale-Up vs Scale-Out</h3>
+<table>
+<tr><th></th><th>Scale-Up (vertical)</th><th>Scale-Out (horizontal)</th></tr>
+<tr><td>Approach</td><td>Bigger single machine (more cores/RAM/GPUs)</td><td>More machines connected over network</td></tr>
+<tr><td>Pros</td><td>Low intra-node latency, shared memory</td><td>Near-linear capacity growth, fault tolerance</td></tr>
+<tr><td>Cons</td><td>Diminishing returns, expensive ceiling</td><td>Network is the bottleneck; complex orchestration</td></tr>
+<tr><td>Use</td><td>Multi-GPU workstation</td><td>GPU cluster, Spark, Kubernetes</td></tr>
+</table>
+
+<h3 id="s2-5">2.5 Communication Cost &amp; Impact on Speedup</h3>
+<p>Real speedup is:
+$$S(p) = \frac{T_1}{T_{\text{compute}}(p) + T_{\text{comm}}(p)}$$
+$T_\text{comm}$ depends on bandwidth (BW) and latency $L$ per message:
+$$T_\text{msg} = L + \frac{\text{bytes}}{\text{BW}}$$</p>
+
+<div class="example"><strong>Numeric.</strong> Synchronising 100 MB gradients across 8 workers via 10 Gbps Ethernet: per-link $T \approx 100\text{MB}/1.25\text{GB/s} = 80$ ms. Vs PCIe Gen4 within a node: $\approx 6$ ms. Vs NVLink: $\approx 0.5$ ms. Hence "node-local first" all-reduce strategies (NCCL hierarchical).</div>
+<p>Implication: as $p$ grows, communication scales (often super-linearly in naive designs) and kills speedup → drives algorithm choice (all-reduce, async, compressed gradients).</p>
+</section>
+
+<!-- =========== SESSION 3 =========== -->
+<section id="s3">
+<h2>S3. Programming Models &amp; Hardware Architectures</h2>
+
+<h3 id="s3-1">3.1 Parallel Programming Models</h3>
+<ul class="k">
+<li><b>Shared memory</b> — threads access common memory (OpenMP, pthreads, Java threads).</li>
+<li><b>Message passing</b> — processes communicate via explicit messages (MPI).</li>
+<li><b>Data parallel</b> — single instruction over partitioned data (SIMD, GPU SIMT, NumPy).</li>
+<li><b>Task graphs / dataflow</b> — Spark RDD lineage, TensorFlow graph, Dask.</li>
+<li><b>BSP</b> (Bulk Synchronous Parallel) — alternating compute and global sync phases.</li>
+</ul>
+
+<h4 id="s3-1b">MapReduce Pattern</h4>
+<div class="def"><strong>MapReduce</strong> (Dean &amp; Ghemawat 2004) processes large data in two stages:
+<ol>
+<li><b>Map</b>: each worker applies a function to its data chunk, emitting key-value pairs.</li>
+<li><b>Shuffle/Sort</b>: pairs with the same key are grouped.</li>
+<li><b>Reduce</b>: per-key aggregation produces the final output.</li>
+</ol>
+Implementations: Hadoop, Spark (in-memory variant). Great for embarrassingly parallel tasks but high latency for iterative ML (each iteration = full job).</div>
+
+<div class="example"><strong>Word-count map-reduce.</strong> Map: each chunk emits <code>(word, 1)</code> per token. Reduce: per word sum counts. Trivially parallel; no inter-mapper communication.</div>
+
+<h3 id="s3-2">3.2 Task-Parallel vs Request-Parallel</h3>
+<ul class="k">
+<li><b>Task-parallel</b> — pre-defined set of <em>different</em> tasks (e.g. CNN's input pipeline + training + checkpoint writer running concurrently).</li>
+<li><b>Request-parallel</b> — many <em>identical</em> independent requests (inference server). Stateless = trivially horizontal.</li>
+</ul>
+
+<h3 id="s3-2b">3.3 Multicore &amp; GPGPU Parallelism</h3>
+
+<h4 id="s3-2c">SIMD vs MIMD</h4>
+<table>
+<tr><th></th><th>SIMD</th><th>MIMD</th></tr>
+<tr><td>Definition</td><td>Single Instruction, Multiple Data</td><td>Multiple Instruction, Multiple Data</td></tr>
+<tr><td>Where</td><td>CPU vector units (AVX-512), GPU warps (SIMT)</td><td>Multi-core CPUs, distributed clusters</td></tr>
+<tr><td>Best for</td><td>Data-parallel ops (matrix ops)</td><td>Heterogeneous tasks</td></tr>
+<tr><td>Pitfalls</td><td>Branch divergence stalls all lanes</td><td>Synchronisation overhead</td></tr>
+</table>
+<p>Flynn's taxonomy adds <b>SISD</b> (one core, one stream) and the rare <b>MISD</b>.</p>
+
+<h4 id="s3-3">Memory Hierarchy &amp; Bandwidth</h4>
+<div class="def">CPUs have layered memory: <b>registers → L1 (~32 KB) → L2 (~1 MB) → L3 (~30 MB shared) → DRAM (GBs)</b>. Each level is bigger but slower. Performance often depends on <em>where</em> data lives.</div>
+<table>
+<tr><th>Level</th><th>Latency</th><th>Bandwidth</th></tr>
+<tr><td>Register</td><td>0.5 ns</td><td>~TB/s</td></tr>
+<tr><td>L1 cache</td><td>1 ns</td><td>~1 TB/s</td></tr>
+<tr><td>L2 / L3</td><td>~3-15 ns</td><td>~500 GB/s</td></tr>
+<tr><td>DRAM</td><td>100 ns</td><td>~50 GB/s</td></tr>
+<tr><td>SSD (NVMe)</td><td>~100 µs</td><td>~5 GB/s</td></tr>
+<tr><td>Network (10 GbE)</td><td>~100 µs</td><td>~1 GB/s</td></tr>
+<tr><td>NVLink GPU↔GPU</td><td>~µs</td><td>300–900 GB/s</td></tr>
+<tr><td>HBM (GPU on-chip)</td><td>~1 ns</td><td>~3 TB/s</td></tr>
+</table>
+<div class="def"><strong>Roofline model.</strong> Performance $\le \min(\text{peak FLOP/s},\ \text{AI}\cdot\text{BW})$. Plots show when a kernel is compute- vs memory-bound.</div>
+
+<h3 id="s3-4">3.4 Distributed Clusters — CPU vs GPU</h3>
+<ul class="k">
+<li><b>CPU-only clusters</b> — many cores, large RAM, cheap. Good for classical ML (Spark MLlib trees), data prep.</li>
+<li><b>GPU-accelerated</b> — massively parallel for matrix-heavy DL. Costs and energy higher.</li>
+<li><b>Heterogeneous</b> — CPUs host data + parameter servers, GPUs do compute. Common in production.</li>
+</ul>
+
+<h3 id="s3-5">3.5 Data Sharding</h3>
+<ul class="k">
+<li><b>Horizontal (row) sharding</b> — split rows/samples across workers. Default for data parallelism.</li>
+<li><b>Vertical (column / feature) sharding</b> — split features across workers; used in feature-store, vertical federated learning, parameter partitioning.</li>
+<li><b>Hash sharding</b> by key, <b>range sharding</b>, <b>random</b>. Hash gives uniformity; range gives locality.</li>
+</ul>
+
+<h3 id="s3-6">3.6 Parameter Server vs All-Reduce</h3>
+<table>
+<tr><th></th><th>Parameter Server (PS)</th><th>All-Reduce</th></tr>
+<tr><td>Topology</td><td>Workers push gradients to PS; pull updated weights</td><td>Peer-to-peer collective; every worker ends with summed gradients</td></tr>
+<tr><td>Comm pattern</td><td>Star (workers ↔ PS)</td><td>Ring or tree</td></tr>
+<tr><td>Async possible?</td><td>Yes (Hogwild!-style)</td><td>Mostly synchronous</td></tr>
+<tr><td>Bandwidth</td><td>PS becomes hotspot</td><td>Balanced; bandwidth-optimal for ring</td></tr>
+<tr><td>Fault tolerance</td><td>Easier (workers stateless)</td><td>Harder</td></tr>
+<tr><td>Used by</td><td>Original Mxnet, classic TF</td><td>Horovod, PyTorch DDP, NCCL</td></tr>
+</table>
+</section>
+
+<!-- ============== MODULE 2 ============== -->
+<h2 class="module">Module M2 — Distributed Machine Learning Algorithms</h2>
+
+<!-- =========== SESSION 4 =========== -->
+<section id="s4">
+<h2>S4. Parallelising ML Algorithms (Part 1)</h2>
+
+<h3 id="s4-1">4.1 Problem Decomposition</h3>
+<div class="def">Two general strategies:
+<ul>
+<li><b>Data decomposition</b> — split the dataset; each worker runs same algorithm; aggregate. (Most common.)</li>
+<li><b>Algorithmic / functional decomposition</b> — split the computation graph; each worker handles a stage/sub-operation.</li>
+</ul>
+Choosing depends on data size, model size, dependency structure.</div>
+
+<h3 id="s4-2">4.2 Ensemble Methods &amp; XGBoost on CPU</h3>
+<h4>Ensembles</h4>
+<ul class="k">
+<li><b>Bagging</b> (Random Forest): build $T$ trees on bootstrap samples — trivially data-parallel (no dependencies between trees).</li>
+<li><b>Boosting</b> (XGBoost, LightGBM): trees are sequential — tree $t$ depends on tree $t-1$. Parallelism is <em>within</em> each tree (split-finding) or in histogram building.</li>
+</ul>
+
+<h4>XGBoost CPU parallelism</h4>
+<ul class="k">
+<li>Per node: histogram-based split finding parallel across features (OpenMP).</li>
+<li>Block structure stores data column-wise sorted → cache friendly.</li>
+<li>Multi-threaded tree-building per boosting round.</li>
+<li>Distributed mode: workers compute local histograms, all-reduce them, then split is decided globally.</li>
+</ul>
+
+<h3 id="s4-2b">4.3 k-Means (overview, deeper in S6)</h3>
+<ul class="k">
+<li>Lloyd iteration: assign each point to nearest centroid, then recompute centroids.</li>
+<li>Both steps are data-parallel; only centroids (small) need to be shared.</li>
+<li>Distributed: workers compute local partial sums + counts; aggregate to update global centroids.</li>
+</ul>
+
+<h3 id="s4-3">4.4 Decision Trees &amp; Random Forests — Distributed</h3>
+<ul class="k">
+<li><b>Spark MLlib</b> — builds trees with the <em>PLANET / sequential</em> algorithm: workers compute local histograms per feature/bucket; driver aggregates to choose best split.</li>
+<li><b>XGBoost distributed GPU</b> — multi-GPU + multi-node via Rabit (all-reduce) collective; gradient histograms reduced across workers.</li>
+<li>Random Forest is embarrassingly parallel across trees and bootstrap samples.</li>
+</ul>
+
+<h3 id="s4-4">4.5 Support Vector Machines (SVM)</h3>
+<ul class="k">
+<li>Training solves a constrained quadratic problem — typically <em>not</em> easily decomposable.</li>
+<li><b>Cascade SVM</b>: split data into chunks, train per-chunk SVMs, combine support vectors, retrain. Approximate but parallel.</li>
+<li><b>Block-wise / column-wise kernel computation</b> — kernel matrix $K\in\mathbb{R}^{n\times n}$ split into blocks; computed in MapReduce-style.</li>
+<li><b>P-packSVM</b>, <b>ParallelSMO</b>, <b>LibLinear</b> for linear SVMs (no kernel).</li>
+</ul>
+</section>
+
+<!-- =========== SESSION 5 =========== -->
+<section id="s5">
+<h2>S5. Parallelising ML Algorithms (Part 2)</h2>
+
+<h3 id="s5-1">5.1 Communication Overhead in Distributed ML</h3>
+<ul class="k">
+<li><b>Sync overhead</b> — workers wait for the slowest ("straggler").</li>
+<li><b>Aggregation overhead</b> — all-reduce of large gradient tensors.</li>
+<li><b>Per-iteration communication</b> kills iterative ML; we want compute-to-comm ratio high.</li>
+<li>Mitigations: <em>gradient compression</em> (top-k sparsification, 1-bit SGD), <em>quantization</em>, <em>local SGD</em>, <em>asynchronous</em>, <em>overlap</em> comm with compute.</li>
+</ul>
+
+<h3 id="s5-1b">5.2 k-Means — Distributed Form &amp; Model Parallelism</h3>
+<p>Already covered above; with very large $k$ (millions of centroids), centroids themselves can be sharded → <em>model parallelism</em> for k-means.</p>
+
+<h3 id="s5-2">5.3 k-Nearest Neighbors (k-NN)</h3>
+
+<h4>Brute force MR</h4>
+<p>For each query, compute distance to all $n$ training points, return top-$k$ — easy to parallelise across data shards; bottleneck is shuffling per-query results.</p>
+
+<h4>Data partitioning &amp; LSH</h4>
+<div class="def"><strong>Locality-Sensitive Hashing (LSH)</strong> hashes points so that similar points collide with high probability. To answer a query, only points in the same bucket are checked. Approximate, sub-linear lookup.</div>
+
+<h4>Distributed indexing</h4>
+<ul class="k">
+<li><b>KD-trees</b> — efficient for low-dimensional Euclidean; degrade in high-d.</li>
+<li><b>Ball trees</b> — better for non-Euclidean metrics.</li>
+<li><b>HNSW</b> (Hierarchical Navigable Small Worlds) — graph index, state of the art for ANN.</li>
+<li><b>Inverted-file (IVF) + PQ</b> (FAISS) — coarse quantizer + product quantization; widely used in production.</li>
+</ul>
+
+<h4>Trade-offs</h4>
+<p>Approximate k-NN: faster, less memory, but lower recall. Tunable knob in production search systems.</p>
+
+<h3 id="s5-3">5.4 Gradient Descent &amp; SGD Variants</h3>
+<table>
+<tr><th>Variant</th><th>Batch</th><th>Updates / epoch</th><th>Gradient quality</th></tr>
+<tr><td>Batch GD</td><td>All data</td><td>1</td><td>Exact</td></tr>
+<tr><td>SGD</td><td>1 sample</td><td>$n$</td><td>Noisy</td></tr>
+<tr><td>Mini-batch SGD</td><td>$B$ samples (32–4k)</td><td>$n/B$</td><td>Good compromise; GPU friendly</td></tr>
+</table>
+<p>Distributed flavours:</p>
+<ul class="k">
+<li><b>Synchronous SGD</b> — workers compute gradients on shards, all-reduce, all update. Equivalent to large-batch SGD.</li>
+<li><b>Asynchronous SGD</b> — each worker pushes gradients to a PS without waiting; "stale" gradients but no synchronisation barrier.</li>
+<li><b>Local SGD / FedAvg</b> — workers run multiple SGD steps locally, then average. Reduces comm.</li>
+</ul>
+</section>
+
+<!-- =========== SESSION 6 =========== -->
+<section id="s6">
+<h2>S6. Clusters, Hadoop/Spark, k-Means &amp; CNN Distribution</h2>
+
+<h3 id="s6-1">6.1 Hadoop and Spark</h3>
+<table>
+<tr><th></th><th>Hadoop MR</th><th>Spark</th></tr>
+<tr><td>Execution</td><td>Disk-based (HDFS) between stages</td><td>In-memory RDDs / DataFrames</td></tr>
+<tr><td>Iterative ML</td><td>Slow (each iter re-reads disk)</td><td>Fast (cache in memory)</td></tr>
+<tr><td>API</td><td>Java/Map-Reduce</td><td>Scala/Python/Java; DataFrame, MLlib, GraphX, Streaming</td></tr>
+<tr><td>Fault tolerance</td><td>Re-run failed task</td><td>RDD lineage recomputation</td></tr>
+<tr><td>Used in ML</td><td>Mostly ETL</td><td>Spark MLlib for distributed classical ML</td></tr>
+</table>
+<p>Spark's iterative speed-up came from keeping the working set in RAM, suiting many epochs of ML algorithms.</p>
+
+<h3 id="s6-2">6.2 k-Means in MapReduce</h3>
+<p>Each Lloyd iteration ⇒ one MapReduce job:</p>
+<ul class="k">
+<li><b>Map</b>: read partition; emit <code>(cluster_id, (point, 1))</code> using current centroids broadcast to all workers.</li>
+<li><b>Combine</b>: locally aggregate partial sums &amp; counts.</li>
+<li><b>Reduce</b>: per cluster sum points/counts → new centroid.</li>
+<li>Driver checks convergence; re-broadcasts centroids; next iteration.</li>
+</ul>
+
+<h4>Mini-batch &amp; streaming k-means</h4>
+<ul class="k">
+<li><b>Mini-batch k-means</b> — sample random mini-batches, update centroids incrementally. Online; much faster on huge datasets.</li>
+<li><b>Streaming k-means</b> — receives points sequentially, maintains running centroids (e.g. half-life forgetting factor).</li>
+</ul>
+<div class="def"><strong>Convergence criteria.</strong> Stop when centroid shift $\sum\|\mu_k^{(t+1)}-\mu_k^{(t)}\|<\epsilon$, or fixed iteration cap, or inertia change small.</div>
+
+<h4>Communication reduction</h4>
+<ul class="k">
+<li>Broadcast only centroids (size $kd$ floats) — tiny compared to data.</li>
+<li>Compress centroid updates / quantize.</li>
+<li>Use coreset / approximate sketches.</li>
+</ul>
+
+<h3 id="s6-3">6.3 Convolutional Neural Networks — Distributed Training</h3>
+<ul class="k">
+<li><b>Data parallel</b> — replicate model on each GPU, split batch; all-reduce gradients.</li>
+<li><b>Model parallel</b> — split layers / tensors across GPUs (covered §7, §10). Used when model doesn't fit in one GPU.</li>
+<li><b>Tensor slicing</b> — split a single weight matrix across GPUs (Megatron-LM style).</li>
+<li><b>Mixed precision</b> — fp16/bf16 forward/backward, fp32 master weights — 2× memory savings, 2-4× speed (covered §7).</li>
+<li><b>Pipeline parallelism</b> — split layers + micro-batch pipelining (GPipe, PipeDream).</li>
+<li><b>Frameworks</b> — Distributed TensorFlow, PyTorch DDP, FSDP, DeepSpeed, ColossalAI.</li>
+</ul>
+</section>
+
+<!-- =========== SESSION 7 =========== -->
+<section id="s7">
+<h2>S7. Distributed Training Strategies</h2>
+
+<h3 id="s7-1">7.1 Data Parallelism</h3>
+<div class="def">Each worker holds a <em>full copy of the model</em>; the global batch is split across workers. After computing local gradients, workers synchronise via all-reduce (or PS) to obtain the averaged gradient.</div>
+<ul class="k">
+<li>Effective batch = per-worker batch × #workers.</li>
+<li>Scales easily as long as model fits in one device.</li>
+<li>PyTorch <code>DistributedDataParallel</code> (DDP) is the canonical implementation.</li>
+<li>Large-batch issues: requires LR scaling (linear scaling rule), warm-up, LARS/LAMB optimizers.</li>
+</ul>
+
+<h3 id="s7-2">7.2 Model Parallelism</h3>
+<div class="def">The model itself is split across devices; each holds <em>different parameters</em>.</div>
+<ul class="k">
+<li><b>Layer (vertical) split</b> — early layers on GPU0, later on GPU1, … Activations forwarded; gradients flow back.</li>
+<li><b>Tensor (intra-layer) split</b> — a giant matrix $W$ split column-wise; matmul computed cooperatively (Megatron-LM splits attention &amp; FFN matrices).</li>
+<li>Used when model > device memory (e.g. 70B-param LLMs).</li>
+<li>Adds <em>communication every layer</em> → bandwidth-hungry; prefer high-speed interconnect (NVLink/InfiniBand).</li>
+</ul>
+
+<h3 id="s7-3">7.3 Pipeline Parallelism</h3>
+<div class="def">Model is split into stages along depth (like model parallelism). A mini-batch is split into <strong>micro-batches</strong> that flow through stages like an assembly line — every stage processes a different micro-batch concurrently.</div>
+
+<h4>Bubble overhead</h4>
+<p>Pipeline incurs idle "bubbles" at fill / drain. For $S$ stages and $M$ micro-batches, bubble fraction $\approx (S-1)/(M+S-1)$. More micro-batches reduce bubbles.</p>
+
+<div class="example"><strong>Bubble numeric.</strong> 4 stages, 8 micro-batches → bubble = 3/(8+3) ≈ 27%. With 32 micro-batches → 3/35 ≈ 8.6%. Hence systems use many micro-batches.</div>
+<ul class="k">
+<li><b>GPipe</b> — synchronous; consistent gradients; bubbles.</li>
+<li><b>PipeDream / 1F1B</b> — interleave forward and backward to overlap stages; less idle.</li>
+<li><b>Interleaved pipeline (Megatron-LM)</b> — split each stage into multiple chunks for finer pipelining.</li>
+</ul>
+
+<h3 id="s7-4">7.4 Gradient Checkpointing (Activation Checkpointing)</h3>
+<div class="def">Don't store all intermediate activations during forward; <em>recompute</em> them during backward. Trades extra compute for lower memory — enables training larger models on the same hardware.</div>
+<ul class="k">
+<li>Naïve: store all → memory $O(L)$.</li>
+<li>Checkpoint every layer: memory $O(1)$, compute 2×.</li>
+<li>Square-root checkpointing: memory $O(\sqrt L)$, compute 1.33×.</li>
+</ul>
+
+<h3 id="s7-5">7.5 Mixed Precision Training</h3>
+<div class="def">Use lower-precision floats (<b>fp16</b> or <b>bf16</b>) for most ops, keep a <b>master copy of weights in fp32</b>, and use <b>loss scaling</b> to avoid underflow of small gradients in fp16.</div>
+<table>
+<tr><th>Format</th><th>Bits (sign/exp/mantissa)</th><th>Range</th><th>Precision</th></tr>
+<tr><td>FP32</td><td>1/8/23</td><td>$\sim10^{38}$</td><td>~7 dec digits</td></tr>
+<tr><td>FP16</td><td>1/5/10</td><td>$\sim 6\times10^4$</td><td>~3 dec digits</td></tr>
+<tr><td>BF16</td><td>1/8/7</td><td>$\sim10^{38}$ (same as fp32)</td><td>Lower precision but wider range — ML-friendly</td></tr>
+<tr><td>FP8 (E4M3/E5M2)</td><td>1/4/3 or 1/5/2</td><td>varies</td><td>used in H100, very recent</td></tr>
+</table>
+<p>Benefits: ~2× faster on Tensor Cores, ~½ memory. Pitfalls: loss-scaling required for fp16; numeric instability in some layers (keep batchnorm / softmax in fp32).</p>
+</section>
+
+<!-- ============== MODULE 3 ============== -->
+<h2 class="module">Module M3 — Scale-Out Systems</h2>
+
+<!-- =========== SESSION 8 =========== -->
+<section id="s8">
+<h2>S8. ML Platforms — Parameter Server &amp; TensorFlow Architecture</h2>
+
+<h3 id="s8-1">8.1 The Parameter Server Model</h3>
+<div class="def">A <strong>Parameter Server (PS)</strong> system has two role types:
+<ul>
+<li><b>Workers</b> compute gradients on local data shards using the latest parameters they pull from PS.</li>
+<li><b>Parameter Servers</b> store and update the global parameters; workers push gradients and pull weights.</li>
+</ul>
+Parameters can be sharded across multiple PS for scalability.</div>
+<ul class="k">
+<li>Supports <b>synchronous</b> (BSP), <b>stale-synchronous</b> (SSP — bounded staleness), <b>fully asynchronous</b> (Hogwild!).</li>
+<li>Pros: fault tolerance, async tolerated; works well for sparse models with billions of parameters (recsys).</li>
+<li>Cons: PS hotspot, often slower per iteration than all-reduce on dense DL.</li>
+</ul>
+
+<h3 id="s8-1b">8.2 Stochastic Gradient Descent (recap, in PS context)</h3>
+<p>Each worker $k$: pull $\theta$ from PS → sample mini-batch → compute $g_k$ → push $g_k$ to PS → PS updates $\theta \leftarrow \theta - \eta\,\bar g$.</p>
+
+<h3 id="s8-2">8.3 TensorFlow Architecture</h3>
+<ul class="k">
+<li><b>Master</b> — receives the user's graph, partitions it, schedules execution.</li>
+<li><b>Workers</b> — actually run ops on local devices (CPU/GPU).</li>
+<li><b>Parameter Server</b> — historical role; holds shared variables for asynchronous training (still used in tf.distribute.ParameterServerStrategy).</li>
+<li><b>Client</b> — your Python program; sends graphs &amp; ops to master.</li>
+</ul>
+
+<h4>Graph vs Eager execution</h4>
+<table>
+<tr><th></th><th>Graph mode (TF 1.x / @tf.function)</th><th>Eager mode (TF 2.x default)</th></tr>
+<tr><td>Execution</td><td>Build static graph; run later</td><td>Run ops immediately, NumPy-like</td></tr>
+<tr><td>Optimisation</td><td>Whole-graph optimisation (XLA, kernel fusion)</td><td>Op-by-op, less room</td></tr>
+<tr><td>Debugging</td><td>Hard</td><td>Easy (Python stack)</td></tr>
+<tr><td>Deployment</td><td>Portable SavedModel</td><td>Need to trace via tf.function</td></tr>
+</table>
+
+<h3 id="s8-3">8.4 <code>tf.distribute</code> Strategies</h3>
+<ul class="k">
+<li><b>MirroredStrategy</b> — single machine, multi-GPU data parallelism with all-reduce (NCCL).</li>
+<li><b>MultiWorkerMirroredStrategy</b> — same, across machines.</li>
+<li><b>ParameterServerStrategy</b> — async data parallelism via PS.</li>
+<li><b>TPUStrategy</b> — TPU pod training.</li>
+<li><b>CentralStorageStrategy</b> — variables on CPU, ops on GPUs.</li>
+</ul>
+
+<h3 id="s8-3b">8.5 PyTorch Distributed</h3>
+<ul class="k">
+<li><b>DistributedDataParallel (DDP)</b> — peer-to-peer all-reduce.</li>
+<li><b>FullyShardedDataParallel (FSDP)</b> — shards parameters, gradients, optimizer states across workers (ZeRO-3 equivalent).</li>
+<li><b>RPC + Pipeline</b> — model / pipeline parallelism.</li>
+<li><b>DeepSpeed</b>, <b>FairScale</b>, <b>ColossalAI</b> — higher-level libraries.</li>
+</ul>
+
+<h3 id="s8-4">8.6 Spark MLlib</h3>
+<ul class="k">
+<li>Distributed implementations of: Logistic Regression, Linear Regression, Decision Tree, Random Forest, GBT, k-Means, PCA, ALS, FP-Growth.</li>
+<li>Pipelines API (Transformers + Estimators).</li>
+<li>Pros: integrates with Spark SQL/Streaming; scales horizontally on CPU clusters.</li>
+<li>Cons: not deep-learning friendly; iterative DL better in TF/PyTorch.</li>
+</ul>
+
+<h3 id="s8-5">8.7 Performance Improvement &amp; Trade-offs</h3>
+<ul class="k">
+<li><b>Batch vs micro-batch sizing</b> — bigger batch ⇒ better GPU util but slower convergence, more memory.</li>
+<li><b>Model compression &amp; quantization</b> — see §12–14.</li>
+<li><b>I/O and shuffling overhead</b> — use sharded TFRecords / WebDataset, pre-fetch, parallel decode; overlap with GPU compute.</li>
+<li><b>Input pipeline</b> — often the bottleneck for small models / big datasets.</li>
+</ul>
+</section>
+
+<!-- =========== SESSION 9 =========== -->
+<section id="s9">
+<h2>S9. Distributed Deep Learning</h2>
+
+<h3 id="s9-1">9.1 All-Reduce</h3>
+<div class="def">A <strong>collective</strong> operation that sums (or averages) a vector across all workers, leaving each worker with the result. Equivalent to reduce + broadcast in one efficient pass.</div>
+
+<h4>Ring all-reduce</h4>
+<ul class="k">
+<li>Each worker partitions its vector into $p$ chunks; arranges workers in a ring.</li>
+<li><b>Scatter-reduce</b> phase ($p-1$ steps): each worker passes one chunk to the next, accumulating.</li>
+<li><b>All-gather</b> phase ($p-1$ steps): the fully reduced chunk propagates around the ring.</li>
+<li>Total data moved per worker: $2(p-1)/p \cdot N$ ≈ $2N$ regardless of $p$ — <em>bandwidth-optimal</em>.</li>
+</ul>
+
+<h4>Tree-based</h4>
+<p>Hierarchical reductions: $O(\log p)$ latency, but each step moves the full vector → worse bandwidth for large $N$. Good when $N$ is small or latency dominates.</p>
+
+<h4>Modern stacks</h4>
+<p>NCCL (NVIDIA), Gloo, MPI, RCCL (AMD). Frameworks autoselect ring vs tree based on tensor size.</p>
+
+<h3 id="s9-2">9.2 Asynchronous Parallelism</h3>
+<div class="def"><strong>Async SGD / Hogwild!</strong> — workers update shared parameters <em>without locking</em>; for sparse problems collisions are rare and convergence still holds. Removes the synchronisation barrier.</div>
+<ul class="k">
+<li><b>Staleness</b> = how many updates have happened since a worker pulled. Larger staleness ⇒ slower / unstable convergence.</li>
+<li><b>Stale-Synchronous Parallel (SSP)</b> — bound staleness to $s$; provides middle ground.</li>
+<li>Works well for non-DL sparse problems (recsys, NLP embeddings).</li>
+</ul>
+
+<h3 id="s9-3">9.3 Local SGD</h3>
+<div class="def">Each worker runs $K$ local SGD steps independently, then workers average their models. As $K$ grows, communication drops; convergence still holds with appropriate $K$.</div>
+<p>Special case $K\to\infty$ = full local training; $K=1$ = standard sync SGD. Federated Averaging is essentially Local SGD with non-IID data.</p>
+
+<h3 id="s9-4">9.4 Optimising Neural Net Programs</h3>
+
+<h4>System-level techniques</h4>
+<ul class="k">
+<li>Kernel fusion (XLA, TensorRT).</li>
+<li>Operator scheduling, memory planning, lifetime analysis.</li>
+<li>Async data loading; pinned memory; DMA.</li>
+<li>Mixed precision &amp; tensor cores.</li>
+</ul>
+
+<h4>Program-level</h4>
+<ul class="k">
+<li>Loop tiling, unrolling, vectorisation.</li>
+<li>Cache-friendly data layouts (NHWC vs NCHW).</li>
+<li>Reduce memory copies (in-place ops where safe).</li>
+</ul>
+
+<h4>Matrix multiplication — the heart of DL</h4>
+<p>GEMM dominates DL FLOPs. Implementations:</p>
+<ul class="k">
+<li>BLAS/Eigen on CPU; cuBLAS / cuDNN / Tensor Cores on GPU.</li>
+<li>Block / tiled algorithms exploit L1/L2/shared memory.</li>
+<li>Special variants: Sparse MatMul, Mixed-precision MatMul, Quantized INT8 MatMul.</li>
+</ul>
+<p>For $A_{m\times k}\cdot B_{k\times n}$: FLOPs $= 2mnk$. Memory traffic depends on tiling — minimal $O((mn+mk+kn))$ with sufficient cache.</p>
+</section>
+
+<!-- =========== SESSION 10 =========== -->
+<section id="s10">
+<h2>S10. Locality, Multi-Threading &amp; Model Parallelism</h2>
+
+<h3 id="s10-1">10.1 Locality-Aware Programs &amp; Multi-threading</h3>
+<ul class="k">
+<li><b>Temporal locality</b> — reuse the same data soon (caching wins).</li>
+<li><b>Spatial locality</b> — access nearby addresses sequentially (prefetching wins).</li>
+<li>Blocked/tiled algorithms exploit both — tile size matched to cache.</li>
+<li><b>Massive multi-threading</b> — GPUs run thousands of threads to hide memory latency (one thread stalls on memory → scheduler swaps in another).</li>
+</ul>
+
+<h3 id="s10-2">10.2 Introduction to GPGPUs</h3>
+<div class="def">A GPU is a <strong>massively parallel SIMT (Single-Instruction Multiple-Thread)</strong> processor. Programmed in CUDA / HIP / OpenCL. Houses thousands of small cores grouped into <b>Streaming Multiprocessors (SMs)</b>, each scheduling 32-thread <b>warps</b> in lockstep.</div>
+<ul class="k">
+<li>Strengths: dense linear algebra, embarrassingly parallel kernels, high memory bandwidth (HBM up to ~3 TB/s).</li>
+<li>Weaknesses: branch divergence (warp lanes diverge), small per-thread state, host↔device data transfers cost.</li>
+</ul>
+
+<h3 id="s10-3">10.3 Model Parallelism Patterns</h3>
+
+<h4>Layer slicing (pipeline-style)</h4>
+<p>Different layers reside on different devices. Activations forward, gradients backward. Underutilises devices without pipelining (only one stage active at a time).</p>
+
+<h4>Tensor slicing</h4>
+<p>Within a layer, split weight matrices and partial activations:</p>
+<ul class="k">
+<li><b>Column-parallel</b>: $Y = X W$ with $W=[W_1,W_2]$ → each GPU computes $Y_i=XW_i$; concatenate.</li>
+<li><b>Row-parallel</b>: $W=\begin{bmatrix}W_1\\ W_2\end{bmatrix}$, $X=[X_1,X_2]$ → $Y=X_1W_1+X_2W_2$ via all-reduce.</li>
+<li>Used in Megatron-LM for attention + FFN of GPT models.</li>
+</ul>
+
+<h4>Cross-device communication patterns</h4>
+<ul class="k">
+<li>Point-to-point (send/recv) between pipeline stages.</li>
+<li>All-reduce / all-gather within tensor-parallel groups.</li>
+<li>Broadcast for embeddings or routing.</li>
+</ul>
+
+<h3 id="s10-4">10.4 Pipeline Parallelism — Micro-batching &amp; Bubbles</h3>
+<p>(See §7.3 for the formula.) Schedules:</p>
+<ul class="k">
+<li><b>GPipe</b>: fill the pipeline with $M$ micro-batches forward, then $M$ backward — simple, larger memory footprint, sync gradients.</li>
+<li><b>1F1B</b>: alternate one forward / one backward as soon as possible — peak activations bounded by stages.</li>
+<li><b>Interleaved 1F1B</b> (Megatron-LM): each stage holds multiple non-contiguous chunks of model → reduces bubble further.</li>
+</ul>
+
+<h3 id="s10-5">10.5 Scalability Case Studies</h3>
+
+<h4>GPT-class models</h4>
+<p>Train via 3-D parallelism: (data × tensor × pipeline). e.g. GPT-3 175B on thousands of A100s with tensor × pipeline × data = 8 × 16 × N.</p>
+
+<h4>Memory-efficient checkpointing</h4>
+<ul class="k">
+<li>Gradient checkpointing (§7.4).</li>
+<li><b>ZeRO</b> (Microsoft) — shards optimizer states, gradients, parameters across data-parallel workers (ZeRO-1/2/3).</li>
+<li><b>Offloading</b> — push optimizer states/parameters to CPU or NVMe.</li>
+<li><b>Re-materialisation</b>, <b>activation offloading</b>.</li>
+</ul>
+</section>
+
+<!-- =========== SESSION 11 =========== -->
+<section id="s11">
+<h2>S11. GPU Architecture &amp; Federated Learning</h2>
+
+<h3 id="s11-1">11.1 GPU Architecture</h3>
+<ul class="k">
+<li>Hierarchy: <b>device → SM (streaming multiprocessor) → warp (32 threads) → thread</b>.</li>
+<li>Each SM has its own <b>shared memory</b> (~100 KB), registers, schedulers.</li>
+<li><b>Global memory (HBM)</b> shared by all SMs; high BW, high latency.</li>
+<li><b>L1/L2 caches</b>; <b>texture/constant</b> memory; <b>Tensor Cores</b> for matrix tile multiplications.</li>
+<li>Modern GPUs: H100 has 80 GB HBM3, 3 TB/s BW, ~1 PFLOP/s FP16/BF16 with Tensor Cores.</li>
+</ul>
+
+<h3 id="s11-2">11.2 GPU Threading Model (CUDA)</h3>
+<div class="def">A kernel is launched as a <strong>grid</strong> of <strong>thread blocks</strong>; each block of threads runs on one SM, executing in groups of 32 = <b>warps</b>. Threads within a block can share data via shared memory and synchronize via <code>__syncthreads()</code>.</div>
+
+<h4>Case study — matrix addition</h4>
+<p>2-D matrix add $C=A+B$: launch a 2-D grid; each thread computes one element. Trivial, embarrassingly parallel; memory-bound — speedup limited by bandwidth, not compute.</p>
+
+<h4>Case study — multi-threaded matrix multiplication</h4>
+<ul class="k">
+<li>Naïve kernel: each thread computes one output element with $k$ reads from $A$ and $B$ — inefficient.</li>
+<li>Tiled (shared-memory) kernel: block loads tiles of $A$ and $B$ into shared memory once, threads reuse them — orders-of-magnitude faster.</li>
+<li>Cubic-block tiling extracts further reuse for very large matrices.</li>
+<li>Tensor-Core kernels operate on small fragments (e.g. 16×16×16) with mixed precision.</li>
+</ul>
+
+<h3 id="s11-3">11.3 Federated Learning — Basics</h3>
+<div class="def"><strong>Federated Learning (FL)</strong> trains a shared model across many clients (phones, hospitals, banks) <em>without moving the raw data</em>. A central server aggregates only model updates.</div>
+
+<h4>FedAvg (McMahan 2017)</h4>
+<ol>
+<li>Server broadcasts current model $\theta$.</li>
+<li>Selected clients each run $E$ local epochs on their data, returning updated $\theta_k$.</li>
+<li>Server averages: $\theta \leftarrow \sum_k \frac{n_k}{n}\theta_k$.</li>
+<li>Repeat for many rounds.</li>
+</ol>
+
+<h4>Non-IID data</h4>
+<p>Clients see <em>different distributions</em> — a hospital sees one disease prevalence, another's differs. Causes <b>client drift</b>, slow / unstable convergence. Mitigations: FedProx (proximal regulariser), SCAFFOLD (control variates), personalised FL.</p>
+
+<h4>Privacy goals</h4>
+<ul class="k">
+<li>Raw data never leaves device.</li>
+<li>Even gradients can leak — add <b>differential privacy</b> noise.</li>
+<li><b>Membership inference</b> / model inversion attacks ⇒ need secure aggregation.</li>
+</ul>
+
+<h3 id="s11-4">11.4 Secure Aggregation</h3>
+<div class="def">Cryptographic protocol where the server learns only the <em>sum</em> of client updates, not individual ones. Uses pairwise random masks that cancel on summation, plus secret-sharing to tolerate drop-outs.</div>
+
+<h3 id="s11-4b">11.5 Communication Efficiency &amp; Hardware Utilisation</h3>
+<ul class="k">
+<li>Clients often on <b>cellular</b> networks → highly bandwidth-constrained.</li>
+<li>Send compressed updates (quantize, sketches, top-k).</li>
+<li>Run training only on Wi-Fi + charging + idle (FedAvg on Android Gboard).</li>
+<li>Heterogeneous clients ⇒ system designs that tolerate stragglers / drop-outs.</li>
+</ul>
+
+<h3 id="s11-5">11.6 Emerging FL Architectures</h3>
+<ul class="k">
+<li><b>Decentralised FL</b> — no central server; clients exchange updates with peers (<b>gossip</b> protocol).</li>
+<li><b>Blockchain-based FL</b> — model updates stored on chain for auditability; smart-contract aggregation.</li>
+<li><b>Hierarchical FL</b> — edge servers aggregate locally before cloud aggregation.</li>
+<li><b>Cross-silo FL</b> (few large organisations) vs <b>cross-device FL</b> (millions of phones).</li>
+</ul>
+</section>
+
+<!-- ============== MODULE 4 ============== -->
+<h2 class="module">Module M4 — Constrained Systems</h2>
+
+<!-- =========== SESSION 12 =========== -->
+<section id="s12">
+<h2>S12. Model Compression — Overview &amp; Knowledge Distillation</h2>
+
+<h3 id="s12-1">12.1 Why Compress?</h3>
+<ul class="k">
+<li><b>Storage</b> — fit on phone / MCU.</li>
+<li><b>Memory</b> — must reside in RAM at inference; quantization → 4× smaller.</li>
+<li><b>Bandwidth</b> — model download over cell network.</li>
+<li><b>Latency</b> — fewer ops + better cache use = faster.</li>
+<li><b>Energy</b> — mobile/IoT power budget.</li>
+</ul>
+
+<h3 id="s12-1b">12.2 Lossy vs Lossless Compression</h3>
+<ul class="k">
+<li><b>Lossless</b> — same predictions; e.g. Huffman coding of quantized indices, sparse storage.</li>
+<li><b>Lossy</b> — drop accuracy in exchange for size/speed (quantization, pruning, distillation).</li>
+</ul>
+
+<h3 id="s12-2">12.3 Weight Sharing &amp; Encoding</h3>
+<div class="def"><strong>Weight clustering</strong> — k-means on weight values; replace each weight with the cluster centroid. Only need to store $k$ centroids + per-weight index (e.g. 8 bits for 256 clusters).</div>
+<ul class="k">
+<li><b>HashNet</b> — group weights sharing the same hash bucket; further reduces unique parameters.</li>
+<li>Saves both memory and bandwidth.</li>
+</ul>
+
+<h3 id="s12-3">12.4 Huffman / Arithmetic Coding</h3>
+<div class="def"><strong>Huffman coding</strong> assigns shorter codes to frequent symbols. Used after quantization/clustering: cluster indices often follow non-uniform distributions, so Huffman further shrinks the file.</div>
+<p><b>Arithmetic coding</b> represents the entire message as a fractional number — achieves rates close to the entropy of the source.</p>
+
+<h3 id="s12-4">12.5 Knowledge Distillation (KD)</h3>
+<div class="def"><strong>Knowledge Distillation</strong> (Hinton, Vinyals, Dean 2015) trains a small <em>student</em> network to mimic a large <em>teacher</em>'s outputs (soft probabilities), instead of just the hard labels. The student often outperforms training from labels alone.</div>
+
+<h4>KD loss</h4>
+$$\mathcal{L}_{KD} = (1-\alpha)\,\mathcal{L}_{CE}(y, \sigma(z_s)) + \alpha\,T^2\,\mathrm{KL}\!\bigl(\sigma(z_t/T)\,\|\,\sigma(z_s/T)\bigr)$$
+<ul class="k">
+<li>$z_t, z_s$ — teacher and student logits.</li>
+<li>$T$ — <b>temperature</b> (>1 softens distribution, revealing inter-class similarities ("dark knowledge")).</li>
+<li>$\alpha$ — mixing weight between hard-label cross-entropy and distillation term.</li>
+</ul>
+
+<h4>Variants</h4>
+<ul class="k">
+<li><b>Feature distillation</b> — match intermediate activations (FitNet).</li>
+<li><b>Relational KD</b> — match relations between examples.</li>
+<li><b>Self-distillation</b> — same architecture; student of a model is itself.</li>
+<li><b>Online distillation</b> — teacher and student train jointly (Born-Again Networks).</li>
+</ul>
+
+<h4>Famous examples</h4>
+<p>DistilBERT (40% smaller, 60% faster, 97% of BERT performance); TinyBERT; MobileBERT.</p>
+</section>
+
+<!-- =========== SESSION 13 =========== -->
+<section id="s13">
+<h2>S13. Quantization &amp; Reduced Precision</h2>
+
+<h3 id="s13-1">13.1 Quantization Fundamentals</h3>
+<div class="def"><strong>Quantization</strong> represents weights and/or activations using fewer bits (e.g. int8 instead of fp32), reducing model size ~4× and enabling integer SIMD/Tensor-Core kernels.</div>
+
+<h4>Uniform (linear) quantization</h4>
+<p>Map real values in $[\alpha,\beta]$ to integers $\{0,\dots,2^b-1\}$:
+$$q = \text{round}\!\left(\frac{x-\alpha}{s}\right),\quad s = \frac{\beta-\alpha}{2^b-1},\quad \hat x = s\cdot q + \alpha$$
+where $s$ = scale, $\alpha$ = zero-point offset.</p>
+
+<div class="example"><strong>Numeric (int8 symmetric).</strong> Weights range $[-1.0,+1.0]$, $b=8$ signed → 256 levels. Scale $s = 1/127 \approx 0.00787$. Weight $w=0.5$ → $q = \text{round}(0.5/0.00787) = 64$. Dequantize: $\hat w = 64\cdot 0.00787 = 0.504$. Error 0.004.</div>
+
+<h4>Non-uniform quantization</h4>
+<p>Use clustering / log-spacing for codebooks — captures heavy-tailed weight distributions better than linear. Examples: log-scale quantization, k-means quantization, vector quantization.</p>
+
+<h3 id="s13-2">13.2 PTQ vs QAT</h3>
+<table>
+<tr><th></th><th>Post-Training Quantization (PTQ)</th><th>Quantization-Aware Training (QAT)</th></tr>
+<tr><td>When</td><td>After a model is trained in fp32</td><td>During training: simulate quantization in forward pass</td></tr>
+<tr><td>Cost</td><td>Cheap: calibration on a small dataset</td><td>Expensive: full retraining</td></tr>
+<tr><td>Accuracy</td><td>Good above 8 bits; drops at 4 bits</td><td>Maintains accuracy at low bits</td></tr>
+<tr><td>Tools</td><td>TensorRT, ONNX-Runtime, TFLite PTQ</td><td>TF/PyTorch QAT, Brevitas</td></tr>
+</table>
+<p>QAT inserts "fake-quant" operators that round to the target precision in forward but keep fp32 gradients through Straight-Through-Estimator (STE).</p>
+
+<h3 id="s13-3">13.3 Reduced-Precision Arithmetic</h3>
+<ul class="k">
+<li><b>FP16/BF16</b> — covered in §7.5; mostly for training.</li>
+<li><b>INT8</b> — common deployment format; 4× smaller than fp32.</li>
+<li><b>INT4 / INT2</b> — used in LLMs (GPTQ, AWQ) — minimal accuracy loss when calibrated carefully.</li>
+<li><b>Binary networks</b> (XNOR-Net) — weights ∈ {−1, +1}, activations ∈ {−1, +1}; matmul becomes XNOR + popcount; huge speedup but accuracy drop on hard tasks.</li>
+<li><b>Ternary networks</b> — {−1, 0, +1}.</li>
+<li>Impact on forward/backward: forward uses int kernels; backward typically still in higher precision to keep gradients stable.</li>
+</ul>
+
+<h3 id="s13-4">13.4 Hardware Support</h3>
+<ul class="k">
+<li><b>CPU vector units</b> — AVX-512, ARM NEON, AVX-VNNI (int8 dot product).</li>
+<li><b>GPU Tensor Cores</b> — fp16, bf16, int8, int4, fp8 (H100).</li>
+<li><b>TPU</b> — bf16 native; high throughput for matmul.</li>
+<li><b>MCU DSP blocks</b> — Cortex-M Helium (MVE) for int8; Hexagon DSP on Snapdragon.</li>
+<li><b>NPUs</b> — dedicated edge accelerators (Apple Neural Engine, Google Edge TPU).</li>
+</ul>
+</section>
+
+<!-- =========== SESSION 14 =========== -->
+<section id="s14">
+<h2>S14. Pruning &amp; Deep Compression</h2>
+
+<h3 id="s14-1">14.1 What is Pruning?</h3>
+<div class="def"><strong>Pruning</strong> removes redundant parameters from a trained network — entire neurons, channels, or just weights — and (usually) fine-tunes the remaining ones. Motivated by the observation that DNNs are heavily over-parameterised.</div>
+
+<h3 id="s14-1b">14.2 Unstructured vs Structured</h3>
+<table>
+<tr><th></th><th>Unstructured</th><th>Structured</th></tr>
+<tr><td>What is pruned</td><td>Individual weights (sparse matrix)</td><td>Whole filters / channels / heads / blocks</td></tr>
+<tr><td>Compression ratio</td><td>Very high (often 90%+ sparsity)</td><td>Lower per parameter; bigger speedup</td></tr>
+<tr><td>Speed-up</td><td>Hard to realise on dense HW (need sparse kernels, 2:4 pattern)</td><td>Direct — model literally becomes smaller</td></tr>
+<tr><td>Example</td><td>Magnitude pruning (|w|&lt;τ)</td><td>Filter pruning, channel pruning, head pruning</td></tr>
+</table>
+
+<h4>Magnitude pruning</h4>
+<p>Sort weights by absolute value; set the bottom $p\%$ to zero. Simple, surprisingly effective.</p>
+
+<h3 id="s14-2">14.3 Iterative vs One-Shot Pruning</h3>
+<ul class="k">
+<li><b>One-shot</b> — prune once, fine-tune. Quick but accuracy drops faster at high sparsity.</li>
+<li><b>Iterative</b> — repeatedly prune small fraction + fine-tune (Train→Prune→Fine-tune). Yields higher sparsity at same accuracy.</li>
+<li><b>Lottery Ticket Hypothesis</b> (Frankle &amp; Carbin 2019) — a small sub-network ("winning ticket") can train to comparable accuracy if reset to the same initial weights.</li>
+</ul>
+
+<h3 id="s14-3">14.4 Evaluation Metrics</h3>
+<ul class="k">
+<li><b>Sparsity</b> = fraction of zero weights.</li>
+<li><b>FLOPs reduction</b> — dense FLOPs ÷ pruned FLOPs.</li>
+<li><b>Accuracy drop</b> at given sparsity.</li>
+<li><b>Compression ratio</b> on disk (after encoding).</li>
+<li><b>Inference latency / energy</b> on target hardware.</li>
+</ul>
+
+<h3 id="s14-4">14.5 Low-Rank Factorisation</h3>
+<div class="def">Replace a large matrix $W\in\mathbb{R}^{m\times n}$ with $W\approx UV$, $U\in\mathbb{R}^{m\times r},V\in\mathbb{R}^{r\times n}$, $r\ll \min(m,n)$. Parameter count drops from $mn$ to $r(m+n)$.</div>
+<ul class="k">
+<li>Methods: SVD truncation, Tucker decomposition (for 4-D conv tensors), CP decomposition.</li>
+<li>Used heavily in LoRA-style fine-tuning of LLMs (low-rank adapters).</li>
+</ul>
+
+<h3 id="s14-4b">14.6 Deep Compression Pipeline (Han et al. 2016)</h3>
+<ol>
+<li><b>Pruning</b> — remove low-magnitude weights, retrain.</li>
+<li><b>Quantization &amp; weight sharing</b> — k-means cluster the remaining weights → indices.</li>
+<li><b>Huffman coding</b> — entropy-code the index stream.</li>
+</ol>
+<p>Result on AlexNet: 35× compression (240 MB → 6.9 MB) with no accuracy loss; on VGG-16: 49× (552 MB → 11.3 MB).</p>
+
+<h4>Sparse matrix storage</h4>
+<ul class="k">
+<li><b>CSR/CSC</b> — Compressed Sparse Row/Column.</li>
+<li><b>COO</b> — coordinate format.</li>
+<li><b>BSR</b> — block sparse (better for hardware).</li>
+<li>NVIDIA Ampere supports <b>2:4 structured sparsity</b> natively (2 out of every 4 weights zero) → 2× speedup.</li>
+</ul>
+</section>
+
+<!-- =========== SESSION 15 =========== -->
+<section id="s15">
+<h2>S15. Edge Deployment &amp; the Optimisation Landscape</h2>
+
+<h3 id="s15-1">15.1 Optimisation Landscape</h3>
+
+<h4>Generic vs Specific Approaches</h4>
+<ul class="k">
+<li><b>Generic</b> — work across many models/devices: quantization, pruning, distillation, compilers (TVM, MLIR, XLA).</li>
+<li><b>Specific</b> — tuned to one model/family/device: hand-written CUDA kernels, ASIC mapping.</li>
+</ul>
+
+<h4>Algorithm- vs Target-platform-specific</h4>
+<ul class="k">
+<li><b>Algorithm-specific</b> — e.g. Winograd convolution for small kernels; FFT convolution for large.</li>
+<li><b>Target-specific</b> — INT8 on Cortex-M, bf16 on TPU, FP8 on H100, 2:4 sparsity on Ampere.</li>
+</ul>
+
+<h4>Layers of the stack</h4>
+<ol>
+<li><b>Model design</b> — efficient architectures (MobileNet, EfficientNet, SqueezeNet).</li>
+<li><b>Training-time optimisations</b> — distillation, QAT, sparse training.</li>
+<li><b>Frameworks &amp; libraries</b> — PyTorch, TF, ONNX, TensorRT.</li>
+<li><b>Compilers</b> — XLA, TVM, MLIR, Glow → lower to optimised kernels.</li>
+<li><b>Hardware</b> — CPU, GPU, TPU, NPU, MCU, custom ASIC.</li>
+</ol>
+
+<h3 id="s15-2">15.2 Frameworks for Edge Deployment</h3>
+
+<h4>TinyML</h4>
+<div class="def"><strong>TinyML</strong> = ML on microcontrollers (kilobytes of RAM, milliwatts of power). Use cases: keyword spotting, gesture recognition, predictive maintenance.</div>
+
+<h4>TensorFlow Lite (TFLite)</h4>
+<ul class="k">
+<li>FlatBuffer model format; smaller than SavedModel; on-device interpreter.</li>
+<li>PTQ/QAT support; selective ops; XNNPACK for fast CPU inference; GPU/NNAPI/Hexagon delegates.</li>
+</ul>
+
+<h4>TFLite Micro</h4>
+<ul class="k">
+<li>Strips the interpreter down to fit on Cortex-M class MCUs (~16 KB code, no malloc).</li>
+<li>Static memory planning; supports int8 / quantized ops.</li>
+<li>Used by Edge Impulse, Arduino Nano BLE Sense, etc.</li>
+</ul>
+
+<h4>ONNX Runtime</h4>
+<ul class="k">
+<li>Cross-platform inference runtime for ONNX models.</li>
+<li>Execution providers: CPU, CUDA, TensorRT, OpenVINO, CoreML, DirectML, ROCm.</li>
+<li>Strong PTQ tooling; widely used in Microsoft/Azure stack.</li>
+</ul>
+
+<h4>Other</h4>
+<ul class="k">
+<li><b>NVIDIA TensorRT</b> — graph-level optimiser + INT8 calibrator for GPUs.</li>
+<li><b>OpenVINO</b> — Intel CPUs/GPUs/VPUs.</li>
+<li><b>CoreML</b> — Apple devices.</li>
+<li><b>Apache TVM</b> — auto-tuned cross-platform compiler.</li>
+</ul>
+
+<h3 id="s15-3">15.3 Small Language Models (SLMs)</h3>
+<ul class="k">
+<li>Sub-7B-parameter LLMs targeting on-device inference (Phi, Gemma, Mistral 7B, Llama-3-8B).</li>
+<li>Heavy use of quantization (INT4 GPTQ/AWQ), distillation, MoE for capacity at low active params.</li>
+<li>Frameworks: <b>llama.cpp</b>, <b>MLX</b>, <b>TFLite Micro</b> (smaller still), <b>ONNX-Runtime mobile</b>.</li>
+</ul>
+</section>
+
+<!-- =========== SESSION 16 =========== -->
+<section id="s16">
+<h2>S16. Energy Constraints &amp; Performance Trade-offs</h2>
+
+<h3 id="s16-1">16.1 Energy Constraints on Constrained Devices</h3>
+<div class="def">Energy per inference ≈ Power × Latency. For battery-powered or harvested-energy devices (IoT, wearables), <strong>energy</strong> is often the binding constraint, not FLOPs or memory.</div>
+
+<h4>Sources of energy cost</h4>
+<ul class="k">
+<li><b>Compute</b> — MAC operations; lower precision (int8 vs fp32) saves ~4–10× energy.</li>
+<li><b>Memory access</b> — moving data from DRAM costs ~100× more energy than a MAC. Hence locality matters more than FLOPs.</li>
+<li><b>I/O</b> — radio (BLE/Wi-Fi/4G) is the biggest energy hog on phones.</li>
+</ul>
+
+<h4>Algorithm adaptations</h4>
+<ul class="k">
+<li>Use smaller models (distillation, NAS-found tiny models).</li>
+<li>Quantize aggressively (int8 / int4).</li>
+<li>Early-exit networks — stop computation when confidence is high.</li>
+<li>Sparsity + 2:4 acceleration.</li>
+<li>Cascade / hierarchical inference — cheap model filters, big model only on uncertain cases.</li>
+<li>Duty-cycle / wake-on-event — sleep most of the time; wake on a tiny detector.</li>
+</ul>
+
+<h3 id="s16-2">16.2 Assessing Trade-offs</h3>
+<table>
+<tr><th>Axis</th><th>Improve by</th><th>Often hurts</th></tr>
+<tr><td>Accuracy</td><td>Bigger model, more data, longer training</td><td>Latency, model size, energy</td></tr>
+<tr><td>Model size</td><td>Pruning, quantization, distillation, low-rank</td><td>Accuracy (small drop)</td></tr>
+<tr><td>Throughput</td><td>Batching, parallelism, fused kernels</td><td>Latency (per-request)</td></tr>
+<tr><td>Latency</td><td>Smaller model, lower precision, no batching</td><td>Throughput, accuracy</td></tr>
+<tr><td>Energy</td><td>Lower precision, smaller model, cache-friendly</td><td>Accuracy, training cost</td></tr>
+<tr><td>Convergence stability</td><td>Smaller LR, mixed precision with loss scaling</td><td>Training speed</td></tr>
+<tr><td>Generalization</td><td>Regularization, more data, smaller model</td><td>Training accuracy</td></tr>
+</table>
+
+<h4>Multi-objective optimisation</h4>
+<ul class="k">
+<li>Pareto frontier — set of models where no other model dominates on all metrics.</li>
+<li>NAS (Neural Architecture Search) often produces Pareto-optimal model families (e.g. EfficientNet, MobileNetV3).</li>
+<li>In deployment, pick the operating point given device constraints &amp; accuracy needs.</li>
+</ul>
+
+<h4>Putting it all together</h4>
+<p>An optimised ML system typically combines: efficient architecture (MobileNet-style) + quantization (PTQ INT8) + pruning (structured ~50%) + distillation (from a bigger teacher) + on-device runtime (TFLite/ONNX-RT) + scheduling (early-exit / cascade) + hardware acceleration (NPU/DSP/Tensor Cores).</p>
+</section>
+
+<!-- ============== CHEAT-SHEET ============== -->
+<section id="cheat">
+<h2>Final Cheat-Sheet</h2>
+<ul class="k">
+<li><b>Amdahl</b>: $S=\frac{1}{(1-f)+f/p}$, max $=1/(1-f)$. <b>Gustafson</b>: $S = p - (1-f)(p-1)$.</li>
+<li><b>Latency vs throughput</b>: not reciprocals; batching trades one for the other.</li>
+<li><b>Parallelism kinds</b>: data, task, request, model, pipeline.</li>
+<li><b>Scale-up</b> (1 big box) vs <b>scale-out</b> (many nodes).</li>
+<li><b>SIMD</b> (1 op many data) vs <b>MIMD</b> (independent cores).</li>
+<li><b>Memory hierarchy</b>: register → L1/L2/L3 → DRAM → SSD → network. Roofline model.</li>
+<li><b>MapReduce</b>: map → shuffle → reduce; slow for iterative ML. <b>Spark</b> caches in memory.</li>
+<li><b>PS</b>: workers ↔ central PS; <b>All-reduce</b>: P2P ring, bandwidth-optimal.</li>
+<li><b>Data parallel</b> (replicate model, split batch) vs <b>model parallel</b> (split model) vs <b>pipeline</b> (stages + micro-batches; bubble $(S-1)/(M+S-1)$).</li>
+<li><b>Gradient checkpointing</b>: trade compute for memory (√L variant).</li>
+<li><b>Mixed precision</b>: fp16/bf16 forward + fp32 master + loss scaling.</li>
+<li><b>Ring all-reduce</b>: each worker sends $2(p-1)/p\cdot N$ bytes — bandwidth-optimal.</li>
+<li><b>Hogwild</b>: lock-free async SGD; <b>Local SGD</b>: $K$ local steps then average; <b>FedAvg</b>: same but non-IID.</li>
+<li><b>tf.distribute</b>: Mirrored, MultiWorkerMirrored, ParameterServer, TPU. <b>PyTorch</b>: DDP, FSDP, DeepSpeed.</li>
+<li><b>k-means MR</b>: broadcast centroids, map emits per-cluster sums, reduce averages.</li>
+<li><b>k-NN</b>: brute / KD-tree / Ball-tree / LSH / HNSW / IVF-PQ. Accuracy ↔ latency trade-off.</li>
+<li><b>XGBoost</b>: tree-sequential but feature/histogram-parallel; distributed via all-reduce on histograms.</li>
+<li><b>SVM</b>: cascade SVM, block kernel matrices, P-packSVM.</li>
+<li><b>Compression</b>: lossy (quantization, pruning, distillation, low-rank) + lossless (Huffman, sparse storage).</li>
+<li><b>Quantization</b>: linear $q=\text{round}((x-\alpha)/s)$. PTQ vs QAT.</li>
+<li><b>Pruning</b>: unstructured (sparse weights) vs structured (filters/channels). Iterative beats one-shot.</li>
+<li><b>Deep Compression</b>: prune → quantize+share → Huffman (35× on AlexNet).</li>
+<li><b>Knowledge distillation</b>: $\mathcal L = (1-\alpha)CE+\alpha T^2 KL(\sigma(z_t/T)\|\sigma(z_s/T))$.</li>
+<li><b>Edge runtimes</b>: TFLite, TFLite Micro, ONNX Runtime, CoreML, TensorRT, TVM.</li>
+<li><b>Federated Learning</b>: FedAvg over non-IID; secure aggregation; communication-efficient.</li>
+<li><b>Energy</b>: DRAM access >> MAC; precision &amp; locality dominate. Trade off vs accuracy on Pareto frontier.</li>
+</ul>
+</section>
+
+<p style="text-align:center;color:var(--muted);margin-top:40px;font-size:13px">
+Study guide for AIML CLZG516 ML System Optimization · prepared for comprehensive exam
+</p>
+</main>
+</div>
+</body>
+</html>

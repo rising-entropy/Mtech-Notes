@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Deep Neural Networks — Exam Study Guide (AIML ZG511)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root{
+  --bg:#0f1115; --panel:#161a22; --panel2:#1b2030; --ink:#e6e9ef; --muted:#9aa3b2;
+  --accent:#7cc4ff; --accent2:#ffb86b; --good:#7ee787; --warn:#ff9b9b;
+  --code:#0b0e14; --border:#2a3142;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+nav.side{
+  width:300px;background:var(--panel);border-right:1px solid var(--border);
+  height:100vh;position:sticky;top:0;overflow-y:auto;padding:18px 14px;font-size:14px;
+}
+nav.side h2{color:var(--accent);margin:0 0 12px 0;font-size:16px}
+nav.side ol{padding-left:18px;margin:0}
+nav.side li{margin:6px 0}
+nav.side ul{padding-left:14px;margin:4px 0;list-style:disc;color:var(--muted)}
+nav.side ul a{color:var(--muted)}
+main{flex:1;padding:30px 48px;max-width:1100px}
+h1{color:#fff;border-bottom:1px solid var(--border);padding-bottom:10px}
+h2{color:var(--accent);margin-top:50px;border-left:4px solid var(--accent);padding-left:10px}
+h3{color:var(--accent2);margin-top:30px}
+h4{color:#cdd5e0;margin-top:20px;margin-bottom:6px}
+section{margin-bottom:40px;padding:18px 22px;background:var(--panel);border:1px solid var(--border);border-radius:10px}
+.def{background:var(--panel2);border-left:3px solid var(--good);padding:10px 14px;margin:10px 0;border-radius:4px}
+.def strong{color:var(--good)}
+.note{background:#2a2030;border-left:3px solid var(--warn);padding:10px 14px;margin:10px 0;border-radius:4px}
+.example{background:#1a2230;border-left:3px solid var(--accent);padding:10px 14px;margin:14px 0;border-radius:4px}
+.example strong{color:var(--accent)}
+.formula{background:var(--code);padding:8px 12px;border-radius:5px;font-family:Menlo,monospace;overflow-x:auto;border:1px solid var(--border)}
+code{background:var(--code);padding:1px 6px;border-radius:4px;font-size:0.92em;color:#ffd58a}
+pre code{display:block;padding:10px;overflow-x:auto}
+table{border-collapse:collapse;margin:10px 0;width:100%;font-size:14px}
+th,td{border:1px solid var(--border);padding:6px 10px;text-align:left}
+th{background:var(--panel2);color:var(--accent)}
+ul.k li{margin:4px 0}
+.pill{display:inline-block;background:var(--panel2);border:1px solid var(--border);padding:2px 8px;border-radius:12px;font-size:12px;color:var(--muted);margin:2px}
+.toc-top{background:var(--panel2);padding:10px 14px;border-radius:6px;border:1px solid var(--border)}
+hr{border:none;border-top:1px dashed var(--border);margin:25px 0}
+.kbd{font-family:Menlo,monospace;background:#222;border:1px solid #444;border-radius:3px;padding:0 4px}
+@media (max-width:900px){nav.side{display:none}main{padding:18px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="side">
+<h2>Syllabus Navigator</h2>
+<ol>
+  <li><a href="#s1">Introduction</a>
+    <ul>
+      <li><a href="#s1-1">What/Why/Where</a></li>
+      <li><a href="#s1-2">Wake-word example</a></li>
+      <li><a href="#s1-3">Key components</a></li>
+      <li><a href="#s1-4">Supervised examples</a></li>
+    </ul>
+  </li>
+  <li><a href="#s2">Artificial Neuron & Perceptron</a>
+    <ul>
+      <li><a href="#s2-1">Biological vs Artificial</a></li>
+      <li><a href="#s2-2">Connectionism</a></li>
+      <li><a href="#s2-3">Perceptron</a></li>
+      <li><a href="#s2-4">Logic gates</a></li>
+      <li><a href="#s2-5">Perceptron learning algo</a></li>
+      <li><a href="#s2-6">XOR Problem</a></li>
+    </ul>
+  </li>
+  <li><a href="#s3">Linear NN Regression</a></li>
+  <li><a href="#s4">Linear NN Classification</a>
+    <ul>
+      <li><a href="#s4-1">Binary (sigmoid)</a></li>
+      <li><a href="#s4-2">Multi-class (softmax)</a></li>
+    </ul>
+  </li>
+  <li><a href="#s5">DFNN / MLP</a>
+    <ul>
+      <li><a href="#s5-1">XOR with MLP</a></li>
+      <li><a href="#s5-2">Hidden layers & nonlinearity</a></li>
+      <li><a href="#s5-3">Forward prop</a></li>
+      <li><a href="#s5-4">Loss</a></li>
+      <li><a href="#s5-5">Backprop</a></li>
+      <li><a href="#s5-6">Depth vs Width</a></li>
+    </ul>
+  </li>
+  <li><a href="#s6">CNN basics</a>
+    <ul>
+      <li><a href="#s6-1">Image data, invariance, locality</a></li>
+      <li><a href="#s6-2">Convolution</a></li>
+      <li><a href="#s6-3">Kernel learning</a></li>
+      <li><a href="#s6-4">Feature map & receptive field</a></li>
+      <li><a href="#s6-5">Padding & stride</a></li>
+      <li><a href="#s6-6">1×1 conv</a></li>
+      <li><a href="#s6-7">Pooling</a></li>
+      <li><a href="#s6-8">Channels</a></li>
+      <li><a href="#s6-9">LeNet</a></li>
+    </ul>
+  </li>
+  <li><a href="#s7">Deep CNNs</a>
+    <ul>
+      <li><a href="#s7-1">AlexNet</a></li>
+      <li><a href="#s7-2">VGG</a></li>
+      <li><a href="#s7-3">NiN</a></li>
+      <li><a href="#s7-4">GoogLeNet (Inception)</a></li>
+      <li><a href="#s7-5">ResNet</a></li>
+    </ul>
+  </li>
+  <li><a href="#s8">Transfer Learning</a></li>
+  <li><a href="#s9">RNN</a>
+    <ul>
+      <li><a href="#s9-1">Text → Sequence</a></li>
+      <li><a href="#s9-2">Recurrence</a></li>
+      <li><a href="#s9-3">BPTT</a></li>
+      <li><a href="#s9-4">Encoder-Decoder</a></li>
+      <li><a href="#s9-5">Teacher forcing</a></li>
+      <li><a href="#s9-6">Masked loss</a></li>
+    </ul>
+  </li>
+  <li><a href="#s10">LSTM / GRU / BiLSTM</a></li>
+  <li><a href="#s11">Attention</a>
+    <ul>
+      <li><a href="#s11-1">Q,K,V</a></li>
+      <li><a href="#s11-2">Nadaraya-Watson</a></li>
+      <li><a href="#s11-3">Scoring functions</a></li>
+      <li><a href="#s11-4">Bahdanau</a></li>
+      <li><a href="#s11-5">Multi-head</a></li>
+      <li><a href="#s11-6">Self-attention</a></li>
+      <li><a href="#s11-7">Positional encoding</a></li>
+    </ul>
+  </li>
+  <li><a href="#s12">Transformer</a></li>
+  <li><a href="#s13">ViT & Pretraining</a></li>
+  <li><a href="#s14">Optimization</a>
+    <ul>
+      <li><a href="#s14-1">GD, SGD, Mini-batch</a></li>
+      <li><a href="#s14-2">Momentum</a></li>
+      <li><a href="#s14-3">AdaGrad</a></li>
+      <li><a href="#s14-4">RMSProp</a></li>
+      <li><a href="#s14-5">Adadelta</a></li>
+      <li><a href="#s14-6">Adam</a></li>
+    </ul>
+  </li>
+  <li><a href="#s15">Regularization</a>
+    <ul>
+      <li><a href="#s15-1">Generalization</a></li>
+      <li><a href="#s15-2">Over/Underfitting</a></li>
+      <li><a href="#s15-3">Model selection</a></li>
+      <li><a href="#s15-4">Weight decay</a></li>
+      <li><a href="#s15-5">Distribution shift</a></li>
+      <li><a href="#s15-6">Dropout</a></li>
+      <li><a href="#s15-7">Batch Norm</a></li>
+      <li><a href="#s15-8">Layer Norm</a></li>
+    </ul>
+  </li>
+</ol>
+</nav>
+
+<main>
+<h1>Deep Neural Networks — AIML ZG511 Study Guide</h1>
+<p class="toc-top">A topic-by-topic walk through the entire syllabus, in order. Each topic has a <em>definition</em>, the <em>core intuition</em>, the <em>math</em> when relevant, and worked numerical examples where they help. Math is rendered via MathJax — give it a moment to load.</p>
+
+<!-- ================= SESSION 1 ================= -->
+<section id="s1">
+<h2>1. Introduction and Motivating Example</h2>
+
+<h3 id="s1-1">1.1 What is Deep Learning?</h3>
+<div class="def"><strong>Definition.</strong> <b>Deep Learning (DL)</b> is a sub-field of Machine Learning that uses <b>artificial neural networks with many hidden layers</b> ("deep" = many layers) to automatically learn <b>hierarchical representations</b> of data — low-level features (edges, phonemes) in early layers and high-level features (faces, words) in later layers. It learns the <b>features</b> as part of the model rather than relying on hand-engineered ones.</div>
+
+<h4>ML vs DL</h4>
+<table>
+<tr><th>Classical ML</th><th>Deep Learning</th></tr>
+<tr><td>Features hand-crafted by experts</td><td>Features learned automatically</td></tr>
+<tr><td>Works on small/structured data</td><td>Needs large datasets & GPUs</td></tr>
+<tr><td>Shallow models (logistic reg, SVM, trees)</td><td>Many stacked nonlinear layers</td></tr>
+<tr><td>Interpretable</td><td>Often a "black box"</td></tr>
+</table>
+
+<h4>Why Deep Learning Now?</h4>
+<ul class="k">
+<li><b>Data</b> — Internet-scale labelled datasets (ImageNet, web text).</li>
+<li><b>Compute</b> — GPUs / TPUs enable parallel matrix math.</li>
+<li><b>Algorithms</b> — Better initialisation (Xavier/He), activations (ReLU), optimizers (Adam), and regularisers (dropout, BN).</li>
+<li><b>Software</b> — PyTorch / TensorFlow / Keras / autograd.</li>
+</ul>
+
+<h4>Where it is used</h4>
+<p>Computer vision (image classification, detection, segmentation), NLP (translation, chatbots, summarisation), speech (ASR, TTS), recommender systems, autonomous driving, drug discovery, time-series forecasting, robotics, gaming (AlphaGo).</p>
+
+<h3 id="s1-2">1.2 Motivating Example — Wake-Word Detection ("Hey Siri", "Alexa")</h3>
+<p>Imagine designing a wake-word detector by hand. You'd need to encode acoustic features, accents, noise, etc. Impractical. Instead:</p>
+<ol>
+<li>Collect many <b>audio snippets</b> labelled "wake" / "not wake".</li>
+<li>Define a neural model that takes the raw waveform/spectrogram and outputs probability of "wake".</li>
+<li>Define a <b>loss</b> (e.g. binary cross entropy).</li>
+<li>Use an <b>optimizer</b> (SGD) to tune millions of weights so the loss drops on training data.</li>
+<li>Evaluate on new audio.</li>
+</ol>
+<div class="note">This is the canonical supervised-learning loop and motivates the 4 key components below.</div>
+
+<h3 id="s1-3">1.3 Key Components of Any DL Problem</h3>
+<div class="def"><strong>Data</strong> — examples $\{(x_i,y_i)\}_{i=1}^N$ sampled from some distribution. Quality, quantity, diversity matter.</div>
+<div class="def"><strong>Model</strong> — a parameterised function $f_\theta(x)$. In DL, $f$ is a composition of differentiable layers.</div>
+<div class="def"><strong>Objective (Loss) Function</strong> — a scalar $\mathcal{L}(\theta)$ measuring how wrong predictions are. Examples: MSE for regression, cross-entropy for classification.</div>
+<div class="def"><strong>Optimization Algorithm</strong> — an iterative procedure (gradient descent and variants) to update $\theta$ so loss decreases: $\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}$.</div>
+
+<h3 id="s1-4">1.4 Supervised Learning Tasks (Examples)</h3>
+<ul class="k">
+<li><b>Regression</b> — predict a real number. e.g. house price, temperature.</li>
+<li><b>Binary Classification</b> — yes/no. e.g. spam, tumor malignant or not.</li>
+<li><b>Multi-class Classification</b> — pick one of K. e.g. digit 0–9, ImageNet 1000 classes.</li>
+<li><b>Multi-label</b> — multiple tags per example. e.g. movie genres.</li>
+<li><b>Sequence-to-sequence</b> — translation, summarisation.</li>
+<li><b>Structured output</b> — segmentation, parse tree.</li>
+</ul>
+</section>
+
+<!-- ================= SESSION 2 ================= -->
+<section id="s2">
+<h2>2. Artificial Neuron and Perceptron</h2>
+
+<h3 id="s2-1">2.1 Biological vs Artificial Neuron</h3>
+<table>
+<tr><th>Biological</th><th>Artificial</th></tr>
+<tr><td>Dendrites receive input signals</td><td>Input features $x_1,\dots,x_n$</td></tr>
+<tr><td>Synapse strength</td><td>Weight $w_i$</td></tr>
+<tr><td>Cell body integrates signals</td><td>Weighted sum $z=\sum w_i x_i + b$</td></tr>
+<tr><td>Threshold for firing</td><td>Activation function $\sigma(z)$</td></tr>
+<tr><td>Axon output spike</td><td>Output $y = \sigma(z)$</td></tr>
+</table>
+<div class="def"><strong>Artificial Neuron (McCulloch–Pitts, 1943).</strong> A unit that computes $y = \sigma\!\left(\sum_{i=1}^n w_i x_i + b\right)$ where $\sigma$ is an activation (originally a step function).</div>
+
+<h3 id="s2-2">2.2 Connectionism Model</h3>
+<p><b>Connectionism</b> is the paradigm that <em>intelligent behavior emerges from networks of simple interconnected units</em>. Knowledge is <b>distributed</b> across weights, not stored in symbols. Foundation of all neural networks.</p>
+
+<h3 id="s2-3">2.3 The Perceptron (Rosenblatt, 1958)</h3>
+<div class="def"><strong>Definition.</strong> A perceptron is a single artificial neuron used for <b>binary classification</b> with a <b>step activation</b>:
+$$y = \begin{cases} 1 & \text{if } w^\top x + b \ge 0 \\ 0 & \text{otherwise}\end{cases}$$</div>
+<p>Geometrically it defines a <b>hyperplane</b> $w^\top x + b = 0$ separating the two classes.</p>
+
+<h3 id="s2-4">2.4 Perceptron for NOT, AND, OR Gates</h3>
+<p>Inputs $x_1, x_2 \in \{0,1\}$. We choose weights & bias so the step function reproduces the gate.</p>
+<table>
+<tr><th>Gate</th><th>$w_1$</th><th>$w_2$</th><th>$b$</th><th>Rule</th></tr>
+<tr><td>NOT (1 input)</td><td>-1</td><td>—</td><td>0.5</td><td>fires if $-x_1+0.5\ge0$</td></tr>
+<tr><td>AND</td><td>1</td><td>1</td><td>-1.5</td><td>fires only when both 1</td></tr>
+<tr><td>OR</td><td>1</td><td>1</td><td>-0.5</td><td>fires if either is 1</td></tr>
+<tr><td>NAND</td><td>-1</td><td>-1</td><td>1.5</td><td>opposite of AND</td></tr>
+</table>
+
+<div class="example"><strong>Numerical check — AND.</strong> $x=(1,1):\ 1\cdot1+1\cdot1-1.5=0.5\ge0 \Rightarrow 1$. $x=(1,0):\ 1-1.5=-0.5<0 \Rightarrow 0$. ✓</div>
+
+<h3 id="s2-5">2.5 Perceptron Learning Algorithm</h3>
+<p>Given labelled data $\{(x_i,y_i)\},\ y_i\in\{0,1\}$:</p>
+<ol>
+<li>Initialise $w=0,\ b=0$.</li>
+<li>For each training sample: compute prediction $\hat{y} = \text{step}(w^\top x + b)$.</li>
+<li>Update only on mistake:
+$$w \leftarrow w + \eta(y-\hat{y})x,\quad b\leftarrow b + \eta(y-\hat{y}).$$</li>
+<li>Repeat for many epochs until no mistakes (if data is linearly separable).</li>
+</ol>
+<div class="def"><strong>Perceptron Convergence Theorem.</strong> If the data is linearly separable, the algorithm converges in a finite number of steps.</div>
+
+<div class="example"><strong>Numerical example.</strong> Learn OR with $\eta=1$, start $w=(0,0),b=0$.
+<br>Sample $(1,1),y=1$: $\hat y=\text{step}(0)=1$ → no update.
+<br>Sample $(0,0),y=0$: $\hat y=1$ (since 0≥0). Update: $w=(0,0)-1\cdot(0,0)=(0,0)$, $b=0-1=-1$.
+<br>Sample $(1,0),y=1$: $z=0-1=-1$, $\hat y=0$. Update: $w=(0,0)+(1,0)=(1,0)$, $b=-1+1=0$.
+<br>Sample $(0,1),y=1$: $z=0+0=0$, $\hat y=1$. No update.
+<br>Continue — eventually $w\approx(1,1),b=-0.5$. ✓
+</div>
+
+<h3 id="s2-6">2.6 Linear Separability and the XOR Problem</h3>
+<div class="def"><strong>Linearly separable</strong> means a single hyperplane can split the classes. AND, OR are separable; XOR is <em>not</em>.</div>
+<p>XOR truth table:</p>
+<table>
+<tr><th>$x_1$</th><th>$x_2$</th><th>$y$</th></tr>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td></tr>
+</table>
+<p>The two "1" points are on a diagonal — no straight line separates them from the "0" points. Hence a single perceptron <b>cannot learn XOR</b>. This led to the AI winter of the 1970s (Minsky & Papert 1969), resolved later by adding <b>hidden layers</b> (MLP).</p>
+</section>
+
+<!-- ================= SESSION 3 ================= -->
+<section id="s3">
+<h2>3. Linear Neural Network for Regression</h2>
+<p>This is the simplest deep-learning-style model: one neuron, no hidden layers, identity activation. It maps "how much" or "how many" questions.</p>
+
+<h3>3.1 Model</h3>
+<div class="def"><strong>Linear regression model.</strong> $\hat{y} = w^\top x + b$ where $x \in \mathbb{R}^d$, $w\in\mathbb{R}^d$, $b\in\mathbb{R}$. The activation is the identity.</div>
+
+<h3>3.2 Loss — Squared Error / MSE</h3>
+$$\mathcal{L}(w,b) = \frac{1}{2N}\sum_{i=1}^N (\hat{y}_i - y_i)^2$$
+<p>Convex, differentiable, penalises large errors quadratically.</p>
+
+<h3>3.3 Gradient Descent (Batch)</h3>
+$$\frac{\partial \mathcal{L}}{\partial w_j} = \frac{1}{N}\sum_i (\hat{y}_i-y_i)x_{ij},\qquad \frac{\partial \mathcal{L}}{\partial b} = \frac{1}{N}\sum_i (\hat{y}_i - y_i)$$
+$$w \leftarrow w - \eta \nabla_w \mathcal{L},\quad b\leftarrow b-\eta \frac{\partial \mathcal{L}}{\partial b}$$
+<p>This is <b>batch GD</b>: uses the entire dataset per step.</p>
+
+<div class="example"><strong>Numerical example.</strong> Data: $(x,y) = (1,2),(2,3),(3,5)$. Start $w=0,b=0,\eta=0.1$.
+<br>Predictions: $\hat y = (0,0,0)$. Errors $e=(\hat y-y)=(-2,-3,-5)$.
+<br>$\partial \mathcal{L}/\partial w = ((-2)(1)+(-3)(2)+(-5)(3))/3 = (-2-6-15)/3 = -7.67$.
+<br>$\partial \mathcal{L}/\partial b = (-2-3-5)/3 = -3.33$.
+<br>Update: $w = 0 - 0.1(-7.67) = 0.767$, $b = 0.333$.
+<br>New predictions: $(1.10, 1.87, 2.63)$ — much closer to $(2,3,5)$. Loss has dropped.
+</div>
+
+<h3>3.4 Prediction / Inference</h3>
+<p>After training, just plug $x$ into $\hat y = w^\top x + b$. No iterative step needed.</p>
+
+<h3>3.5 Auto-MPG Example (UCI)</h3>
+<p>Predict miles-per-gallon of cars from features: cylinders, displacement, horsepower, weight, acceleration, model year, origin. Approach:</p>
+<ol>
+<li>Load, drop NaN, separate target.</li>
+<li><b>Normalise</b> features ($\mu=0,\sigma=1$) — crucial because GD struggles with varying scales.</li>
+<li>One neuron with 7 inputs, identity activation.</li>
+<li>Train with batch GD on MSE.</li>
+<li>Evaluate on held-out test split (MAE/RMSE).</li>
+</ol>
+</section>
+
+<!-- ================= SESSION 4 ================= -->
+<section id="s4">
+<h2>4. Linear Neural Network for Classification</h2>
+
+<h3 id="s4-1">4.1 Binary Classification — Single Neuron + Sigmoid + BCE</h3>
+<div class="def"><strong>Sigmoid (logistic) activation.</strong>  $\sigma(z) = \dfrac{1}{1+e^{-z}}$. Maps real line to $(0,1)$ — interpreted as $P(y=1\mid x)$.</div>
+<p>Properties: $\sigma(-z) = 1-\sigma(z)$; derivative $\sigma'(z) = \sigma(z)(1-\sigma(z))$.</p>
+
+<h4>Model</h4>
+$$\hat{y} = \sigma(w^\top x + b),\quad \hat y \in (0,1)$$
+<p>Predict class 1 if $\hat y \ge 0.5$, else class 0.</p>
+
+<h4>Loss — Binary Cross Entropy (Log Loss)</h4>
+$$\mathcal{L}=-\frac{1}{N}\sum_i \left[y_i\log\hat y_i + (1-y_i)\log(1-\hat y_i)\right]$$
+<div class="def">Why BCE and not MSE? With sigmoid + MSE the loss is <b>non-convex</b> and gradients vanish; with sigmoid + BCE the gradient is simply $(\hat y - y)x$ — clean, large signal even when wrong.</div>
+
+<h4>Gradient (single sample)</h4>
+$$\frac{\partial \mathcal{L}}{\partial w} = (\hat y - y)x,\quad \frac{\partial \mathcal{L}}{\partial b} = (\hat y - y)$$
+
+<h4>Training — Stochastic Gradient Descent (SGD)</h4>
+<p>One sample at a time: $w \leftarrow w - \eta(\hat y_i-y_i)x_i$. Noisier path, but faster updates and escapes shallow minima.</p>
+
+<div class="example"><strong>Numerical example.</strong> $x=(2,3),y=1$, $w=(0.1,-0.2),b=0,\eta=0.1$.
+<br>$z = 0.1(2)+(-0.2)(3)+0 = 0.2-0.6=-0.4$. $\hat y = \sigma(-0.4) = 0.401$.
+<br>Error $= \hat y - y = -0.599$.
+<br>$\Delta w = -\eta(-0.599)(2,3)=(0.120,0.180)$. New $w=(0.220,-0.020)$. Output now $\approx \sigma(0.38) = 0.594$ — moving toward 1. ✓
+</div>
+
+<h4>Breast Cancer Wisconsin example</h4>
+<p>30 numeric features (radius, texture, ...) → benign(0)/malignant(1). Single sigmoid neuron + BCE + SGD. Achieves ~95% accuracy after standardisation.</p>
+
+<h3 id="s4-2">4.2 Multi-class Classification — Softmax + Cross Entropy</h3>
+<div class="def"><strong>Softmax activation.</strong> For $K$ classes, output vector $\hat y \in \mathbb{R}^K$:
+$$\hat y_k = \frac{e^{z_k}}{\sum_{j=1}^K e^{z_j}}$$
+$\hat y_k \in (0,1),\ \sum_k \hat y_k = 1$ — a probability distribution. The largest pre-activation $z_k$ wins.</div>
+
+<h4>Model</h4>
+<p>$K$ output neurons, weight <b>matrix</b> $W \in \mathbb{R}^{K\times d}$, bias vector $b\in\mathbb{R}^K$. $z = Wx+b$; $\hat y = \text{softmax}(z)$.</p>
+
+<h4>Loss — Categorical Cross Entropy</h4>
+<p>If true class is encoded as one-hot $y$ with $y_c=1$:
+$$\mathcal{L} = -\sum_{k=1}^K y_k \log \hat y_k = -\log \hat y_c$$</p>
+
+<h4>Gradient (beautiful identity)</h4>
+$$\frac{\partial \mathcal{L}}{\partial z_k} = \hat y_k - y_k$$
+<p>So $\nabla_W \mathcal{L} = (\hat y - y) x^\top,\ \nabla_b \mathcal{L} = \hat y - y$.</p>
+
+<div class="example"><strong>Numerical softmax.</strong> $z=(2,1,0)$.
+<br>$e^z = (7.389, 2.718, 1.0)$, sum $=11.107$.
+<br>$\hat y = (0.665, 0.245, 0.090)$. If true class is 0, cross-entropy $=-\log(0.665)=0.408$. If true class is 2, $-\log(0.090)=2.41$ — much worse, gradient large.
+</div>
+
+<h4>Mini-batch SGD</h4>
+<div class="def"><strong>Mini-batch SGD</strong> takes the average gradient over a small batch (typ. 32, 64, 128). Best of both worlds: smoother than SGD, faster than batch GD, GPU-friendly.</div>
+
+<h4>Iris example</h4>
+<p>4 features (sepal/petal length & width) → 3 species. 3-neuron output, softmax + CE, mini-batch SGD. Reaches ~97% accuracy with no hidden layers because Iris is nearly linearly separable.</p>
+</section>
+
+<!-- ================= SESSION 5 ================= -->
+<section id="s5">
+<h2>5. Deep Feedforward Neural Networks (DFNN / MLP)</h2>
+
+<h3 id="s5-1">5.1 MLP Solves XOR</h3>
+<p>Add one hidden layer with 2 neurons + nonlinearity. The hidden layer transforms input space so XOR becomes linearly separable.</p>
+<p>Hand-built weights: hidden layer computes OR and NAND; output computes AND of those — equals XOR. The nonlinearity is essential — without it the network collapses to a single linear function.</p>
+
+<h3 id="s5-2">5.2 Hidden Layers and Non-Linearity</h3>
+<div class="def"><strong>Hidden layer.</strong> Any layer between input and output. Each unit has weights, bias, and a nonlinear activation. Stacked hidden layers learn increasingly abstract features.</div>
+<div class="def"><strong>Universal Approximation Theorem.</strong> An MLP with a single hidden layer containing a finite number of neurons and a non-polynomial activation can approximate <em>any</em> continuous function on a compact set to arbitrary precision. (Hornik, Cybenko 1989.)</div>
+
+<h4>Common Activations</h4>
+<table>
+<tr><th>Name</th><th>Formula</th><th>Range</th><th>Pros / Cons</th></tr>
+<tr><td>Sigmoid</td><td>$1/(1+e^{-z})$</td><td>$(0,1)$</td><td>saturates → vanishing grad</td></tr>
+<tr><td>Tanh</td><td>$(e^z-e^{-z})/(e^z+e^{-z})$</td><td>$(-1,1)$</td><td>zero-centered, still saturates</td></tr>
+<tr><td>ReLU</td><td>$\max(0,z)$</td><td>$[0,\infty)$</td><td>fast, no saturation; "dying" units</td></tr>
+<tr><td>Leaky ReLU</td><td>$\max(0.01z,z)$</td><td>$\mathbb{R}$</td><td>fixes dying ReLU</td></tr>
+<tr><td>GELU/Swish</td><td>smooth gates</td><td>$\mathbb{R}$</td><td>used in Transformers</td></tr>
+</table>
+
+<h3 id="s5-3">5.3 Forward Propagation (Vectorised)</h3>
+<p>For layer $l = 1,\dots,L$:
+$$z^{[l]} = W^{[l]} a^{[l-1]} + b^{[l]},\quad a^{[l]} = \sigma^{[l]}(z^{[l]})$$
+with $a^{[0]} = x$ and $\hat y = a^{[L]}$.</p>
+
+<div class="example"><strong>Tiny numerical pass.</strong> 1 hidden layer with ReLU; output sigmoid. $x=(1,2)$, $W^{[1]}=\begin{pmatrix}0.5 & -0.3\\ 0.1 & 0.2\end{pmatrix}$, $b^{[1]}=(0,0)$, $W^{[2]}=(1.0,-1.0),\ b^{[2]}=0$.
+<br>$z^{[1]}=(0.5-0.6, 0.1+0.4)=(-0.1,0.5)$. $a^{[1]}=\text{ReLU}=(0,0.5)$.
+<br>$z^{[2]}=1.0(0)-1.0(0.5)+0=-0.5$. $\hat y = \sigma(-0.5)=0.378$.
+</div>
+
+<h3 id="s5-4">5.4 Loss Functions</h3>
+<ul class="k">
+<li>Regression: MSE, MAE, Huber.</li>
+<li>Binary classification: Binary Cross Entropy.</li>
+<li>Multi-class: Categorical Cross Entropy.</li>
+<li>Multi-label: BCE per output.</li>
+</ul>
+
+<h3 id="s5-5">5.5 Backpropagation</h3>
+<div class="def"><strong>Backprop</strong> is the <em>reverse-mode automatic differentiation</em> algorithm for computing $\nabla_\theta \mathcal{L}$ in $O(\text{forward pass cost})$. It is just the <b>chain rule</b> applied layer by layer from output back to input.</div>
+
+<h4>Equations (one sample)</h4>
+$$\delta^{[L]} = \nabla_a \mathcal{L} \odot \sigma'^{[L]}(z^{[L]})$$
+$$\delta^{[l]} = \left(W^{[l+1]\top}\delta^{[l+1]}\right)\odot \sigma'^{[l]}(z^{[l]})$$
+$$\frac{\partial \mathcal{L}}{\partial W^{[l]}} = \delta^{[l]} a^{[l-1]\top},\qquad \frac{\partial \mathcal{L}}{\partial b^{[l]}} = \delta^{[l]}$$
+<p>For softmax+CE or sigmoid+BCE the $\delta^{[L]}$ at the output simplifies to $\hat y - y$.</p>
+
+<h4>Algorithm</h4>
+<ol>
+<li>Forward pass, cache all $z^{[l]}, a^{[l]}$.</li>
+<li>Compute output error $\delta^{[L]} = \hat y - y$.</li>
+<li>For $l = L-1,\dots,1$: propagate $\delta^{[l]}$ using the equations above.</li>
+<li>Compute gradients $\partial \mathcal{L}/\partial W^{[l]}$ and update $W^{[l]} \leftarrow W^{[l]} - \eta \,\partial \mathcal{L}/\partial W^{[l]}$.</li>
+</ol>
+
+<div class="example"><strong>Numerical backprop (continuing 5.3).</strong> Suppose $y=1$, so $\delta^{[2]} = \hat y - y = 0.378 - 1 = -0.622$.
+<br>$\partial \mathcal{L}/\partial W^{[2]} = \delta^{[2]} a^{[1]\top} = -0.622\cdot(0,0.5) = (0, -0.311)$.
+<br>$\delta^{[1]} = W^{[2]\top}\delta^{[2]} \odot \text{ReLU}'(z^{[1]}) = (1.0,-1.0)^\top(-0.622) \odot (0,1) = (-0.622,0.622)\odot(0,1) = (0, 0.622)$.
+<br>$\partial \mathcal{L}/\partial W^{[1]} = \delta^{[1]} x^\top = \binom{0}{0.622}(1,2) = \begin{pmatrix}0 & 0\\ 0.622 & 1.244\end{pmatrix}$.
+<br>Apply $\eta=0.1$ to update.
+</div>
+
+<h3 id="s5-6">5.6 Impact of Depth and Width</h3>
+<div class="def"><strong>Width</strong> = number of neurons per layer. Increasing width helps memorise but cost grows linearly. <strong>Depth</strong> = number of layers. Deeper networks build composed representations; exponentially more expressive per parameter.</div>
+<ul class="k">
+<li>Width vs depth trade-off: a deeper net with same parameters often outperforms a wider shallow net (empirical, see Bengio).</li>
+<li>Very deep networks suffer from <b>vanishing/exploding gradients</b> — mitigations: ReLU, careful init (He/Xavier), batch norm, residual connections.</li>
+<li>More depth → more <b>compositional features</b> (edges → textures → parts → objects).</li>
+</ul>
+</section>
+
+<!-- ================= SESSION 6 ================= -->
+<section id="s6">
+<h2>6. Convolutional Neural Networks (CNNs)</h2>
+
+<h3 id="s6-1">6.1 Image Data, Invariance, Locality, Channels</h3>
+<div class="def"><strong>Image tensor.</strong> Grayscale image = matrix $H\times W$. Color image = tensor $H\times W \times C$ ($C=3$ for RGB). A batch is $N\times C\times H \times W$.</div>
+<p>Why not flatten and feed to MLP? A 224×224×3 image → 150,528 inputs. With even 1,000 hidden units that's 150M weights per layer — too many.</p>
+
+<div class="def"><strong>Translation Invariance.</strong> The same object should be recognised wherever it appears in the image. Achieved by <b>weight sharing</b> — same kernel slides over the whole image.</div>
+<div class="def"><strong>Locality.</strong> Nearby pixels are more correlated than distant ones. So each neuron only looks at a small <b>local receptive field</b>.</div>
+<div class="def"><strong>Channels.</strong> Multiple feature maps stacked along the depth dimension; each maps a different learned filter.</div>
+
+<h3 id="s6-2">6.2 Convolution Operation</h3>
+<div class="def"><strong>2-D cross-correlation</strong> (called "convolution" in DL): slide a kernel $K \in \mathbb{R}^{k_h\times k_w}$ over input, computing dot products.
+$$Y(i,j) = \sum_{a=0}^{k_h-1}\sum_{b=0}^{k_w-1} X(i+a, j+b)\,K(a,b)$$
+</div>
+
+<div class="example"><strong>Numerical convolution.</strong> Input $X=\begin{pmatrix}1&2&3\\4&5&6\\7&8&9\end{pmatrix}$, kernel $K=\begin{pmatrix}1&0\\0&-1\end{pmatrix}$ (2×2), no padding, stride 1. Output is 2×2:
+<br>$Y(0,0)=1\cdot1+2\cdot0+4\cdot0+5\cdot(-1)=1-5=-4$.
+<br>$Y(0,1)=2-6=-4$. $Y(1,0)=4-8=-4$. $Y(1,1)=5-9=-4$.
+<br>This kernel approximates a diagonal edge detector.
+</div>
+
+<h4>Output size formula</h4>
+$$H_{out} = \left\lfloor \frac{H_{in} + 2p - k_h}{s}\right\rfloor + 1$$
+where $p$ = padding, $s$ = stride.
+
+<h3 id="s6-3">6.3 Learning a Kernel</h3>
+<p>Kernel weights are <b>parameters</b>, initialised randomly, and updated by backprop just like in MLP. Each layer learns multiple kernels — early layers learn edges/colors; deeper layers learn parts and objects.</p>
+
+<h3 id="s6-4">6.4 Feature Map and Receptive Field</h3>
+<div class="def"><strong>Feature map</strong> = the 2-D output of one kernel applied across the input. Each value indicates "how strongly this filter responds" at that location.</div>
+<div class="def"><strong>Receptive field</strong> = region of the original input that influences one neuron's output. Grows with depth.</div>
+<p>Example: two stacked 3×3 conv layers (stride 1) → receptive field 5×5; three stacked → 7×7. With pooling/stride it grows much faster.</p>
+
+<h3 id="s6-5">6.5 Padding and Stride</h3>
+<div class="def"><strong>Padding</strong> — adding zeros (or reflect/replicate) around the input border to control output size. <b>"same"</b> padding keeps $H_{out}=H_{in}$.</div>
+<div class="def"><strong>Stride</strong> — step size of the sliding kernel. Stride 2 halves spatial dimensions, replacing the role of pooling.</div>
+
+<div class="example"><strong>Size example.</strong> Input 32×32, kernel 5×5, padding 2, stride 1: $H_{out}=(32+4-5)/1+1=32$. Same. With stride 2: $(32+4-5)/2+1=16$.</div>
+
+<h3 id="s6-6">6.6 1×1 Convolution</h3>
+<div class="def">A <strong>1×1 conv</strong> doesn't look at spatial neighbours; it mixes channels at each pixel — equivalent to a fully connected layer applied per spatial location. Uses: <b>channel reduction/expansion</b> (bottleneck), <b>cross-channel nonlinearity</b> (NiN), used in Inception, ResNet, MobileNet.</div>
+<p>If input has $C_{in}$ channels and we apply $C_{out}$ filters of size 1×1, params $= C_{in}\cdot C_{out}$ — very cheap.</p>
+
+<h3 id="s6-7">6.7 Pooling</h3>
+<div class="def"><strong>Pooling</strong> downsamples each feature map. <b>Max pooling</b> takes the max over a window; <b>average pooling</b> averages. No learned parameters. Adds slight translation invariance and reduces compute.</div>
+
+<div class="example">Input $\begin{pmatrix}1&3&2&4\\5&6&7&8\\9&8&7&6\\5&4&3&2\end{pmatrix}$, 2×2 max-pool stride 2 →
+$\begin{pmatrix}6&8\\9&7\end{pmatrix}$.</div>
+
+<h3 id="s6-8">6.8 Multiple Channels</h3>
+<p>If input has $C_{in}$ channels, each filter is $C_{in}\times k_h\times k_w$. Apply $C_{out}$ such filters → output of $C_{out}$ feature maps. Parameter count per conv layer:
+$$C_{in}\cdot k_h\cdot k_w\cdot C_{out} + C_{out}$$</p>
+
+<div class="example"><strong>Param example.</strong> Conv with 32 input channels, 64 filters, kernel 3×3, bias on: $32\cdot3\cdot3\cdot64+64 = 18{,}496$ params.</div>
+
+<h3 id="s6-9">6.9 LeNet-5 (LeCun, 1998)</h3>
+<p>Classic CNN for handwritten digits (MNIST 32×32 grayscale).</p>
+<table>
+<tr><th>Layer</th><th>Op</th><th>Output</th></tr>
+<tr><td>Input</td><td>—</td><td>1×32×32</td></tr>
+<tr><td>C1</td><td>Conv 5×5, 6 filters</td><td>6×28×28</td></tr>
+<tr><td>S2</td><td>Avg pool 2×2</td><td>6×14×14</td></tr>
+<tr><td>C3</td><td>Conv 5×5, 16 filters</td><td>16×10×10</td></tr>
+<tr><td>S4</td><td>Avg pool 2×2</td><td>16×5×5</td></tr>
+<tr><td>C5</td><td>FC (120)</td><td>120</td></tr>
+<tr><td>F6</td><td>FC (84)</td><td>84</td></tr>
+<tr><td>Out</td><td>Softmax</td><td>10</td></tr>
+</table>
+<p>Activation: sigmoid/tanh in original; modern reimplementations use ReLU.</p>
+</section>
+
+<!-- ================= SESSION 7 ================= -->
+<section id="s7">
+<h2>7. Deep Convolutional Neural Networks</h2>
+
+<h3 id="s7-1">7.1 AlexNet (Krizhevsky et al., 2012)</h3>
+<p>Winner of ImageNet 2012 — sparked the deep learning revolution. Trained on 2 GPUs.</p>
+<ul class="k">
+<li>5 conv layers + 3 FC layers; ~60M params.</li>
+<li>Innovations: <b>ReLU</b> (faster than tanh), <b>dropout</b> in FC layers, <b>data augmentation</b>, <b>local response normalisation</b>, <b>overlapping pooling</b>, GPU implementation.</li>
+<li>Filters: 11×11 (stride 4), 5×5, 3×3.</li>
+<li>Input 224×224×3 → 1000-way softmax.</li>
+</ul>
+<div class="def"><strong>Representation Learning.</strong> The idea, made famous by AlexNet, that the network <em>learns its own features</em>; visualised first-layer filters look like Gabor edge/colour detectors.</div>
+
+<h3 id="s7-2">7.2 VGG (Simonyan & Zisserman, 2014)</h3>
+<div class="def"><strong>VGG block</strong> = repeated 3×3 convs + ReLU, followed by a 2×2 max-pool. Use only 3×3 kernels — stacking two 3×3 has the same receptive field as 5×5 but fewer parameters and more nonlinearity.</div>
+<p>VGG-16: 13 conv + 3 FC = 16 weighted layers, ~138M params. Simple, uniform, easy to reason about.</p>
+
+<h3 id="s7-3">7.3 Network in Network (NiN) (Lin et al., 2013)</h3>
+<div class="def"><strong>NiN block</strong> = one regular conv followed by two 1×1 convs (acting as tiny MLPs per spatial location). Replaces dense layers at the end with <b>global average pooling</b>, drastically reducing params and overfitting.</div>
+
+<h3 id="s7-4">7.4 GoogLeNet / Inception (Szegedy et al., 2014)</h3>
+<div class="def"><strong>Inception block</strong> — parallel branches with 1×1, 3×3, 5×5 conv and 3×3 max-pool, concatenated. 1×1 convs reduce channels before expensive 3×3/5×5 (the "bottleneck"). Captures features at multiple scales simultaneously.</div>
+<p>22 layers, ~6M params (much fewer than VGG via 1×1 bottlenecks). Auxiliary classifiers attached mid-way during training to help gradient flow.</p>
+
+<h3 id="s7-5">7.5 ResNet (He et al., 2015)</h3>
+<div class="def"><strong>Residual block.</strong> Output $y = \mathcal{F}(x;\theta) + x$ — a <b>skip connection</b> adds the input to the output of a few conv layers. The network learns a <em>residual</em> $\mathcal{F}(x)=y-x$, easier than learning $y$ from scratch.</div>
+<p>Solves the <b>degradation problem</b> — extremely deep plain nets paradoxically perform worse than shallower ones. With residuals: ResNet-50, -101, -152, even 1000+ layers train successfully and improve accuracy.</p>
+<p>Bottleneck residual: 1×1 reduce → 3×3 conv → 1×1 expand. Used in ResNet-50+.</p>
+</section>
+
+<!-- ================= SESSION 8 ================= -->
+<section id="s8">
+<h2>8. Transfer Learning</h2>
+
+<h3>8.1 What & Why</h3>
+<div class="def"><strong>Transfer Learning</strong> = take a model pre-trained on a large dataset (e.g. ImageNet) and reuse its learned weights for a new, related task with limited data.</div>
+<p>Motivation: training from scratch needs millions of labelled examples and GPU days. Most low-level features (edges, textures) generalise across tasks.</p>
+
+<h3>8.2 Strategies</h3>
+<ol>
+<li><b>Feature extractor</b>: freeze the conv backbone, train only a new classifier head. Use when you have a small dataset similar to the original.</li>
+<li><b>Fine-tuning</b>: unfreeze some/all layers and continue training with a <em>small learning rate</em>. Use when target dataset is larger or quite different.</li>
+<li><b>Partial fine-tuning</b>: freeze early layers (generic features), fine-tune later layers (task-specific).</li>
+</ol>
+
+<h3>8.3 Workflow</h3>
+<ol>
+<li>Load pretrained model (ResNet-50, VGG, ViT) with weights.</li>
+<li>Replace final classifier with one matching your # of classes.</li>
+<li>Optionally freeze layers (<code>requires_grad=False</code>).</li>
+<li>Train on your data with small lr (e.g. $10^{-4}$).</li>
+<li>Optionally unfreeze gradually (discriminative fine-tuning).</li>
+</ol>
+
+<div class="note">Rule of thumb: small data + similar domain → freeze. Large data or different domain → fine-tune more. Very different domain (e.g. medical x-rays vs natural images) — train from scratch or fine-tune everything.</div>
+</section>
+
+<!-- ================= SESSION 9 ================= -->
+<section id="s9">
+<h2>9. Recurrent Neural Networks (RNN)</h2>
+
+<h3 id="s9-1">9.1 Raw Text into Sequence Data</h3>
+<p>Pipeline:</p>
+<ol>
+<li><b>Tokenise</b> — split into words / sub-words / characters.</li>
+<li><b>Build vocabulary</b> — map tokens to integer IDs; add <code>&lt;unk&gt;,&lt;pad&gt;,&lt;bos&gt;,&lt;eos&gt;</code>.</li>
+<li><b>Embed</b> — replace IDs with learned dense vectors $\in \mathbb{R}^d$.</li>
+<li>Sequence of embeddings → RNN.</li>
+</ol>
+
+<h3 id="s9-2">9.2 Recurrent Connection</h3>
+<div class="def"><strong>RNN.</strong> A network that maintains a hidden state $h_t$ updated each time step:
+$$h_t = \sigma(W_{hh} h_{t-1} + W_{xh} x_t + b_h),\quad y_t = W_{hy} h_t + b_y$$
+The same weights are <em>shared</em> across all time steps.</div>
+<p>Vanilla RNN treats variable-length input by unrolling the recurrence.</p>
+
+<div class="example"><strong>Tiny step.</strong> $h_0=0$, $W_{xh}=0.5,W_{hh}=0.8,b_h=0$, tanh activation, $x_1=1,x_2=0.5$.
+<br>$h_1 = \tanh(0.5\cdot1 + 0.8\cdot0)=\tanh(0.5)=0.462$.
+<br>$h_2 = \tanh(0.5(0.5)+0.8(0.462)) = \tanh(0.620)=0.551$.
+</div>
+
+<h3 id="s9-3">9.3 Backpropagation Through Time (BPTT)</h3>
+<div class="def"><strong>BPTT</strong> = backprop applied to the unrolled RNN — gradients flow back across time. Loss is summed over time steps, and $\partial \mathcal{L}/\partial W$ accumulates contributions from every step.</div>
+<p>Problem: when chaining many time steps, the gradient w.r.t. $W_{hh}$ involves $\prod_t W_{hh}^\top \text{diag}(\sigma')$. If eigenvalues $<1$ → <b>vanishing gradient</b>; if $>1$ → <b>exploding gradient</b>. Cures: gradient clipping, LSTM/GRU, identity init.</p>
+<div class="note"><b>Truncated BPTT</b> — only backprop $k$ steps to keep compute bounded.</div>
+
+<h3 id="s9-4">9.4 RNNs for NLP Tasks</h3>
+<ul class="k">
+<li><b>Sequence labelling</b> (POS, NER) — output one label per step.</li>
+<li><b>Sequence classification</b> (sentiment) — read whole sentence, classify last hidden state.</li>
+<li><b>Language modelling</b> — predict next token.</li>
+<li><b>Sequence-to-sequence</b> (translation, summarisation) — encoder-decoder.</li>
+</ul>
+
+<h4 id="s9-4b">Encoder–Decoder Architecture</h4>
+<div class="def">An <strong>encoder</strong> RNN reads the input sequence and produces a <em>context vector</em> (last hidden state). A <strong>decoder</strong> RNN starts from this context and generates the output sequence token by token.</div>
+
+<h3 id="s9-5">9.5 Teacher Forcing</h3>
+<div class="def"><strong>Teacher Forcing</strong> = during training of the decoder, feed the <em>ground-truth</em> previous token (not the predicted one) as input at each step. Speeds convergence and stabilises learning. At inference time, feed predictions back (autoregressive).</div>
+<div class="note">Drawback: <em>exposure bias</em> — train/test mismatch. Mitigated by scheduled sampling.</div>
+
+<h3 id="s9-6">9.6 Loss Function with Masking</h3>
+<p>Sequences come in different lengths within a batch → pad shorter ones with <code>&lt;pad&gt;</code>. When computing loss, multiply each token's loss by a <b>mask</b> (1 for real tokens, 0 for pads) so padding doesn't influence gradients.</p>
+
+<h3>9.7 Training and Prediction</h3>
+<p>Training: teacher forcing + masked cross-entropy + SGD/Adam, clip grads.<br>
+Prediction (inference): start with <code>&lt;bos&gt;</code>, sample/argmax next token, feed back, until <code>&lt;eos&gt;</code> or max length. Decoding strategies: <b>greedy</b>, <b>beam search</b>, <b>sampling</b>, <b>top-k / nucleus</b>.</p>
+</section>
+
+<!-- ================= SESSION 10 ================= -->
+<section id="s10">
+<h2>10. Deep RNNs — LSTM, GRU, BiLSTM</h2>
+
+<h3>10.1 LSTM (Long Short-Term Memory, Hochreiter & Schmidhuber 1997)</h3>
+<div class="def">An LSTM cell augments the hidden state with a <strong>cell state</strong> $c_t$ that travels through time with mostly additive updates — preserving gradients across long horizons. Three <b>gates</b> regulate information flow: <b>forget</b>, <b>input</b>, <b>output</b>.</div>
+
+<h4>Equations</h4>
+$$f_t = \sigma(W_f[h_{t-1},x_t] + b_f)\quad\text{forget gate}$$
+$$i_t = \sigma(W_i[h_{t-1},x_t] + b_i)\quad\text{input gate}$$
+$$\tilde c_t = \tanh(W_c[h_{t-1},x_t] + b_c)\quad\text{candidate}$$
+$$c_t = f_t \odot c_{t-1} + i_t \odot \tilde c_t\quad\text{cell update}$$
+$$o_t = \sigma(W_o[h_{t-1},x_t]+b_o)\quad\text{output gate}$$
+$$h_t = o_t \odot \tanh(c_t)$$
+
+<h4>Intuition</h4>
+<ul class="k">
+<li><b>Forget gate</b>: which past info to keep (1) or drop (0).</li>
+<li><b>Input gate</b>: how much new candidate to add.</li>
+<li><b>Output gate</b>: how much of cell state to expose as hidden.</li>
+<li>Because $c_t$ updates via addition (no repeated matmul), gradients persist.</li>
+</ul>
+
+<h3>10.2 GRU (Cho et al., 2014)</h3>
+<div class="def">A <strong>Gated Recurrent Unit</strong> merges the forget and input gates into an <b>update gate</b> and adds a <b>reset gate</b>. No separate cell state. Fewer parameters than LSTM, often comparable accuracy.</div>
+
+<h4>Equations</h4>
+$$z_t = \sigma(W_z[h_{t-1},x_t])\quad\text{update gate}$$
+$$r_t = \sigma(W_r[h_{t-1},x_t])\quad\text{reset gate}$$
+$$\tilde h_t = \tanh(W[r_t\odot h_{t-1}, x_t])\quad\text{candidate hidden}$$
+$$h_t = (1-z_t)\odot h_{t-1} + z_t \odot \tilde h_t$$
+<ul class="k">
+<li>$z_t\to 0$: keep old state (long memory).</li>
+<li>$r_t\to 0$: ignore past hidden state, fresh start.</li>
+</ul>
+
+<h3>10.3 Stacked / Deep RNNs</h3>
+<p>Pile multiple RNN layers — the hidden states of layer $l$ become the inputs of layer $l+1$. Captures more abstract temporal features but harder to train; common to use dropout between layers.</p>
+
+<h3>10.4 Bidirectional RNN (BiLSTM)</h3>
+<div class="def"><strong>BiRNN/BiLSTM</strong> runs <em>two</em> RNNs — one left-to-right, one right-to-left — and concatenates their hidden states at each step. The representation at $t$ sees both past and future context. Great for sequence tagging (NER, POS), but only usable when the full sequence is available (not for streaming).</div>
+</section>
+
+<!-- ================= SESSION 11 ================= -->
+<section id="s11">
+<h2>11. Attention Mechanism</h2>
+
+<h3 id="s11-1">11.1 Queries, Keys, Values (Q, K, V)</h3>
+<div class="def"><strong>Attention.</strong> Given a query $q$, a set of keys $\{k_i\}$, and corresponding values $\{v_i\}$, compute weights $\alpha_i$ measuring "how relevant is $k_i$ to $q$" and return $\sum_i \alpha_i v_i$. The output is a context-dependent summary of the values.</div>
+<p>Analogy: a database lookup that is "soft" — instead of returning one value at an exact key, you return a weighted average across all keys.</p>
+
+<h3 id="s11-2">11.2 Attention Pooling by Similarity (Nadaraya–Watson)</h3>
+<div class="def"><strong>Nadaraya–Watson kernel regression</strong>: predict $\hat f(q) = \sum_i \frac{K(q,k_i)}{\sum_j K(q,k_j)} v_i$. Choose $K$ as e.g. a Gaussian. This is exactly attention — non-parametric, but illustrates the soft-lookup idea.</div>
+<p>If $K(q,k)=\exp(-\|q-k\|^2/2)$, points close to $q$ dominate the average.</p>
+
+<h3 id="s11-3">11.3 Attention Scoring Functions</h3>
+<p>General form:</p>
+$$\alpha_i = \text{softmax}_i(a(q, k_i)),\qquad \text{output} = \sum_i \alpha_i v_i$$
+
+<h4>Dot-Product Attention</h4>
+$$a(q,k) = q^\top k$$
+<p>Fast (one matrix multiply across all queries and keys) but its magnitude scales with $d$, causing the softmax to become too peaked at high dims.</p>
+
+<h4>Scaled Dot-Product Attention</h4>
+$$a(q,k) = \frac{q^\top k}{\sqrt{d_k}}$$
+<p>The $\sqrt{d_k}$ scaling keeps the variance of the scores ≈1, stabilising softmax. Used in Transformers.</p>
+<p>For a batch in matrix form $Q\in\mathbb{R}^{n\times d_k},K\in\mathbb{R}^{m\times d_k},V\in\mathbb{R}^{m\times d_v}$:
+$$\text{Attn}(Q,K,V) = \text{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V$$
+</p>
+
+<h4>Additive (Bahdanau) Attention</h4>
+$$a(q,k) = w_v^\top \tanh(W_q q + W_k k)$$
+<p>Uses a small neural net to score; works when $q$ and $k$ have different dimensions. Original 2014 attention for NMT.</p>
+
+<h3>11.4 Convenience Functions</h3>
+<ul class="k">
+<li><b>Masked softmax</b> — set scores of padding tokens to $-\infty$ before softmax so they receive zero weight.</li>
+<li><b>Causal mask</b> — for autoregressive decoders, mask future positions so token $t$ only attends to $\le t$.</li>
+</ul>
+
+<h3 id="s11-4">11.5 Bahdanau Attention for Seq2Seq</h3>
+<p>In encoder-decoder for translation, instead of compressing the source sentence into one context vector, the decoder computes a <em>different</em> context $c_t$ at every step:
+$$c_t = \sum_s \alpha_{ts} h_s^{enc}$$
+with $\alpha_{ts}$ computed from $h_{t-1}^{dec}$ (query) and encoder states $h_s^{enc}$ (keys=values). Solved RNN seq2seq's long-sentence bottleneck.</p>
+
+<h3 id="s11-5">11.6 Multi-Head Attention</h3>
+<div class="def">Run $h$ attention "heads" in parallel — each with its own learned linear projections $W_i^Q,W_i^K,W_i^V$ — then concatenate and project:
+$$\text{MHA}(Q,K,V)=[\text{head}_1;\dots;\text{head}_h]W^O,\quad \text{head}_i=\text{Attn}(QW_i^Q, KW_i^K, VW_i^V)$$
+Lets the model attend to different "kinds" of relationships simultaneously (syntax, semantics, coreference, ...).</div>
+
+<h3 id="s11-6">11.7 Self-Attention</h3>
+<div class="def"><strong>Self-attention</strong> — the queries, keys and values all come from the <em>same</em> sequence. Each token gathers info from all other tokens. Captures arbitrary long-range dependencies in $O(n^2 d)$ per layer.</div>
+<p>Replaces recurrence: no sequential dependence in time → fully parallel; the trade-off is quadratic memory in sequence length.</p>
+
+<h3 id="s11-7">11.8 Positional Encoding</h3>
+<div class="def">Self-attention is <em>permutation-invariant</em> — it has no built-in notion of order. We add a <strong>positional encoding</strong> $p_t$ to each token embedding so the model can use position information.</div>
+
+<h4>Sinusoidal (Vaswani et al.)</h4>
+$$p_{t,2i} = \sin\!\left(\frac{t}{10000^{2i/d}}\right),\quad p_{t,2i+1}=\cos\!\left(\frac{t}{10000^{2i/d}}\right)$$
+<p>Properties: relative positions can be expressed as linear functions of absolute encodings; extrapolates to unseen lengths.</p>
+<p><b>Learned</b> positional embeddings are an alternative used in BERT, GPT. <b>RoPE</b> (rotary) used in LLaMA.</p>
+</section>
+
+<!-- ================= SESSION 12 ================= -->
+<section id="s12">
+<h2>12. Transformer Architecture</h2>
+
+<h3>12.1 Big Picture</h3>
+<div class="def">The <strong>Transformer</strong> (Vaswani et al. 2017, "Attention is All You Need") is an encoder–decoder model built entirely from self-attention and feed-forward layers — no recurrence, no convolution. Highly parallel, scales beautifully.</div>
+<p>Each side is a stack of $N$ identical blocks (typically 6). Used for translation originally; the recipe behind GPT, BERT, T5, ViT.</p>
+
+<h3>12.2 Transformer Block — Components</h3>
+<ol>
+<li><b>Multi-Head Self-Attention</b></li>
+<li><b>Add & Norm</b> (residual connection + Layer Norm)</li>
+<li><b>Position-wise Feed-Forward Network (FFN)</b>:
+$$\text{FFN}(x) = \max(0, xW_1+b_1)W_2 + b_2$$
+applied independently to each position. Often $d_{ff}=4d_{model}$.</li>
+<li><b>Add & Norm</b> again.</li>
+</ol>
+
+<div class="def"><strong>Residual connection.</strong> $x + \text{Sublayer}(x)$. Eases gradient flow in very deep stacks. <strong>Layer Norm</strong> normalises across features per token, stabilising training.</div>
+
+<h3>12.3 Encoder</h3>
+<ul class="k">
+<li>Input embeddings + positional encoding.</li>
+<li>$N$ blocks of: Multi-Head Self-Attn → Add&amp;Norm → FFN → Add&amp;Norm.</li>
+<li>Output: contextual representations $z_1,\dots,z_n$.</li>
+</ul>
+
+<h3>12.4 Decoder</h3>
+<ul class="k">
+<li>Output embeddings (shifted right) + positional encoding.</li>
+<li>$N$ blocks of: <b>Masked</b> Multi-Head Self-Attn (causal mask) → Add&amp;Norm → <b>Cross-Attn</b> with encoder output as K,V → Add&amp;Norm → FFN → Add&amp;Norm.</li>
+<li>Final linear + softmax → vocabulary distribution.</li>
+</ul>
+
+<h3>12.5 Residual View of a Transformer</h3>
+<div class="def">Each Transformer block adds a small update to a "residual stream": $x_{l+1} = x_l + \text{Attn}_l(x_l) + \text{FFN}_l(x_l)$. The residual stream carries information from input to output; sub-layers <em>read</em> from and <em>write</em> to it. This view is central to mechanistic interpretability.</div>
+
+<h3>12.6 Complexity</h3>
+<table>
+<tr><th>Layer</th><th>Complexity per layer</th><th>Sequential ops</th><th>Max path length</th></tr>
+<tr><td>Self-attention</td><td>$O(n^2 d)$</td><td>$O(1)$</td><td>$O(1)$</td></tr>
+<tr><td>Recurrent</td><td>$O(n d^2)$</td><td>$O(n)$</td><td>$O(n)$</td></tr>
+<tr><td>Convolutional</td><td>$O(k n d^2)$</td><td>$O(1)$</td><td>$O(\log_k n)$</td></tr>
+</table>
+<p>Self-attention is cheap in sequential steps and short path → easier to learn long dependencies. But quadratic in $n$.</p>
+</section>
+
+<!-- ================= SESSION 13 ================= -->
+<section id="s13">
+<h2>13. Transformers for Vision &amp; Large-Scale Pretraining</h2>
+
+<h3>13.1 Vision Transformer (ViT, Dosovitskiy et al. 2020)</h3>
+<div class="def">Treat an image as a sequence of <strong>patches</strong>. Each patch is flattened and linearly projected to a $d$-dim embedding (<b>Patch Embedding</b>). Prepend a learnable <code>[CLS]</code> token, add positional embeddings, then feed through a standard Transformer encoder. The <code>[CLS]</code> token's final representation goes to a classifier.</div>
+
+<h4>Patch Embedding numbers</h4>
+<p>Image 224×224×3, patch size 16×16 → $(224/16)^2 = 196$ patches. Each patch = $16\cdot16\cdot3 = 768$ values, projected linearly to $d_{model}=768$. Sequence length 197 (with CLS).</p>
+
+<h3>13.2 Training and Evaluation</h3>
+<ul class="k">
+<li>Pretrain on huge image dataset (JFT-300M, ImageNet-21k).</li>
+<li>Fine-tune on target dataset (ImageNet-1k, CIFAR-100).</li>
+<li>ViT outperforms CNNs <em>only when pretrained on very large data</em> — it lacks the inductive biases (locality, translation invariance) of CNNs and needs to learn them.</li>
+</ul>
+
+<h3>13.3 Large-Scale Pretraining with Transformers</h3>
+<div class="def">Three Transformer paradigms based on which parts are used:</div>
+<table>
+<tr><th>Type</th><th>Examples</th><th>Use</th></tr>
+<tr><td><b>Encoder-Only</b></td><td>BERT, RoBERTa, ViT</td><td>Understanding tasks (classification, NER). Pretrained with masked language modelling (MLM).</td></tr>
+<tr><td><b>Encoder–Decoder</b></td><td>T5, BART, original Transformer</td><td>Seq2seq tasks (translation, summarisation).</td></tr>
+<tr><td><b>Decoder-Only</b></td><td>GPT family, LLaMA</td><td>Autoregressive generation, chat, code. Pretrained with next-token prediction.</td></tr>
+</table>
+
+<h3>13.4 Scalability</h3>
+<ul class="k">
+<li>Empirically observed <b>scaling laws</b>: loss decreases as a power law with model size, data size, compute (Kaplan et al. 2020; Chinchilla 2022).</li>
+<li>Bigger models + more data → better, often with <b>emergent</b> abilities (in-context learning, chain-of-thought).</li>
+<li>Hardware: massive parallelism via attention, GPUs/TPUs, mixed precision, sharding (Megatron, ZeRO).</li>
+</ul>
+</section>
+
+<!-- ================= SESSION 14 ================= -->
+<section id="s14">
+<h2>14. Optimization of Deep Models</h2>
+
+<h3>14.1 Goal of Optimization in DL</h3>
+<div class="def">Find parameters $\theta^*$ that minimise the <em>training loss</em>, hoping to generalise. Unlike pure optimisation, we don't even want the exact minimum of training loss — that overfits.</div>
+
+<h3>14.2 Challenges</h3>
+<ul class="k">
+<li><b>Local minima</b> — in high dimensions, true bad local minima are rare; almost all critical points are saddles.</li>
+<li><b>Saddle points</b> — gradient is zero in some directions; can stall vanilla GD.</li>
+<li><b>Plateaus / flat regions</b> — gradients near zero.</li>
+<li><b>Cliffs and exploding gradients</b> — large updates blow weights up. Fix: gradient clipping.</li>
+<li><b>Vanishing gradients</b> — common in deep / recurrent nets.</li>
+<li><b>Ill-conditioning</b> — Hessian eigenvalues vary widely → narrow valleys, slow GD.</li>
+<li><b>Stochastic noise</b> — mini-batch gradient estimates are noisy.</li>
+</ul>
+
+<h3 id="s14-1">14.3 Gradient Descent Family</h3>
+<table>
+<tr><th>Variant</th><th>Update</th><th>Pros / Cons</th></tr>
+<tr><td>Batch GD</td><td>$\theta\leftarrow \theta - \eta \nabla_\theta \frac{1}{N}\sum_i \ell_i$</td><td>Stable, but slow per step; expensive for large $N$.</td></tr>
+<tr><td>SGD</td><td>one example: $\theta\leftarrow \theta-\eta\nabla_\theta \ell_i$</td><td>Fast, noisy, escapes shallow minima.</td></tr>
+<tr><td>Mini-batch SGD</td><td>average over batch $B$</td><td>Standard practice; balances noise &amp; speed; GPU friendly.</td></tr>
+</table>
+
+<h3 id="s14-2">14.4 Momentum</h3>
+<div class="def">Maintain a <strong>velocity</strong> that averages recent gradients; update using velocity instead of raw gradient:
+$$v_t = \beta v_{t-1} + \nabla \mathcal{L}(\theta_t),\quad \theta_{t+1} = \theta_t - \eta v_t$$
+Typical $\beta=0.9$. Damps oscillations across narrow valleys, accelerates along consistent directions.</div>
+
+<div class="example"><strong>Numeric.</strong> Two consecutive gradients $g_1=1, g_2=1$. $v_1 = 0.9\cdot0 + 1 = 1$. $v_2 = 0.9\cdot1 + 1 = 1.9$. Step size keeps growing → effective lr larger than $\eta$.
+<br>Now $g_3=-1$: $v_3 = 0.9(1.9) -1 = 0.71$ — still pointing roughly forward, smoothing the reversal.</div>
+
+<p><b>Nesterov</b> momentum looks ahead: evaluates the gradient at $\theta - \eta\beta v_{t-1}$, often slightly better.</p>
+
+<h3 id="s14-3">14.5 AdaGrad</h3>
+<div class="def">Per-parameter learning rate that decays with the accumulated squared gradient:
+$$r_t = r_{t-1} + g_t^2,\qquad \theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{r_t}+\epsilon}\, g_t$$
+Helps sparse features (rare features get larger updates). Drawback: $r_t$ only grows → learning rate eventually vanishes.</div>
+
+<h3 id="s14-4">14.6 RMSProp</h3>
+<div class="def">Fixes AdaGrad's monotonic decay by using an <em>exponential moving average</em>:
+$$r_t = \rho r_{t-1} + (1-\rho) g_t^2,\qquad \theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{r_t}+\epsilon}g_t$$
+Typical $\rho=0.9$. Stable, popular default for RNNs.</div>
+
+<h3 id="s14-5">14.7 Adadelta</h3>
+<div class="def">RMSProp variant that removes the need for a global learning rate by also keeping an EMA of squared <em>updates</em>:
+$$E[g^2]_t = \rho E[g^2]_{t-1} + (1-\rho) g_t^2$$
+$$\Delta\theta_t = -\frac{\sqrt{E[\Delta\theta^2]_{t-1}+\epsilon}}{\sqrt{E[g^2]_t+\epsilon}} g_t$$
+$$E[\Delta\theta^2]_t = \rho E[\Delta\theta^2]_{t-1} + (1-\rho)\Delta\theta_t^2$$
+Update step has the same "units" as $\theta$.</div>
+
+<h3 id="s14-6">14.8 Adam (Adaptive Moments)</h3>
+<div class="def"><strong>Adam</strong> combines momentum (1st moment) with RMSProp (2nd moment) and adds bias correction:
+$$m_t=\beta_1 m_{t-1}+(1-\beta_1)g_t,\quad v_t=\beta_2 v_{t-1}+(1-\beta_2)g_t^2$$
+$$\hat m_t = \frac{m_t}{1-\beta_1^t},\quad \hat v_t = \frac{v_t}{1-\beta_2^t}$$
+$$\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{\hat v_t}+\epsilon}\hat m_t$$
+Defaults: $\beta_1=0.9,\beta_2=0.999,\epsilon=10^{-8}$. The de facto default optimizer in deep learning.</div>
+<p>Variants: <b>AdamW</b> (decouples weight decay), <b>NAdam</b> (Nesterov + Adam), <b>AMSGrad</b>.</p>
+
+<h3>14.9 Comparison Summary</h3>
+<table>
+<tr><th>Method</th><th>Adaptive?</th><th>Momentum?</th><th>Best for</th></tr>
+<tr><td>SGD</td><td>No</td><td>No</td><td>Final fine-tune, well-tuned vision</td></tr>
+<tr><td>SGD+Momentum</td><td>No</td><td>Yes</td><td>CNNs (often beats Adam at end)</td></tr>
+<tr><td>AdaGrad</td><td>Yes</td><td>No</td><td>Sparse data (NLP early on)</td></tr>
+<tr><td>RMSProp</td><td>Yes</td><td>No</td><td>RNNs</td></tr>
+<tr><td>Adam</td><td>Yes</td><td>Yes</td><td>Default everywhere; Transformers, NLP</td></tr>
+</table>
+</section>
+
+<!-- ================= SESSION 15 ================= -->
+<section id="s15">
+<h2>15. Regularization for Deep Models</h2>
+
+<h3 id="s15-1">15.1 Generalization, Training Error, Test Error</h3>
+<div class="def"><strong>Generalization</strong> = ability of a model to perform well on unseen data drawn from the same distribution.</div>
+<div class="def"><strong>Training error</strong> $E_{\text{train}}$ — average loss on training data. <strong>Generalization error</strong> $E_{\text{gen}}$ — expected loss on the data distribution; estimated by a held-out <em>test set</em>.</div>
+<p>Generalization gap = $E_{\text{gen}} - E_{\text{train}}$. Small training error + small gap = good.</p>
+
+<h3 id="s15-2">15.2 Underfitting vs Overfitting</h3>
+<table>
+<tr><th>Symptom</th><th>Underfit</th><th>Overfit</th></tr>
+<tr><td>Train error</td><td>High</td><td>Low</td></tr>
+<tr><td>Test error</td><td>High</td><td>High</td></tr>
+<tr><td>Gap</td><td>Small</td><td>Large</td></tr>
+<tr><td>Cause</td><td>Model too simple / under-trained</td><td>Model too complex / over-trained</td></tr>
+<tr><td>Fixes</td><td>Bigger model, more features, train longer</td><td>More data, regularize, simpler model, dropout</td></tr>
+</table>
+<div class="def"><strong>Bias–Variance tradeoff.</strong> $E[(y-\hat y)^2] = \text{Bias}^2 + \text{Variance} + \text{Noise}$. Simple models high bias; complex models high variance.</div>
+
+<h3 id="s15-3">15.3 Model Selection</h3>
+<ul class="k">
+<li>Split data: <b>train / validation / test</b>. Tune hyperparameters on validation. Touch test only at the end.</li>
+<li><b>$k$-fold cross-validation</b> — split into $k$ folds; train on $k-1$, validate on remaining; average. Useful when data is limited.</li>
+<li><b>Early stopping</b> — monitor validation loss; stop when it stops improving; an implicit regularizer.</li>
+</ul>
+
+<h3 id="s15-4">15.4 Weight Decay and Norms ($L_2 / L_1$)</h3>
+<div class="def"><strong>$L_2$ regularization / weight decay.</strong> Add $\lambda \|w\|_2^2$ to the loss. Gradient adds $2\lambda w$, so each update shrinks weights toward 0 — "decay". Discourages large weights ⇒ smoother function.</div>
+<p>$L_1$ regularization $\lambda \|w\|_1$ encourages <b>sparsity</b> (some weights exactly 0). Often used for feature selection; less common in deep nets.</p>
+
+<div class="example"><strong>Effect on update.</strong> Plain SGD: $w\leftarrow w - \eta g$. With L2: $w\leftarrow w - \eta(g+2\lambda w) = (1-2\eta\lambda)w - \eta g$. The factor $(1-2\eta\lambda)<1$ pulls weights toward 0.</div>
+
+<h3>15.5 Generalization in Classification</h3>
+<p>Same concepts but loss is cross-entropy / accuracy. Things to watch:</p>
+<ul class="k">
+<li>Class imbalance ⇒ accuracy is misleading; use F1, AUC, balanced accuracy.</li>
+<li>Confidence calibration: deep nets often over-confident; use temperature scaling.</li>
+</ul>
+
+<h3 id="s15-5">15.6 Environment and Distribution Shift</h3>
+<div class="def">Models trained on $P_{\text{train}}$ may fail when tested on $P_{\text{test}}\neq P_{\text{train}}$. Types:</div>
+<ul class="k">
+<li><b>Covariate shift</b> — $P(x)$ changes but $P(y|x)$ stays the same. e.g. medical images from a new scanner.</li>
+<li><b>Label shift</b> — $P(y)$ changes (e.g. disease prevalence shift).</li>
+<li><b>Concept drift</b> — $P(y|x)$ itself changes over time (e.g. spam tactics evolve).</li>
+</ul>
+<p>Remedies: importance weighting, domain adaptation, continual learning, monitor and retrain.</p>
+
+<h3>15.7 Generalization in Deep Learning — Why Big Nets Still Generalize</h3>
+<p>Classical theory says overparameterised models should overfit, yet huge deep nets generalize. Hypothesised reasons:</p>
+<ul class="k">
+<li><b>Implicit bias of SGD</b> toward flat / low-norm minima.</li>
+<li><b>Overparameterisation</b> + interpolation regime — "double descent": test error first rises with model size, then falls again.</li>
+<li><b>Architecture priors</b> (conv, attention) match real-world data structure.</li>
+<li><b>Explicit regularizers</b> — dropout, BN, weight decay, data augmentation.</li>
+</ul>
+
+<h3 id="s15-6">15.8 Dropout (Srivastava et al. 2014)</h3>
+<div class="def">During training, randomly set each unit's activation to zero with probability $p$, independently per example. At test time, use all units but scale activations by $(1-p)$ (or equivalently scale up by $1/(1-p)$ at train time — "inverted dropout").</div>
+<ul class="k">
+<li>Prevents <b>co-adaptation</b> — units must be useful in many random sub-networks.</li>
+<li>Acts like training and averaging an exponential ensemble of thinned networks.</li>
+<li>Typical $p$ = 0.5 for FC layers, 0.1–0.3 for conv, 0 (or tiny) for very deep nets with BN.</li>
+</ul>
+
+<div class="example">During training, if a hidden vector is $h=(2,4,6,8)$ and dropout mask $m=(1,0,1,0)$ at $p=0.5$, output (inverted) $=h\odot m / (1-p) = (4,0,12,0)$.</div>
+
+<h3 id="s15-7">15.9 Batch Normalization (Ioffe &amp; Szegedy 2015)</h3>
+<div class="def">For each mini-batch and each channel/feature, normalise activations to zero mean unit variance, then apply learnable scale $\gamma$ and shift $\beta$:
+$$\mu = \frac{1}{m}\sum_i x_i,\quad \sigma^2 = \frac{1}{m}\sum_i (x_i-\mu)^2$$
+$$\hat x_i = \frac{x_i-\mu}{\sqrt{\sigma^2+\epsilon}},\quad y_i = \gamma \hat x_i + \beta$$</div>
+<ul class="k">
+<li>Reduces <em>internal covariate shift</em>; lets you use higher learning rates.</li>
+<li>Acts as a regularizer (mini-batch noise).</li>
+<li>At inference time, use running averages of $\mu,\sigma^2$ from training.</li>
+<li>Placed after conv/FC, before (or after) activation.</li>
+<li>Trouble with very small batches; replaced by GroupNorm/LayerNorm in those cases.</li>
+</ul>
+
+<h3 id="s15-8">15.10 Layer Normalization</h3>
+<div class="def">Like BN but normalises across the <b>features</b> within a single example (not across the batch). So $\mu,\sigma^2$ computed per token / per sample. Independent of batch size — ideal for RNNs and Transformers.</div>
+
+<h4>BN vs LN</h4>
+<table>
+<tr><th></th><th>Batch Norm</th><th>Layer Norm</th></tr>
+<tr><td>Normalize across</td><td>Batch dimension (per feature)</td><td>Feature dimension (per sample)</td></tr>
+<tr><td>Depends on batch size?</td><td>Yes</td><td>No</td></tr>
+<tr><td>Used in</td><td>CNNs</td><td>RNNs, Transformers</td></tr>
+<tr><td>Train vs test stats</td><td>Different (running mean)</td><td>Same</td></tr>
+</table>
+
+<h3>15.11 Other Regularization Techniques (good to mention)</h3>
+<ul class="k">
+<li><b>Data augmentation</b> — random crops, flips, color jitter; in NLP: back-translation, masking.</li>
+<li><b>Label smoothing</b> — replace 1-hot target with $(1-\epsilon)$ + $\epsilon/K$; reduces overconfidence.</li>
+<li><b>Mixup / CutMix</b> — linearly interpolate samples and labels.</li>
+<li><b>Early stopping</b>, <b>noise injection</b>, <b>parameter sharing</b>.</li>
+</ul>
+</section>
+
+<section>
+<h2>Final Quick-Reference Cheatsheet</h2>
+<ul class="k">
+<li><b>Linear regression neuron</b>: $\hat y = w^\top x + b$, MSE, batch GD.</li>
+<li><b>Logistic neuron</b>: sigmoid + BCE + SGD; gradient $(\hat y - y)x$.</li>
+<li><b>Multi-class</b>: softmax + categorical CE + mini-batch SGD; $\partial \mathcal{L}/\partial z = \hat y - y$.</li>
+<li><b>MLP</b>: depth + nonlinearity solves XOR; UAT for one hidden layer.</li>
+<li><b>Backprop</b>: chain rule; $\delta^{[l]} = (W^{[l+1]\top}\delta^{[l+1]})\odot \sigma'(z^{[l]})$.</li>
+<li><b>CNN</b>: convolution + pooling + 1×1; output $\lfloor(H+2p-k)/s\rfloor+1$.</li>
+<li><b>LeNet, AlexNet, VGG (3×3), NiN (1×1 + GAP), Inception (parallel 1×1/3×3/5×5), ResNet (skip)</b>.</li>
+<li><b>Transfer learning</b>: freeze + new head, or fine-tune with small lr.</li>
+<li><b>RNN</b>: $h_t=\sigma(W_{xh}x_t+W_{hh}h_{t-1})$; BPTT, vanishing/exploding.</li>
+<li><b>LSTM</b>: gates $f,i,o$ + cell state $c_t$. <b>GRU</b>: gates $z,r$, no cell. <b>BiLSTM</b>: both directions.</li>
+<li><b>Attention</b>: $\text{softmax}(QK^\top/\sqrt{d_k})V$. Bahdanau (additive), Multi-Head, Self-Attn.</li>
+<li><b>Transformer</b>: MHA + FFN + residual + LN, encoder/decoder, positional encoding.</li>
+<li><b>ViT</b>: image as patches + CLS token + standard encoder.</li>
+<li><b>Optimizers</b>: SGD, Momentum ($\beta=0.9$), AdaGrad (cum $g^2$), RMSProp (EMA $g^2$), Adadelta (units-correct), Adam (1st + 2nd moments + bias correction).</li>
+<li><b>Regularization</b>: weight decay (L2), dropout, BN, LN, early stopping, data aug.</li>
+<li><b>BN vs LN</b>: across-batch vs across-feature.</li>
+</ul>
+</section>
+
+<p style="text-align:center;color:var(--muted);margin-top:40px;font-size:13px">
+Study guide for AIML ZG511 Deep Neural Networks · built {today}
+</p>
+</main>
+</div>
+</body>
+</html>
